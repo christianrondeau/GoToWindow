@@ -7,14 +7,14 @@ using GoToWindow.Api;
 namespace GoToWindow.Api.Tests
 {
     [TestClass]
-    public class WindowsListTests
+    public class WindowListFactoryTests
     {
         [TestMethod]
         public void CanGetAListOfActiveWindows_ContainingVisualStudio()
         {
             const string expectedWindow = "GoToWindow - Microsoft Visual Studio";
 
-            var windowsList = WindowsList.Load();
+            var windowsList = WindowListFactory.Load();
             var windows = windowsList.Windows;
 
             var openedWindows = windows.Select(window => window.Title);
