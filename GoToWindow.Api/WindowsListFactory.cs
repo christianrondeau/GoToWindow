@@ -12,22 +12,19 @@ namespace GoToWindow.Api
     /// </remarks>
     public class WindowsListFactory
     {
-        delegate bool EnumWindowsProc(IntPtr IntPtr, int lParam);
+        delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
         [DllImport("USER32.DLL")]
         static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
 
         [DllImport("USER32.DLL")]
-        static extern int GetWindowText(IntPtr IntPtr, StringBuilder lpString, int nMaxCount);
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
         [DllImport("USER32.DLL")]
-        static extern int GetWindowTextLength(IntPtr IntPtr);
+        static extern int GetWindowTextLength(IntPtr hWnd);
 
         [DllImport("USER32.DLL")]
-        static extern bool IsWindowVisible(IntPtr IntPtr);
-
-        [DllImport("USER32.DLL")]
-        static extern IntPtr GetActiveWindow();
+        static extern bool IsWindowVisible(IntPtr hWnd);
 
         [DllImport("USER32.DLL")]
         static extern IntPtr GetShellWindow();

@@ -6,5 +6,7 @@ namespace GoToWindow.Api
     {
         IntPtr IntPtr { get; set; }
         string Title { get; set; }
+
+        void Focus();
     }
 }
