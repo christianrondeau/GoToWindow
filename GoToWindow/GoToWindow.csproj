@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GoToWindowApplication.cs" />
+    <Compile Include="GoToWindowApplicationContext.cs" />
+    <Compile Include="IGoToWindowApplication.cs" />
+    <Compile Include="InterceptAltTab.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +86,9 @@
       <Project>{c0e88c89-8430-43ba-a5d5-a92eafd48a79}</Project>
       <Name>GoToWindow.Api</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AppIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

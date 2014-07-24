@@ -10,6 +10,7 @@ namespace GoToWindow.Api
     internal static class WindowToForeground
     {
         public const uint SW_SHOW = 5;
+		public const uint SW_RESTORE = 9;
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
@@ -43,7 +44,7 @@ namespace GoToWindow.Api
         {
             var foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
             var appThread = GetCurrentThreadId();
-            bool threadsAttached = false;
+            var threadsAttached = false;
 
             try
             {
@@ -68,6 +69,7 @@ namespace GoToWindow.Api
                 {
                     BringWindowToTop(hwnd);
                     ShowWindow(hwnd, SW_SHOW);
+					ShowWindow(hwnd, SW_RESTORE);
                 });
         }
     }

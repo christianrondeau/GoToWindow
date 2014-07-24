@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.windowsListBox = new System.Windows.Forms.ListBox();
 			this.goToWindowButton = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
@@ -36,6 +37,7 @@
 			// 
 			// windowsListBox
 			// 
+			this.windowsListBox.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
 			this.windowsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -90,6 +92,7 @@
 			this.Controls.Add(this.goToWindowButton);
 			this.Controls.Add(this.windowsListBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "MainForm";
@@ -97,7 +100,6 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Go To Window";
 			this.TopMost = true;
-			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

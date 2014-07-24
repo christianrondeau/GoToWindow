@@ -9,25 +9,33 @@ namespace GoToWindow
 {
     public partial class MainForm : Form
     {
-	    private WindowsList _windowsList;
+	    private IList<IWindow> _windows;
+		private readonly IGoToWindowApplication _app;
 
-        public MainForm()
+		public MainForm(IGoToWindowApplication app)
         {
-            InitializeComponent();
+	        _app = app;
+
+	        InitializeComponent();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
+		public void InitializeData(IList<IWindow> windows)
+	    {
+			_windows = windows;
+
+			searchTextBox.Text = "";
 			ActiveControl = searchTextBox;
 
-	        _windowsList = WindowsListFactory.Load();
-            windowsListBox.Items.AddRange(_windowsList.Windows.ToArray<Object>());
-            windowsListBox.SelectedIndex = 0;
-        }
+			windowsListBox.BeginUpdate();
+			windowsListBox.Items.Clear();
+			windowsListBox.Items.AddRange(_windows.ToArray<Object>());
+			windowsListBox.SelectedIndex = 0;
+			windowsListBox.EndUpdate();
+	    }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            _app.Hide();
         }
 
         private void goToWindowButton_Click(object sender, EventArgs e)
@@ -47,7 +55,7 @@ namespace GoToWindow
                 }
             }
 
-            Application.Exit();
+	        _app.Hide();
         }
 
 		private void searchTextBox_TextChanged(object sender, EventArgs e)
@@ -56,7 +64,7 @@ namespace GoToWindow
 
 			windowsListBox.BeginUpdate();
 			windowsListBox.Items.Clear();
-			windowsListBox.Items.AddRange(Filter(_windowsList.Windows, searchTextBox.Text).ToArray<Object>());
+			windowsListBox.Items.AddRange(Filter(_windows, searchTextBox.Text).ToArray<Object>());
 			windowsListBox.EndUpdate();
 
 			if (currentSelection != null && windowsListBox.Items.Contains(currentSelection))
