@@ -33,12 +33,7 @@ namespace GoToWindow
 			windowsListBox.EndUpdate();
 	    }
 
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            _app.Hide();
-        }
-
-        private void goToWindowButton_Click(object sender, EventArgs e)
+        private void GoToSelectedWindow()
         {
             var selectedItem = (IWindow)windowsListBox.SelectedItem;
 
@@ -47,53 +42,88 @@ namespace GoToWindow
                 try
                 {
                     selectedItem.Focus();
-
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
-                    MessageBox.Show("There was an error trying to switch: " + exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("There was an error trying to switch: " + exc.Message, "Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
             }
 
-	        _app.Hide();
+            _app.Hide();
         }
 
-		private void searchTextBox_TextChanged(object sender, EventArgs e)
-		{
-			var currentSelection = windowsListBox.SelectedItem;
+        private void UpdateSearchText()
+        {
+            var currentSelection = windowsListBox.SelectedItem;
 
-			windowsListBox.BeginUpdate();
-			windowsListBox.Items.Clear();
-			windowsListBox.Items.AddRange(Filter(_windows, searchTextBox.Text).ToArray<Object>());
-			windowsListBox.EndUpdate();
+            windowsListBox.BeginUpdate();
+            windowsListBox.Items.Clear();
+            windowsListBox.Items.AddRange(Filter(_windows, searchTextBox.Text).ToArray<Object>());
+            windowsListBox.EndUpdate();
 
-			if (currentSelection != null && windowsListBox.Items.Contains(currentSelection))
-				windowsListBox.SelectedItem = currentSelection;
-			else if(windowsListBox.Items.Count > 0)
-				windowsListBox.SelectedIndex = 0;
-		}
+            if (currentSelection != null && windowsListBox.Items.Contains(currentSelection))
+                windowsListBox.SelectedItem = currentSelection;
+            else if (windowsListBox.Items.Count > 0)
+                windowsListBox.SelectedIndex = 0;
+        }
 
-		private void searchTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-		{
-			if (windowsListBox.Items.Count == 0)
-				return;
+        private void MoveInList(PreviewKeyDownEventArgs e)
+        {
+            if (windowsListBox.Items.Count == 0)
+                return;
 
-			if (e.KeyCode == Keys.Down && windowsListBox.SelectedIndex < windowsListBox.Items.Count - 1)
-			{
-				windowsListBox.SelectedIndex++;
-			}
+            if (e.KeyCode == Keys.Down && windowsListBox.SelectedIndex < windowsListBox.Items.Count - 1)
+            {
+                windowsListBox.SelectedIndex++;
+            }
 
-			if (e.KeyCode == Keys.Up && windowsListBox.SelectedIndex > 0)
-			{
-				windowsListBox.SelectedIndex--;
-			}
-		}
+            if (e.KeyCode == Keys.Up && windowsListBox.SelectedIndex > 0)
+            {
+                windowsListBox.SelectedIndex--;
+            }
+        }
 
-	    private static IEnumerable<IWindow> Filter(IEnumerable<IWindow> windows, string searchText)
-	    {
-		    return string.IsNullOrEmpty(searchText)
-				? windows
-				: windows.Where(window => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(window.Title, searchText, CompareOptions.IgnoreCase) > -1);
-	    }
+        private static IEnumerable<IWindow> Filter(IEnumerable<IWindow> windows, string searchText)
+        {
+            return string.IsNullOrEmpty(searchText)
+                ? windows
+                : windows.Where(window => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(window.Title, searchText, CompareOptions.IgnoreCase) > -1);
+        }
+
+        #region Events
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            _app.Hide();
+        }
+
+        private void goToWindowButton_Click(object sender, EventArgs e)
+        {
+            GoToSelectedWindow();
+        }
+
+        private void windowsListBox_DoubleClick(object sender, EventArgs e)
+        {
+            GoToSelectedWindow();
+        }
+
+        private void searchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSearchText();
+        }
+
+        private void searchTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            MoveInList(e);
+        }
+
+        private void MainForm_Deactivate(object sender, EventArgs e)
+        {
+            _app.Hide();
+        }
+
+        #endregion
+
     }
 }
