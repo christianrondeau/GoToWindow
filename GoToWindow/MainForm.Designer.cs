@@ -28,64 +28,78 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.windowsListBox = new System.Windows.Forms.ListBox();
-            this.goToWindowButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.SuspendLayout();
-            // 
-            // windowsListBox
-            // 
-            this.windowsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.windowsListBox = new System.Windows.Forms.ListBox();
+			this.goToWindowButton = new System.Windows.Forms.Button();
+			this.cancelButton = new System.Windows.Forms.Button();
+			this.searchTextBox = new System.Windows.Forms.TextBox();
+			this.SuspendLayout();
+			// 
+			// windowsListBox
+			// 
+			this.windowsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.windowsListBox.FormattingEnabled = true;
-            this.windowsListBox.Location = new System.Drawing.Point(12, 12);
-            this.windowsListBox.Name = "windowsListBox";
-            this.windowsListBox.Size = new System.Drawing.Size(602, 277);
-            this.windowsListBox.TabIndex = 0;
-            // 
-            // goToWindowButton
-            // 
-            this.goToWindowButton.Location = new System.Drawing.Point(539, 295);
-            this.goToWindowButton.Name = "goToWindowButton";
-            this.goToWindowButton.Size = new System.Drawing.Size(75, 23);
-            this.goToWindowButton.TabIndex = 1;
-            this.goToWindowButton.Text = "Go";
-            this.goToWindowButton.UseVisualStyleBackColor = true;
-            this.goToWindowButton.Click += new System.EventHandler(this.goToWindowButton_Click);
-            // 
-            // cancelButton
-            // 
-            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(458, 295);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 2;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-            // 
-            // MainForm
-            // 
-            this.AcceptButton = this.goToWindowButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(626, 330);
-            this.ControlBox = false;
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.goToWindowButton);
-            this.Controls.Add(this.windowsListBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "MainForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Go To Window";
-            this.TopMost = true;
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.ResumeLayout(false);
+			this.windowsListBox.BackColor = System.Drawing.SystemColors.Control;
+			this.windowsListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.windowsListBox.FormattingEnabled = true;
+			this.windowsListBox.Location = new System.Drawing.Point(12, 38);
+			this.windowsListBox.Name = "windowsListBox";
+			this.windowsListBox.Size = new System.Drawing.Size(602, 247);
+			this.windowsListBox.TabIndex = 2;
+			// 
+			// goToWindowButton
+			// 
+			this.goToWindowButton.Location = new System.Drawing.Point(539, 295);
+			this.goToWindowButton.Name = "goToWindowButton";
+			this.goToWindowButton.Size = new System.Drawing.Size(75, 23);
+			this.goToWindowButton.TabIndex = 3;
+			this.goToWindowButton.Text = "Go";
+			this.goToWindowButton.UseVisualStyleBackColor = true;
+			this.goToWindowButton.Click += new System.EventHandler(this.goToWindowButton_Click);
+			// 
+			// cancelButton
+			// 
+			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.cancelButton.Location = new System.Drawing.Point(458, 295);
+			this.cancelButton.Name = "cancelButton";
+			this.cancelButton.Size = new System.Drawing.Size(75, 23);
+			this.cancelButton.TabIndex = 4;
+			this.cancelButton.Text = "Cancel";
+			this.cancelButton.UseVisualStyleBackColor = true;
+			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+			// 
+			// searchTextBox
+			// 
+			this.searchTextBox.Location = new System.Drawing.Point(12, 12);
+			this.searchTextBox.Name = "searchTextBox";
+			this.searchTextBox.Size = new System.Drawing.Size(602, 20);
+			this.searchTextBox.TabIndex = 1;
+			this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
+			this.searchTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.searchTextBox_PreviewKeyDown);
+			// 
+			// MainForm
+			// 
+			this.AcceptButton = this.goToWindowButton;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.cancelButton;
+			this.ClientSize = new System.Drawing.Size(626, 330);
+			this.ControlBox = false;
+			this.Controls.Add(this.searchTextBox);
+			this.Controls.Add(this.cancelButton);
+			this.Controls.Add(this.goToWindowButton);
+			this.Controls.Add(this.windowsListBox);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.Name = "MainForm";
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text = "Go To Window";
+			this.TopMost = true;
+			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 
@@ -94,6 +108,7 @@
         private System.Windows.Forms.ListBox windowsListBox;
         private System.Windows.Forms.Button goToWindowButton;
         private System.Windows.Forms.Button cancelButton;
+		private System.Windows.Forms.TextBox searchTextBox;
     }
 }
 
