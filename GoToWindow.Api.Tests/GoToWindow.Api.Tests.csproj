@@ -50,8 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="WindowsListTests.cs" />
+    <Compile Include="WindowListFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoToWindow.Api\GoToWindow.Api.csproj">

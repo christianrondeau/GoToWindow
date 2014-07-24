@@ -14,7 +14,7 @@ namespace GoToWindow.Api.Tests
         {
             const string expectedWindow = "GoToWindow - Microsoft Visual Studio";
 
-            var windowsList = WindowListFactory.Load();
+            var windowsList = WindowsListFactory.Load();
             var windows = windowsList.Windows;
 
             var openedWindows = windows.Select(window => window.Title);

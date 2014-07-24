@@ -28,36 +28,62 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.windowsListBox = new System.Windows.Forms.ListBox();
+            this.goToWindowButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // listBox1
+            // windowsListBox
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(78, 46);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(147, 199);
-            this.listBox1.TabIndex = 0;
+            this.windowsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.windowsListBox.FormattingEnabled = true;
+            this.windowsListBox.Location = new System.Drawing.Point(12, 12);
+            this.windowsListBox.Name = "windowsListBox";
+            this.windowsListBox.Size = new System.Drawing.Size(602, 277);
+            this.windowsListBox.TabIndex = 0;
             // 
-            // button1
+            // goToWindowButton
             // 
-            this.button1.Location = new System.Drawing.Point(328, 130);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.goToWindowButton.Location = new System.Drawing.Point(539, 295);
+            this.goToWindowButton.Name = "goToWindowButton";
+            this.goToWindowButton.Size = new System.Drawing.Size(75, 23);
+            this.goToWindowButton.TabIndex = 1;
+            this.goToWindowButton.Text = "Go";
+            this.goToWindowButton.UseVisualStyleBackColor = true;
+            this.goToWindowButton.Click += new System.EventHandler(this.goToWindowButton_Click);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Location = new System.Drawing.Point(458, 295);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 2;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // MainForm
             // 
+            this.AcceptButton = this.goToWindowButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(626, 330);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.listBox1);
+            this.ControlBox = false;
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.goToWindowButton);
+            this.Controls.Add(this.windowsListBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Go To Window";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
 
@@ -65,8 +91,9 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListBox windowsListBox;
+        private System.Windows.Forms.Button goToWindowButton;
+        private System.Windows.Forms.Button cancelButton;
     }
 }
 

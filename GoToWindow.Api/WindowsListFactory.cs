@@ -10,7 +10,7 @@ namespace GoToWindow.Api
     /// <remarks>
     /// Thanks to Tommy Carlier for how to get the list of windows: http://blog.tcx.be/2006/05/getting-list-of-all-open-windows.html
     /// </remarks>
-    public class WindowListFactory
+    public class WindowsListFactory
     {
         delegate bool EnumWindowsProc(IntPtr IntPtr, int lParam);
 
@@ -25,6 +25,9 @@ namespace GoToWindow.Api
 
         [DllImport("USER32.DLL")]
         static extern bool IsWindowVisible(IntPtr IntPtr);
+
+        [DllImport("USER32.DLL")]
+        static extern IntPtr GetActiveWindow();
 
         [DllImport("USER32.DLL")]
         static extern IntPtr GetShellWindow();
