@@ -1,16 +1,23 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace GoToWindow
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
-        static void Main()
+        private static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new GoToWindowApplicationContext());
+            bool createdNew;
+            using (new Mutex(true, "GoToWindow", out createdNew))
+            {
+                if (!createdNew) return;
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new GoToWindowApplicationContext());
+            }
         }
     }
 }
