@@ -89,6 +89,7 @@
             this.windowsDataGrid.ShowEditingIcon = false;
             this.windowsDataGrid.Size = new System.Drawing.Size(602, 251);
             this.windowsDataGrid.TabIndex = 2;
+            this.windowsDataGrid.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.windowsDataGrid_DataBindingComplete);
             // 
             // MainForm
             // 

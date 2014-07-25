@@ -6,6 +6,7 @@ namespace GoToWindow.Api
     {
         public IntPtr HWnd { get; set; }
         public string ProcessName { get; set; }
+        public string Executable { get; set; }
         public string Title { get; set; }
 
         public void Focus()

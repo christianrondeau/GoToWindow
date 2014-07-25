@@ -30,15 +30,26 @@ namespace GoToWindow
 	    {
 			_windows = windows;
 
-			searchTextBox.Text = "";
 			ActiveControl = searchTextBox;
 
             _windowsBindingListView = new BindingListView<IWindow>(windows.ToList());
             windowsDataGrid.DataSource = _windowsBindingListView;
             windowsDataGrid.Columns["HWnd"].Visible = false;
-            windowsDataGrid.Columns["ProcessName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            windowsDataGrid.Columns["ProcessName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
             windowsDataGrid.Columns["ProcessName"].CellTemplate.Style.ForeColor = Color.Gray;
-            windowsDataGrid.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            windowsDataGrid.Columns["Executable"].Visible = false;
+            windowsDataGrid.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+
+            var iconsColumn = new DataGridViewImageColumn(true)
+            {
+                Name = "Icon",
+                HeaderText = "Icon",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                Width = 22,
+                ImageLayout = DataGridViewImageCellLayout.Stretch
+            };
+            iconsColumn.DefaultCellStyle.NullValue = null;
+            windowsDataGrid.Columns.Insert(0, iconsColumn);
             
             SelectFirstWindow();
 	    }
@@ -175,5 +186,25 @@ namespace GoToWindow
             MoveInList(e);
         }
 
+
+        public void Clear()
+        {
+            searchTextBox.Text = "";
+            windowsDataGrid.Columns.Clear();
+            windowsDataGrid.DataSource = null;
+            _windowsBindingListView = null;
+        }
+
+        private void windowsDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (!windowsDataGrid.Columns.Contains("Icon"))
+                return;
+
+            foreach (DataGridViewRow row in windowsDataGrid.Rows)
+            {
+                var window = GetRowWindow(row);
+                row.Cells["Icon"].Value = Icon.ExtractAssociatedIcon(window.Executable);
+            }
+        }
     }
 }

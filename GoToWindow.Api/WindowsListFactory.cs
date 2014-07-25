@@ -51,11 +51,15 @@ namespace GoToWindow.Api
                 uint processId;
                 GetWindowThreadProcessId(hWnd, out processId);
 
+                var process = Process.GetProcessById((int)processId);
+                var module = process.Modules[0];
+
                 windows.Add(new Window
                 {
                     HWnd = hWnd,
                     Title = builder.ToString(),
-                    ProcessName = Process.GetProcessById((int)processId).ProcessName
+                    ProcessName = process.ProcessName,
+                    Executable = module.FileName
                 });
 
                 return true;

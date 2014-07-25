@@ -45,6 +45,8 @@ namespace GoToWindow
 
 			if (_mainForm.Visible)
 				_mainForm.Hide();
+
+            _mainForm.Clear();
 		}
     }
 }
