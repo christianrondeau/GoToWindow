@@ -14,19 +14,19 @@ namespace GoToWindow.Api
     {
         delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.dll")]
         static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.dll")]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.dll")]
         static extern int GetWindowTextLength(IntPtr hWnd);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.dll")]
         static extern bool IsWindowVisible(IntPtr hWnd);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("user32.dll")]
         static extern IntPtr GetShellWindow();
 
         [DllImport("user32.dll", SetLastError = true)]

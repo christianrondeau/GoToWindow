@@ -10,21 +10,59 @@ namespace GoToWindow.Api
     internal static class WindowToForeground
     {
         public const uint SW_SHOW = 5;
+        public const uint SW_MINIMIZE = 6;
 		public const uint SW_RESTORE = 9;
+
+        [Serializable]
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct WINDOWPLACEMENT
+        {
+            public int Length;
+            public int Flags;
+            public ShowWindowCommands ShowCmd;
+            public POINT MinPosition;
+            public POINT MaxPosition;
+            public RECT NormalPosition;
+        }
+
+        public enum ShowWindowCommands
+        {
+            Hide = 0,
+            Normal = 1,
+            ShowMinimized = 2,
+            Maximize = 3,
+            ShowMaximized = 3,
+            ShowNoActivate = 4,
+            Show = 5,
+            Minimize = 6,
+            ShowMinNoActive = 7,
+            ShowNA = 8,
+            Restore = 9,
+            ShowDefault = 10,
+            ForceMinimize = 11
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X, Y;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left, Top, Right, Bottom;
+        }
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-        // When you don't want the ProcessId, use this overload and pass 
-        // IntPtr.Zero for the second parameter
         [DllImport("user32.dll")]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
 
         [DllImport("kernel32.dll")]
         public static extern uint GetCurrentThreadId();
 
-        /// The GetForegroundWindow function returns a handle to the 
-        /// foreground window.
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
 
@@ -39,6 +77,9 @@ namespace GoToWindow.Api
 
         [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, uint nCmdShow);
+
+        [DllImport("user32.dll")]
+        internal static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
 
         public static void AttachedThreadInputAction(Action action)
         {
@@ -68,8 +109,14 @@ namespace GoToWindow.Api
                 () =>
                 {
                     BringWindowToTop(hwnd);
-                    ShowWindow(hwnd, SW_SHOW);
-					ShowWindow(hwnd, SW_RESTORE);
+
+                    WINDOWPLACEMENT state;
+                    GetWindowPlacement(hwnd, out state);
+                    if (state.ShowCmd == ShowWindowCommands.ShowMinimized)
+                    {
+                        //ShowWindow(hwnd, SW_SHOW);
+                        ShowWindow(hwnd, SW_RESTORE);
+                    }
                 });
         }
     }
