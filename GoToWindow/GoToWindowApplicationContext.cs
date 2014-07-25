@@ -32,12 +32,13 @@ namespace GoToWindow
 
 			notifyIcon.DoubleClick += (obj, args) => _app.Show();
 
-			_app.Start(notifyIcon);
+            _app.Start(notifyIcon);
 
-			_altTab = new InterceptAltTab(KeyPress);
+            if (AppConfiguration.Current.HookAltTab)
+                _altTab = new InterceptAltTab(AltTabCallback);
 		}
 
-		private void KeyPress()
+		private void AltTabCallback()
 		{
 			_app.Show();
 		}

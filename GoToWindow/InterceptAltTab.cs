@@ -40,26 +40,24 @@ namespace GoToWindow
 
 		private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
+        private LowLevelKeyboardProc _proc;
+
 		public InterceptAltTab(Action callback)
 		{
-			_callback = callback;
-			_hookID = SetHook(HookCallback);
+            _callback = callback;
+            _proc = new LowLevelKeyboardProc(HookCallback);
+            using (var curProcess = Process.GetCurrentProcess())
+            {
+                using (var curModule = curProcess.MainModule)
+                {
+                    _hookID = SetWindowsHookEx(WH_KEYBOARD_LL, _proc, GetModuleHandle(curModule.ModuleName), 0);
+                }
+            }
 		}
 
 		public void Dispose()
 		{
 			UnhookWindowsHookEx(_hookID);
-		}
-
-		private static IntPtr SetHook(LowLevelKeyboardProc proc)
-		{
-			using (var curProcess = Process.GetCurrentProcess())
-			{
-				using (var curModule = curProcess.MainModule)
-				{
-					return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
-				}
-			}
 		}
 
 		private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)

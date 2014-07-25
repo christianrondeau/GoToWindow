@@ -9,12 +9,15 @@ namespace GoToWindow
 		private MainForm _mainForm;
 		private NotifyIcon _notifyIcon;
 
-		public void Start(NotifyIcon notifyIcon)
+        public void Start(NotifyIcon notifyIcon)
 		{
-			_mainForm = new MainForm(this);
+            _mainForm = new MainForm(this);
 
 			_notifyIcon = notifyIcon;
-			_notifyIcon.Visible = true;
+            _notifyIcon.Visible = true;
+
+            if (AppConfiguration.Current.AlwaysShow)
+                Show();
 		}
 		
 		public void Exit()
@@ -37,8 +40,11 @@ namespace GoToWindow
 
 		public void Hide()
 		{
+            if (AppConfiguration.Current.AlwaysShow)
+                return;
+
 			if (_mainForm.Visible)
 				_mainForm.Hide();
 		}
-	}
+    }
 }

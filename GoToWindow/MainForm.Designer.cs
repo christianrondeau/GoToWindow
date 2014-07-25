@@ -29,26 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.windowsListBox = new System.Windows.Forms.ListBox();
             this.goToWindowButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.searchTextBox = new System.Windows.Forms.TextBox();
+            this.windowsDataGrid = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.windowsDataGrid)).BeginInit();
             this.SuspendLayout();
-            // 
-            // windowsListBox
-            // 
-            this.windowsListBox.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
-            this.windowsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.windowsListBox.BackColor = System.Drawing.SystemColors.Control;
-            this.windowsListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.windowsListBox.FormattingEnabled = true;
-            this.windowsListBox.Location = new System.Drawing.Point(12, 38);
-            this.windowsListBox.Name = "windowsListBox";
-            this.windowsListBox.Size = new System.Drawing.Size(602, 247);
-            this.windowsListBox.TabIndex = 2;
-            this.windowsListBox.DoubleClick += new System.EventHandler(this.windowsListBox_DoubleClick);
             // 
             // goToWindowButton
             // 
@@ -78,7 +64,31 @@
             this.searchTextBox.Size = new System.Drawing.Size(602, 20);
             this.searchTextBox.TabIndex = 1;
             this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
-            this.searchTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.searchTextBox_PreviewKeyDown);
+            this.searchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchTextBox_KeyDown);
+            // 
+            // windowsDataGrid
+            // 
+            this.windowsDataGrid.AllowUserToAddRows = false;
+            this.windowsDataGrid.AllowUserToDeleteRows = false;
+            this.windowsDataGrid.AllowUserToResizeColumns = false;
+            this.windowsDataGrid.AllowUserToResizeRows = false;
+            this.windowsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.windowsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.windowsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.windowsDataGrid.ColumnHeadersVisible = false;
+            this.windowsDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.windowsDataGrid.Location = new System.Drawing.Point(12, 38);
+            this.windowsDataGrid.MultiSelect = false;
+            this.windowsDataGrid.Name = "windowsDataGrid";
+            this.windowsDataGrid.ReadOnly = true;
+            this.windowsDataGrid.RowHeadersVisible = false;
+            this.windowsDataGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.windowsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.windowsDataGrid.ShowEditingIcon = false;
+            this.windowsDataGrid.Size = new System.Drawing.Size(602, 251);
+            this.windowsDataGrid.TabIndex = 2;
             // 
             // MainForm
             // 
@@ -88,20 +98,19 @@
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(626, 330);
             this.ControlBox = false;
+            this.Controls.Add(this.windowsDataGrid);
             this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.goToWindowButton);
-            this.Controls.Add(this.windowsListBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainForm";
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Go To Window";
-            this.TopMost = true;
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
+            ((System.ComponentModel.ISupportInitialize)(this.windowsDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,10 +118,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox windowsListBox;
         private System.Windows.Forms.Button goToWindowButton;
         private System.Windows.Forms.Button cancelButton;
-		private System.Windows.Forms.TextBox searchTextBox;
+        private System.Windows.Forms.TextBox searchTextBox;
+        private System.Windows.Forms.DataGridView windowsDataGrid;
     }
 }
 

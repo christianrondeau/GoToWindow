@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using GoToWindow.Api;
+using System.Data;
+using Equin.ApplicationFramework;
 
 namespace GoToWindow
 {
@@ -11,12 +13,16 @@ namespace GoToWindow
     {
 	    private IList<IWindow> _windows;
 		private readonly IGoToWindowApplication _app;
+        private BindingListView<IWindow> _windowsBindingListView;
 
 		public MainForm(IGoToWindowApplication app)
         {
 	        _app = app;
 
 	        InitializeComponent();
+
+            TopMost = AppConfiguration.Current.AlwaysOnTop;
+            ShowInTaskbar = AppConfiguration.Current.AlwaysShow;
         }
 
 		public void InitializeData(IList<IWindow> windows)
@@ -26,16 +32,36 @@ namespace GoToWindow
 			searchTextBox.Text = "";
 			ActiveControl = searchTextBox;
 
-			windowsListBox.BeginUpdate();
-			windowsListBox.Items.Clear();
-			windowsListBox.Items.AddRange(_windows.ToArray<Object>());
-			windowsListBox.SelectedIndex = 0;
-			windowsListBox.EndUpdate();
+            _windowsBindingListView = new BindingListView<IWindow>(windows.ToList());
+            windowsDataGrid.DataSource = _windowsBindingListView;
+
+            SelectFirstWindow();
 	    }
+
+        private void SelectFirstWindow()
+        {
+            if (windowsDataGrid.Rows.Count > 0)
+                windowsDataGrid.Rows[0].Selected = true;
+        }
+
+        private ListViewItem GetListViewItem(IWindow window)
+        {
+            var item = new ListViewItem(window.Title);
+
+            item.SubItems.Add(window.Title);
+
+            return item;
+        }
 
         private void GoToSelectedWindow()
         {
-            var selectedItem = (IWindow)windowsListBox.SelectedItem;
+            if (windowsDataGrid.SelectedRows.Count == 0)
+            {
+                _app.Hide();
+                return;
+            }
+
+            var selectedItem = GetRowWindow(windowsDataGrid.SelectedRows[0]);
 
             if (selectedItem != null)
             {
@@ -45,50 +71,69 @@ namespace GoToWindow
                 }
                 catch (Exception exc)
                 {
-                    MessageBox.Show("There was an error trying to switch: " + exc.Message, "Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    MessageBox.Show("There was an error trying to switch: " + exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
             _app.Hide();
         }
 
+        private IWindow GetRowWindow(DataGridViewRow row)
+        {
+            return ((ObjectView<IWindow>)row.DataBoundItem).Object;
+        }
+
         private void UpdateSearchText()
         {
-            var currentSelection = windowsListBox.SelectedItem;
+            IWindow selectedWindow = null;
 
-            windowsListBox.BeginUpdate();
-            windowsListBox.Items.Clear();
-            windowsListBox.Items.AddRange(Filter(_windows, searchTextBox.Text).ToArray<Object>());
-            windowsListBox.EndUpdate();
+            if (windowsDataGrid.SelectedRows.Count > 0)
+                selectedWindow = GetRowWindow(windowsDataGrid.SelectedRows[0]);
 
-            if (currentSelection != null && windowsListBox.Items.Contains(currentSelection))
-                windowsListBox.SelectedItem = currentSelection;
-            else if (windowsListBox.Items.Count > 0)
-                windowsListBox.SelectedIndex = 0;
+            _windowsBindingListView.ApplyFilter(SearchFilter);
+
+            foreach(DataGridViewRow row in windowsDataGrid.Rows)
+            {
+                if(GetRowWindow(row) == selectedWindow)
+                {
+                    row.Selected = true;
+                    break;
+                }
+            }
         }
 
-        private void MoveInList(PreviewKeyDownEventArgs e)
+        private bool SearchFilter(IWindow window)
         {
-            if (windowsListBox.Items.Count == 0)
+            if (string.IsNullOrEmpty(searchTextBox.Text))
+                return true;
+
+            return CultureInfo.CurrentUICulture.CompareInfo.IndexOf(window.Title, searchTextBox.Text, CompareOptions.IgnoreCase) > -1;
+        }
+
+        private void MoveInList(KeyEventArgs e)
+        {
+            if (windowsDataGrid.Rows.Count == 0)
                 return;
 
-            if (e.KeyCode == Keys.Down && windowsListBox.SelectedIndex < windowsListBox.Items.Count - 1)
+            if (windowsDataGrid.SelectedRows.Count == 0)
             {
-                windowsListBox.SelectedIndex++;
+                SelectFirstWindow();
+                return;
+            }
+            
+            if (e.KeyCode == Keys.Down && windowsDataGrid.SelectedRows[0].Index < windowsDataGrid.Rows.Count - 1)
+            {
+                windowsDataGrid.Rows[windowsDataGrid.SelectedRows[0].Index + 1].Selected = true;
+                e.SuppressKeyPress = true;
+                return;
             }
 
-            if (e.KeyCode == Keys.Up && windowsListBox.SelectedIndex > 0)
+            if (e.KeyCode == Keys.Up && windowsDataGrid.SelectedRows[0].Index > 0)
             {
-                windowsListBox.SelectedIndex--;
+                windowsDataGrid.Rows[windowsDataGrid.SelectedRows[0].Index - 1].Selected = true;
+                e.SuppressKeyPress = true;
+                return;
             }
-        }
-
-        private static IEnumerable<IWindow> Filter(IEnumerable<IWindow> windows, string searchText)
-        {
-            return string.IsNullOrEmpty(searchText)
-                ? windows
-                : windows.Where(window => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(window.Title, searchText, CompareOptions.IgnoreCase) > -1);
         }
 
         #region Events
@@ -103,19 +148,9 @@ namespace GoToWindow
             GoToSelectedWindow();
         }
 
-        private void windowsListBox_DoubleClick(object sender, EventArgs e)
-        {
-            GoToSelectedWindow();
-        }
-
         private void searchTextBox_TextChanged(object sender, EventArgs e)
         {
             UpdateSearchText();
-        }
-
-        private void searchTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            MoveInList(e);
         }
 
         private void MainForm_Deactivate(object sender, EventArgs e)
@@ -124,6 +159,11 @@ namespace GoToWindow
         }
 
         #endregion
+
+        private void searchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            MoveInList(e);
+        }
 
     }
 }
