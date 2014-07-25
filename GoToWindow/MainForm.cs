@@ -54,7 +54,6 @@ namespace GoToWindow
 		public void InitializeData(IList<IWindow> windows)
 	    {
 		    ActiveControl = searchTextBox;
-
             
 		    _windowsBindingListView.DataSource = windows.ToList();
             windowsDataGrid.ResetBindings();
@@ -64,7 +63,9 @@ namespace GoToWindow
 
         private void SelectFirstWindow()
         {
-            if (windowsDataGrid.Rows.Count > 0)
+            if (windowsDataGrid.Rows.Count > 1)
+                windowsDataGrid.Rows[1].Selected = true;
+            else if (windowsDataGrid.Rows.Count > 0)
                 windowsDataGrid.Rows[0].Selected = true;
         }
 

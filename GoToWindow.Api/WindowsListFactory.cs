@@ -38,27 +38,33 @@ namespace GoToWindow.Api
 
             EnumWindows((hWnd, lParam) =>
             {
-                if (hWnd == lShellWindow) return true;
-                if (!IsWindowVisible(hWnd)) return true;
+                if (hWnd == lShellWindow)
+                    return true;
+
+                if (!IsWindowVisible(hWnd))
+                    return true;
 
                 var lLength = GetWindowTextLength(hWnd);
-                if (lLength == 0) return true;
-
-                var builder = new StringBuilder(lLength);
-                GetWindowText(hWnd, builder, lLength + 1);
+                if (lLength == 0)
+                    return true;
 
                 uint processId;
                 GetWindowThreadProcessId(hWnd, out processId);
 
+                if (processId == Process.GetCurrentProcess().Id)
+                    return true;
+
                 var process = Process.GetProcessById((int)processId);
-                var module = process.Modules[0];
+
+                var builder = new StringBuilder(lLength);
+                GetWindowText(hWnd, builder, lLength + 1);
 
                 windows.Add(new Window
                 {
                     HWnd = hWnd,
                     Title = builder.ToString(),
                     ProcessName = process.ProcessName,
-                    Executable = module.FileName
+                    Executable = process.GetExecutablePath()
                 });
 
                 return true;

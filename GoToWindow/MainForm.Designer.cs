@@ -103,7 +103,7 @@
             this.windowsDataGrid.ShowCellErrors = false;
             this.windowsDataGrid.ShowEditingIcon = false;
             this.windowsDataGrid.ShowRowErrors = false;
-            this.windowsDataGrid.Size = new System.Drawing.Size(640, 419);
+            this.windowsDataGrid.Size = new System.Drawing.Size(640, 422);
             this.windowsDataGrid.StandardTab = true;
             this.windowsDataGrid.TabIndex = 2;
             this.windowsDataGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.windowsDataGrid_CellDoubleClick);
@@ -117,7 +117,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(640, 480);
+            this.ClientSize = new System.Drawing.Size(640, 442);
             this.ControlBox = false;
             this.Controls.Add(this.windowsDataGrid);
             this.Controls.Add(this.searchTextBox);
