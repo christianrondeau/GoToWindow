@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using log4net.Config;
 
 [assembly: AssemblyTitle("Go To Window")]
 [assembly: AssemblyDescription("The keyboard-maniac alt-tab alternative")]
@@ -16,3 +17,5 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly: XmlConfigurator(ConfigFile = "log4net.config")]

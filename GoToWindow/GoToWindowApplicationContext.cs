@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using log4net;
+using log4net.Config;
+using log4net.Core;
 
 namespace GoToWindow
 {
@@ -9,6 +12,7 @@ namespace GoToWindow
 	/// </remarks>
 	public class GoToWindowApplicationContext : ApplicationContext
 	{
+        private readonly ILog _log = LogManager.GetLogger(typeof(GoToWindowApplicationContext).Assembly, "GoToWindow");
 		private readonly GoToWindowApplication _app;
 		private InterceptAltTab _altTab;
 
@@ -16,10 +20,17 @@ namespace GoToWindow
 		{
 			_app = new GoToWindowApplication();
 
+		    AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
+
 			InitializeComponent();
 		}
 
-		private void InitializeComponent()
+	    private void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
+	    {
+	        _log.Error(e.ExceptionObject);
+	    }
+
+	    private void InitializeComponent()
 		{
 			var configMenuItem = new MenuItem("Show", (obj, args) => _app.Show());
 			var exitMenuItem = new MenuItem("Exit", (obj, args) => _app.Exit());
@@ -39,7 +50,7 @@ namespace GoToWindow
 		}
 
 		private void AltTabCallback()
-		{
+        {
 			_app.Show();
 		}
 
@@ -49,7 +60,7 @@ namespace GoToWindow
 			// Icon from http://designmodo.com
 			using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".AppIcon.ico"))
 			{
-				return new Icon(stream);
+			    return stream == null ? null : new Icon(stream);
 			}
 		}
 
