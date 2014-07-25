@@ -39,7 +39,8 @@
             // 
             // goToWindowButton
             // 
-            this.goToWindowButton.Location = new System.Drawing.Point(553, 445);
+            this.goToWindowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.goToWindowButton.Location = new System.Drawing.Point(553, 377);
             this.goToWindowButton.Name = "goToWindowButton";
             this.goToWindowButton.Size = new System.Drawing.Size(75, 23);
             this.goToWindowButton.TabIndex = 3;
@@ -49,8 +50,9 @@
             // 
             // cancelButton
             // 
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(472, 445);
+            this.cancelButton.Location = new System.Drawing.Point(472, 377);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 4;
@@ -60,6 +62,7 @@
             // 
             // searchTextBox
             // 
+            this.searchTextBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.searchTextBox.Location = new System.Drawing.Point(0, 0);
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(640, 20);
@@ -73,9 +76,6 @@
             this.windowsDataGrid.AllowUserToDeleteRows = false;
             this.windowsDataGrid.AllowUserToResizeColumns = false;
             this.windowsDataGrid.AllowUserToResizeRows = false;
-            this.windowsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.windowsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.windowsDataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.windowsDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -86,11 +86,11 @@
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(2);
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.windowsDataGrid.DefaultCellStyle = dataGridViewCellStyle1;
+            this.windowsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.windowsDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.windowsDataGrid.Location = new System.Drawing.Point(0, 20);
             this.windowsDataGrid.MultiSelect = false;
@@ -103,7 +103,7 @@
             this.windowsDataGrid.ShowCellErrors = false;
             this.windowsDataGrid.ShowEditingIcon = false;
             this.windowsDataGrid.ShowRowErrors = false;
-            this.windowsDataGrid.Size = new System.Drawing.Size(640, 422);
+            this.windowsDataGrid.Size = new System.Drawing.Size(640, 392);
             this.windowsDataGrid.StandardTab = true;
             this.windowsDataGrid.TabIndex = 2;
             this.windowsDataGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.windowsDataGrid_CellDoubleClick);
@@ -117,12 +117,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(640, 442);
+            this.ClientSize = new System.Drawing.Size(640, 412);
             this.ControlBox = false;
             this.Controls.Add(this.windowsDataGrid);
-            this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.goToWindowButton);
+            this.Controls.Add(this.searchTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

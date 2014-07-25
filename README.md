@@ -2,7 +2,7 @@
 
 **Alpha** - [Download](https://github.com/christianrondeau/GoToWindow/releases)
 
-No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press a shortcut, type a few letters from the window title or process name and press enter. 
+No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press `Alt` + `Tab`, type a few characters from the window title or process name you want to switch to and press enter. 
 
 For the keyboard maniacs.
 

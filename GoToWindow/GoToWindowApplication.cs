@@ -29,13 +29,19 @@ namespace GoToWindow
 		
 		public void Show()
 		{
-            if(_mainForm.Visible)
-                return;
+		    if (!_mainForm.Visible)
+		    {
 
-            _mainForm.Show();
-            _mainForm.Activate();
+		        _mainForm.Show();
+		        _mainForm.Activate();
 
-            _mainForm.BeginInvoke(new ShowAsyncDelegate(ShowAsync));
+		        _mainForm.BeginInvoke(new ShowAsyncDelegate(ShowAsync));
+		    }
+
+            var screen = Screen.FromPoint(Cursor.Position);
+            _mainForm.StartPosition = FormStartPosition.Manual;
+            _mainForm.Left = screen.Bounds.Left + screen.Bounds.Width / 2 - _mainForm.Width / 2;
+            _mainForm.Top = screen.Bounds.Top + screen.Bounds.Height / 2 - _mainForm.Height / 2;
 		}
 
 	    private void ShowAsync()
