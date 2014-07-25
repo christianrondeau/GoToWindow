@@ -12,6 +12,13 @@ Function GetMSBuildExe {
 	Return $MSBuildExe
 }
 
+Function ZipFiles($Filename, $Source)
+{
+   Add-Type -Assembly System.IO.Compression.FileSystem
+   $CompressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
+   [System.IO.Compression.ZipFile]::CreateFromDirectory($Source, $Filename, $CompressionLevel, $false)
+}
+
 &(GetMSBuildExe) GoToWindow.sln `
 	/t:Clean`;Rebuild `
 	/p:Configuration=Release `
@@ -20,3 +27,11 @@ Function GetMSBuildExe {
 	/p:DebugType=None `
 	/clp:ErrorsOnly `
 	/v:m
+
+$ReleaseFolder = "$PSScriptRoot\Release"
+	
+If(!(Test-Path -Path $ReleaseFolder )){
+    New-Item -ItemType directory -Path $ReleaseFolder
+}
+	
+ZipFiles "$ReleaseFolder\GoToWindow.zip" "$PSScriptRoot\GoToWindow\bin\Release"
