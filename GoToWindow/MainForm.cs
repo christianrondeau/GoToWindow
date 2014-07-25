@@ -36,10 +36,10 @@ namespace GoToWindow
             _windowsBindingListView = new BindingListView<IWindow>(windows.ToList());
             windowsDataGrid.DataSource = _windowsBindingListView;
             windowsDataGrid.Columns["HWnd"].Visible = false;
-            windowsDataGrid.Columns["ProcessName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            windowsDataGrid.Columns["ProcessName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             windowsDataGrid.Columns["ProcessName"].CellTemplate.Style.ForeColor = Color.Gray;
-            windowsDataGrid.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
+            windowsDataGrid.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            
             SelectFirstWindow();
 	    }
 
