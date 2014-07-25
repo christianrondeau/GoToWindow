@@ -34,20 +34,20 @@ namespace GoToWindow.Api
             IntPtr lShellWindow = GetShellWindow();
             var windows = new List<IWindow>();
 
-            EnumWindows((IntPtr IntPtr, int lParam) =>
+            EnumWindows((IntPtr hWnd, int lParam) =>
             {
-                if (IntPtr == lShellWindow) return true;
-                if (!IsWindowVisible(IntPtr)) return true;
+                if (hWnd == lShellWindow) return true;
+                if (!IsWindowVisible(hWnd)) return true;
 
-                int lLength = GetWindowTextLength(IntPtr);
+                int lLength = GetWindowTextLength(hWnd);
                 if (lLength == 0) return true;
 
                 StringBuilder builder = new StringBuilder(lLength);
-                GetWindowText(IntPtr, builder, lLength + 1);
+                GetWindowText(hWnd, builder, lLength + 1);
 
                 windows.Add(new Window
                 {
-                    IntPtr = IntPtr,
+                    HWnd = hWnd,
                     Title = builder.ToString()
                 });
 

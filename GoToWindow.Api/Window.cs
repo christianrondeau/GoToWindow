@@ -4,12 +4,12 @@ namespace GoToWindow.Api
 {
     public class Window : IWindow
     {
-        public IntPtr IntPtr { get; set; }
+        public IntPtr HWnd { get; set; }
         public string Title { get; set; }
 
         public void Focus()
         {
-            WindowToForeground.ForceWindowToForeground(IntPtr);
+            WindowToForeground.ForceWindowToForeground(HWnd);
         }
 
         public override string ToString()

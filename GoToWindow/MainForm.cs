@@ -34,6 +34,8 @@ namespace GoToWindow
 
             _windowsBindingListView = new BindingListView<IWindow>(windows.ToList());
             windowsDataGrid.DataSource = _windowsBindingListView;
+            windowsDataGrid.Columns["HWnd"].Visible = false;
+            windowsDataGrid.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             SelectFirstWindow();
 	    }

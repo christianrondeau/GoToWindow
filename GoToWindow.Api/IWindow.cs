@@ -4,7 +4,7 @@ namespace GoToWindow.Api
 {
     public interface IWindow
     {
-        IntPtr IntPtr { get; set; }
+        IntPtr HWnd { get; set; }
         string Title { get; set; }
 
         void Focus();
