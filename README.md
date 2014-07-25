@@ -1,6 +1,6 @@
 # Go To Window
 
-**This is not yet even alpha**
+**Alpha** - [Download](https://github.com/christianrondeau/GoToWindow/releases)
 
 No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press a shortcut, type a few letters from the window title or process name and press enter. 
 
@@ -8,9 +8,17 @@ For the keyboard maniacs.
 
 ## Usage
 
-Since this is not even alpha, you'll have to build the software and bind a shortcut yourself.
+Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to launch it automatically with Windows.
 
-Once the main window is opened, either use the arrows to navigate or type something, and press enter to focus the window. Press escape to close.
+* Press `Alt` + `Tab` to open the windows list. All windows are shown, with the most recently accessed first.
+
+* Press `Enter` to go to the previously accessed window (same behavior as standard Windows `Alt` + `Tab`)
+
+* Press the `Up` and `Down` arrows to navigate in the list, and press `Enter` to switch to the application.
+
+* Start typing keywords to filter the list. Note that only windows that contain all words in either the window title _or_ the process name will be shown.
+
+* Press `Escape` to close the window.
 
 ## License
 

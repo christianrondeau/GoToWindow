@@ -47,7 +47,8 @@ namespace GoToWindow
 			var notifyIcon = new NotifyIcon
 			{
 				Icon = LoadIconFromEmbeddedResource(),
-				ContextMenu = new ContextMenu(new[] {configMenuItem, exitMenuItem})
+				ContextMenu = new ContextMenu(new[] {configMenuItem, exitMenuItem}),
+                Text = "Go To Window"
 			};
 
 			notifyIcon.DoubleClick += (obj, args) => _app.Show();
