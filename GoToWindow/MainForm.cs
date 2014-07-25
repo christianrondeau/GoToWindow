@@ -34,10 +34,9 @@ namespace GoToWindow
             // ReSharper disable PossibleNullReferenceException
             windowsDataGrid.Columns["HWnd"].Visible = false;
             windowsDataGrid.Columns["ProcessName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            windowsDataGrid.Columns["ProcessName"].CellTemplate.Style.BackColor = windowsDataGrid.BackColor;
             windowsDataGrid.Columns["ProcessName"].CellTemplate.Style.ForeColor = Color.Gray;
             windowsDataGrid.Columns["Executable"].Visible = false;
-            windowsDataGrid.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            windowsDataGrid.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             // ReSharper restore PossibleNullReferenceException
 
             var iconsColumn = new DataGridViewImageColumn(true)
@@ -46,7 +45,7 @@ namespace GoToWindow
                 HeaderText = "Icon",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                 Width = 32,
-                ImageLayout = DataGridViewImageCellLayout.Stretch,
+                ImageLayout = DataGridViewImageCellLayout.Normal,
                 DefaultCellStyle = { NullValue = null }
             };
             windowsDataGrid.Columns.Insert(0, iconsColumn);
@@ -58,7 +57,7 @@ namespace GoToWindow
 
             
 		    _windowsBindingListView.DataSource = windows.ToList();
-
+            windowsDataGrid.ResetBindings();
             
             SelectFirstWindow();
 	    }
@@ -99,7 +98,14 @@ namespace GoToWindow
             if (row.Cells.Count == 0)
                 return null;
 
-            return ((ObjectView<IWindow>)row.DataBoundItem).Object;
+            try
+            {
+                return ((ObjectView<IWindow>) row.DataBoundItem).Object;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return null;
+            }
         }
 
         private void UpdateSearchText()
@@ -109,7 +115,7 @@ namespace GoToWindow
             if (windowsDataGrid.SelectedRows.Count > 0)
                 selectedWindow = GetRowWindow(windowsDataGrid.SelectedRows[0]);
 
-            _windowsBindingListView.ApplyFilter(SearchFilter);
+                _windowsBindingListView.ApplyFilter(SearchFilter);
 
             foreach (var row in windowsDataGrid.Rows.Cast<DataGridViewRow>().Where(row => GetRowWindow(row) == selectedWindow))
             {
@@ -123,12 +129,12 @@ namespace GoToWindow
             if (string.IsNullOrEmpty(searchTextBox.Text))
                 return true;
 
-            return StringContains(window.Title, searchTextBox.Text) || StringContains(window.ProcessName, searchTextBox.Text);
+            return StringContains(window.ProcessName + " " + window.Title, searchTextBox.Text);
         }
 
         private static bool StringContains(string text, string partial)
         {
-            return CultureInfo.CurrentUICulture.CompareInfo.IndexOf(text, partial, CompareOptions.IgnoreCase) > -1;
+            return partial.Split(' ').All(word => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(text, word, CompareOptions.IgnoreCase) > -1);
         }
 
         private void MoveInList(KeyEventArgs e)
@@ -152,6 +158,23 @@ namespace GoToWindow
             }
 
             windowsDataGrid.CurrentCell = windowsDataGrid.SelectedRows[0].Cells[0];
+        }
+
+        public void Clear()
+        {
+            searchTextBox.Text = "";
+            _windowsBindingListView.DataSource = new IWindow[0];
+        }
+
+        private void BindCell(DataGridViewCellValueEventArgs e)
+        {
+            if (e.RowIndex >= 0 && windowsDataGrid.Columns[e.ColumnIndex].Name != "Icon")
+                return;
+
+            var row = windowsDataGrid.Rows[e.RowIndex];
+            var window = GetRowWindow(row);
+            if (window != null && window.Executable != null)
+                e.Value = Icon.ExtractAssociatedIcon(window.Executable);
         }
 
         #region Events
@@ -185,7 +208,7 @@ namespace GoToWindow
 
         private void windowsDataGrid_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
-            BindRow(e);
+            BindCell(e);
         }
 
         private void windowsDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -210,20 +233,5 @@ namespace GoToWindow
         // ReSharper restore InconsistentNaming
 
         #endregion
-
-        public void Clear()
-        {
-            searchTextBox.Text = "";
-        }
-
-        private void BindRow(DataGridViewCellValueEventArgs e)
-        {
-            if (e.RowIndex >= 0 && windowsDataGrid.Columns[e.ColumnIndex].Name != "Icon")
-                return;
-
-            var row = windowsDataGrid.Rows[e.RowIndex];
-            var window = GetRowWindow(row);
-            e.Value = Icon.ExtractAssociatedIcon(window.Executable);
-        }
     }
 }

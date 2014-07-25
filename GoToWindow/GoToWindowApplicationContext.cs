@@ -28,6 +28,15 @@ namespace GoToWindow
 	    private void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
 	    {
 	        _log.Error(e.ExceptionObject);
+
+	        string message;
+	        var exc = e.ExceptionObject as Exception;
+	        if (exc != null)
+	            message = exc.Message;
+	        else
+	            message = "An unknown error occured: " + e;
+
+	        MessageBox.Show(message, "GoToWindow Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 	    }
 
 	    private void InitializeComponent()

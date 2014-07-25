@@ -5,6 +5,8 @@ namespace GoToWindow
 {
 	public class GoToWindowApplication : IGoToWindowApplication
 	{
+        public delegate void ShowAsyncDelegate();
+
 		private MainForm _mainForm;
 		private NotifyIcon _notifyIcon;
 
@@ -30,13 +32,17 @@ namespace GoToWindow
             if(_mainForm.Visible)
                 return;
 
-			var windowsList = WindowsListFactory.Load();
+            _mainForm.Show();
+            _mainForm.Activate();
 
-			_mainForm.InitializeData(windowsList.Windows);
-
-			_mainForm.Show();
-			_mainForm.Activate();
+            _mainForm.BeginInvoke(new ShowAsyncDelegate(ShowAsync));
 		}
+
+	    private void ShowAsync()
+	    {
+            var windowsList = WindowsListFactory.Load();
+            _mainForm.InitializeData(windowsList.Windows);
+	    }
 
 		public void Hide()
 		{
