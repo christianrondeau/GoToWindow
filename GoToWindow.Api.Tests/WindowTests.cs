@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GoToWindow.Api;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GoToWindow.Api.Tests
 {

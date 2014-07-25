@@ -40,11 +40,13 @@ namespace GoToWindow
 
 		private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        private LowLevelKeyboardProc _proc;
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly LowLevelKeyboardProc _proc;
 
 		public InterceptAltTab(Action callback)
 		{
             _callback = callback;
+            // ReSharper disable once RedundantDelegateCreation
             _proc = new LowLevelKeyboardProc(HookCallback);
             using (var curProcess = Process.GetCurrentProcess())
             {
@@ -62,15 +64,20 @@ namespace GoToWindow
 
 		private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
 		{
-			var keyInfo = (Kbdllhookstruct)Marshal.PtrToStructure(lParam, typeof(Kbdllhookstruct));
+		    if (nCode >= 0)
+		    {
+		        var keyInfo = (Kbdllhookstruct) Marshal.PtrToStructure(lParam, typeof (Kbdllhookstruct));
 
-			if (wParam == (IntPtr) WM_SYSKEYDOWN && keyInfo.Key == Keys.Tab && HasAltModifier(keyInfo.Flags))
-			{
-				_callback();
-				return (IntPtr)1;
-			}
+		        if (keyInfo.Key == Keys.Tab && HasAltModifier(keyInfo.Flags))
+		        {
+		            if (wParam == (IntPtr) WM_SYSKEYDOWN)
+		                _callback();
 
-			return CallNextHookEx(_hookID, nCode, wParam, lParam);
+		            return (IntPtr) 1;
+		        }
+		    }
+
+		    return CallNextHookEx(_hookID, nCode, wParam, lParam);
 		}
 
 		private static bool HasAltModifier(int flags)

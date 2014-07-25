@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -34,18 +33,18 @@ namespace GoToWindow.Api
 
         public static WindowsList Load()
         {
-            IntPtr lShellWindow = GetShellWindow();
+            var lShellWindow = GetShellWindow();
             var windows = new List<IWindow>();
 
-            EnumWindows((IntPtr hWnd, int lParam) =>
+            EnumWindows((hWnd, lParam) =>
             {
                 if (hWnd == lShellWindow) return true;
                 if (!IsWindowVisible(hWnd)) return true;
 
-                int lLength = GetWindowTextLength(hWnd);
+                var lLength = GetWindowTextLength(hWnd);
                 if (lLength == 0) return true;
 
-                StringBuilder builder = new StringBuilder(lLength);
+                var builder = new StringBuilder(lLength);
                 GetWindowText(hWnd, builder, lLength + 1);
 
                 uint processId;

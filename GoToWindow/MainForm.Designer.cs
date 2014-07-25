@@ -89,13 +89,16 @@
             this.windowsDataGrid.ShowEditingIcon = false;
             this.windowsDataGrid.Size = new System.Drawing.Size(602, 251);
             this.windowsDataGrid.TabIndex = 2;
-            this.windowsDataGrid.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.windowsDataGrid_DataBindingComplete);
+            this.windowsDataGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.windowsDataGrid_CellDoubleClick);
+            this.windowsDataGrid.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.windowsDataGrid_CellValueNeeded);
+            this.windowsDataGrid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.windowsDataGrid_KeyDown);
             // 
             // MainForm
             // 
             this.AcceptButton = this.goToWindowButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(626, 330);
             this.ControlBox = false;

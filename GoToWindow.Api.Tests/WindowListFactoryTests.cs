@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GoToWindow.Api;
 
 namespace GoToWindow.Api.Tests
 {
@@ -17,8 +15,8 @@ namespace GoToWindow.Api.Tests
             var windowsList = WindowsListFactory.Load();
             var windows = windowsList.Windows;
 
-            var openedWindows = windows.Select(window => window.Title);
-            var containsVisualStudio = openedWindows.Where(title => title.StartsWith(expectedWindow)).Count() >= 1;
+            var openedWindows = windows.Select(window => window.Title).ToArray();
+            var containsVisualStudio = openedWindows.Count(title => title.StartsWith(expectedWindow)) >= 1;
             Assert.IsTrue(containsVisualStudio, String.Format("Expected a window to start with {0}. List:\r\n{1}", expectedWindow, String.Join("\r\n", openedWindows)));
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Forms;
 using GoToWindow.Api;
 
@@ -28,14 +27,15 @@ namespace GoToWindow
 		
 		public void Show()
 		{
+            if(_mainForm.Visible)
+                return;
+
 			var windowsList = WindowsListFactory.Load();
 
 			_mainForm.InitializeData(windowsList.Windows);
 
-			if (_mainForm.Visible)
-				_mainForm.Activate();
-			else
-				_mainForm.Show();
+			_mainForm.Show();
+			_mainForm.Activate();
 		}
 
 		public void Hide()

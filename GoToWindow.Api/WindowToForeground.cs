@@ -9,6 +9,7 @@ namespace GoToWindow.Api
     /// </remarks>
     internal static class WindowToForeground
     {
+// ReSharper disable InconsistentNaming
         public const uint SW_SHOW = 5;
         public const uint SW_MINIMIZE = 6;
 		public const uint SW_RESTORE = 9;
@@ -53,12 +54,13 @@ namespace GoToWindow.Api
         {
             public int Left, Top, Right, Bottom;
         }
+        // ReSharper restore InconsistentNaming
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         [DllImport("user32.dll")]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr processId);
 
         [DllImport("kernel32.dll")]
         public static extern uint GetCurrentThreadId();
@@ -105,19 +107,17 @@ namespace GoToWindow.Api
 
         public static void ForceWindowToForeground(IntPtr hwnd)
         {
-            AttachedThreadInputAction(
-                () =>
-                {
-                    BringWindowToTop(hwnd);
+            AttachedThreadInputAction(() =>
+            {
+                BringWindowToTop(hwnd);
 
-                    WINDOWPLACEMENT state;
-                    GetWindowPlacement(hwnd, out state);
-                    if (state.ShowCmd == ShowWindowCommands.ShowMinimized)
-                    {
-                        //ShowWindow(hwnd, SW_SHOW);
-                        ShowWindow(hwnd, SW_RESTORE);
-                    }
-                });
+                WINDOWPLACEMENT state;
+                GetWindowPlacement(hwnd, out state);
+                if (state.ShowCmd == ShowWindowCommands.ShowMinimized)
+                {
+                    ShowWindow(hwnd, SW_RESTORE);
+                }
+            });
         }
     }
 }
