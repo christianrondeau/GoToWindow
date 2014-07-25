@@ -5,6 +5,7 @@ namespace GoToWindow.Api
     public class Window : IWindow
     {
         public IntPtr HWnd { get; set; }
+        public string ProcessName { get; set; }
         public string Title { get; set; }
 
         public void Focus()

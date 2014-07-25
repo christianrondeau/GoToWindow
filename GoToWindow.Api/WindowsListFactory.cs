@@ -29,6 +29,9 @@ namespace GoToWindow.Api
         [DllImport("USER32.DLL")]
         static extern IntPtr GetShellWindow();
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
         public static WindowsList Load()
         {
             IntPtr lShellWindow = GetShellWindow();
@@ -45,10 +48,14 @@ namespace GoToWindow.Api
                 StringBuilder builder = new StringBuilder(lLength);
                 GetWindowText(hWnd, builder, lLength + 1);
 
+                uint processId;
+                GetWindowThreadProcessId(hWnd, out processId);
+
                 windows.Add(new Window
                 {
                     HWnd = hWnd,
-                    Title = builder.ToString()
+                    Title = builder.ToString(),
+                    ProcessName = Process.GetProcessById((int)processId).ProcessName
                 });
 
                 return true;

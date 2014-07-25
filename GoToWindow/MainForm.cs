@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using GoToWindow.Api;
 using System.Data;
 using Equin.ApplicationFramework;
+using System.Drawing;
 
 namespace GoToWindow
 {
@@ -35,6 +36,8 @@ namespace GoToWindow
             _windowsBindingListView = new BindingListView<IWindow>(windows.ToList());
             windowsDataGrid.DataSource = _windowsBindingListView;
             windowsDataGrid.Columns["HWnd"].Visible = false;
+            windowsDataGrid.Columns["ProcessName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            windowsDataGrid.Columns["ProcessName"].CellTemplate.Style.ForeColor = Color.Gray;
             windowsDataGrid.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             SelectFirstWindow();
@@ -109,7 +112,12 @@ namespace GoToWindow
             if (string.IsNullOrEmpty(searchTextBox.Text))
                 return true;
 
-            return CultureInfo.CurrentUICulture.CompareInfo.IndexOf(window.Title, searchTextBox.Text, CompareOptions.IgnoreCase) > -1;
+            return StringContains(window.Title, searchTextBox.Text) || StringContains(window.ProcessName, searchTextBox.Text);
+        }
+
+        private bool StringContains(string text, string partial)
+        {
+            return CultureInfo.CurrentUICulture.CompareInfo.IndexOf(text, partial, CompareOptions.IgnoreCase) > -1;
         }
 
         private void MoveInList(KeyEventArgs e)
