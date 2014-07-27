@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace GoToWindow
 {
@@ -12,7 +12,7 @@ namespace GoToWindow
 		[StructLayout(LayoutKind.Sequential)]
 		public struct Kbdllhookstruct
 		{
-			public Keys Key;
+			public Key Key;
 			public int ScanCode;
 			public int Flags;
 			public int Time;
@@ -42,7 +42,7 @@ namespace GoToWindow
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly LowLevelKeyboardProc _proc;
-
+        
 		public InterceptAltTab(Action callback)
 		{
             _callback = callback;
@@ -56,19 +56,19 @@ namespace GoToWindow
                 }
             }
 		}
-
+        
 		public void Dispose()
 		{
 			UnhookWindowsHookEx(_hookID);
 		}
-
+        
 		private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
 		{
 		    if (nCode >= 0)
 		    {
 		        var keyInfo = (Kbdllhookstruct) Marshal.PtrToStructure(lParam, typeof (Kbdllhookstruct));
 
-		        if (keyInfo.Key == Keys.Tab && HasAltModifier(keyInfo.Flags))
+		        if (keyInfo.Key == Key.Tab && HasAltModifier(keyInfo.Flags))
 		        {
 		            if (wParam == (IntPtr) WM_SYSKEYDOWN)
 		                _callback();
