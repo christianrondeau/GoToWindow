@@ -12,7 +12,7 @@ namespace GoToWindow
 		[StructLayout(LayoutKind.Sequential)]
 		public struct Kbdllhookstruct
 		{
-			public Key Key;
+            public int VkCode;
 			public int ScanCode;
 			public int Flags;
 			public int Time;
@@ -35,6 +35,7 @@ namespace GoToWindow
 		// ReSharper disable InconsistentNaming
 		private const int WH_KEYBOARD_LL = 13;
 		private const int WM_SYSKEYDOWN = 0x0104;
+        private const int VK_TAB = 0x09;
 		private static IntPtr _hookID = IntPtr.Zero;
 		// ReSharper restore InconsistentNaming
 
@@ -68,7 +69,7 @@ namespace GoToWindow
 		    {
 		        var keyInfo = (Kbdllhookstruct) Marshal.PtrToStructure(lParam, typeof (Kbdllhookstruct));
 
-		        if (keyInfo.Key == Key.Tab && HasAltModifier(keyInfo.Flags))
+                if (keyInfo.VkCode == VK_TAB && HasAltModifier(keyInfo.Flags))
 		        {
 		            if (wParam == (IntPtr) WM_SYSKEYDOWN)
 		                _callback();

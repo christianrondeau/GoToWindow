@@ -2,9 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gotowindow="clr-namespace:GoToWindow"
-        Title="Go To Window" Height="350" Width="525"
+        Title="Go To Window" Height="400" Width="640"
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
+        Background="Transparent"
         WindowStyle="None"
         Icon="AppIcon.ico"
         Topmost="True"
@@ -12,13 +13,16 @@
         FocusManager.FocusedElement="{Binding ElementName=searchTextBox}"
         SourceInitialized="Window_SourceInitialized"
         PreviewKeyDown="Window_PreviewKeyDown">
-    <Grid>
+    <Grid Margin="32">
         <Grid.RowDefinitions>
             <RowDefinition Name="searchRow" Height="48"/>
             <RowDefinition Name="windowsListRow" Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Name="searchBox" Cursor="IBeam"  MouseDown="searchBox_MouseDown" Background="White">
-            <Viewbox Stretch="Uniform" HorizontalAlignment="Left">
+        <Border Grid.Row="0" BorderThickness="0" CornerRadius="32" Background="White" Cursor="IBeam"  MouseDown="searchBox_MouseDown">
+            <Border.Effect>
+                <DropShadowEffect />
+            </Border.Effect>
+            <Viewbox Stretch="Uniform" HorizontalAlignment="Left" Margin="32, 0, 32, 0">
                 <TextBox Name="searchTextBox" TextChanged="searchTextBox_TextChanged" PreviewKeyDown="searchTextBox_PreviewKeyDown" SelectionOpacity="0">
                     <TextBox.Template>
                         <ControlTemplate TargetType="{x:Type TextBox}">
@@ -27,16 +31,21 @@
                     </TextBox.Template>
                 </TextBox>
             </Viewbox>
-        </Grid>
-        <ListView Grid.Row="1" Name="windowsListView"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  MouseDoubleClick="windowsListView_MouseDoubleClick"
-                  BorderBrush="Transparent">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <gotowindow:WindowListEntry />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        </Border>
+        <Border Grid.Row="1" BorderThickness="0" Background="White" Margin="0, 14, 0, 0">
+            <Border.Effect>
+                <DropShadowEffect />
+            </Border.Effect>
+            <ListView Grid.Row="1" Name="windowsListView"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      MouseDoubleClick="windowsListView_MouseDoubleClick"
+                      BorderBrush="Transparent">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <gotowindow:WindowListEntry />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
     </Grid>
 </Window>

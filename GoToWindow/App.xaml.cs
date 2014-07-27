@@ -16,6 +16,7 @@ namespace GoToWindow
     public partial class App : Application
     {
         private readonly IGoToWindowContext _context = new GoToWindowContext();
+        private InterceptAltTab _keyHandler;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -31,10 +32,22 @@ namespace GoToWindow
             contextMenu.Items.Add(exitMenuItem);
 
             trayIcon.ContextMenu = contextMenu;
-            
 
-            //_mainWindow.Show();
-            //Current.Shutdown(0);
+            _keyHandler = new InterceptAltTab(HandleAltTab);
+        }
+
+        private void HandleAltTab()
+        {
+            new OpenMainWindowCommand(_context).Execute(null);
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            if (_keyHandler != null)
+            {
+                _keyHandler.Dispose();
+                _keyHandler = null;
+            }
         }
     }
 }
