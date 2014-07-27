@@ -10,7 +10,7 @@ namespace GoToWindow.Api.Tests
         {
             const string expectedTitle = "Some App: Some Window Title";
 
-            Assert.AreEqual(expectedTitle, new Window { Title = expectedTitle }.ToString());
+            Assert.AreEqual(expectedTitle, new WindowEntry { Title = expectedTitle }.ToString());
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace GoToWindow.Api
 {
-    public interface IWindow
+    public interface IWindowEntry
     {
         IntPtr HWnd { get; set; }
         string ProcessName { get; set; }

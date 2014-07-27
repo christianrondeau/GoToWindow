@@ -34,7 +34,7 @@ namespace GoToWindow.Api
         public static WindowsList Load()
         {
             var lShellWindow = GetShellWindow();
-            var windows = new List<IWindow>();
+            var windows = new List<IWindowEntry>();
 
             EnumWindows((hWnd, lParam) =>
             {
@@ -59,7 +59,7 @@ namespace GoToWindow.Api
                 var builder = new StringBuilder(lLength);
                 GetWindowText(hWnd, builder, lLength + 1);
 
-                windows.Add(new Window
+                windows.Add(new WindowEntry
                 {
                     HWnd = hWnd,
                     Title = builder.ToString(),

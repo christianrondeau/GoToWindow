@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoToWindow.Api;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -43,11 +44,21 @@ namespace GoToWindow
             _trayIcon = new TrayIcon(this);
             _trayIcon.LeftDoubleClick += new EventHandler(TrayIcon_LeftDoubleClick);
             _trayIcon.Show(Properties.Resources.AppIcon, "Go To Window");
+
+            var windows = WindowsListFactory.Load();
+            windowsListView.ItemsSource = windows.Windows;
         }
 
         void TrayIcon_LeftDoubleClick(object sender, EventArgs e)
         {
             WindowState = System.Windows.WindowState.Normal;
+        }
+
+        private void windowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var windowEntry = windowsListView.SelectedItem as IWindowEntry;
+            if(windowEntry != null)
+                windowEntry.Focus();
         }
     }
 }

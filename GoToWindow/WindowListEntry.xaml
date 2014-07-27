@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="GoToWindow.WindowListEntry"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:gotowindow="clr-namespace:GoToWindow"
+             mc:Ignorable="d" Height="48"
+             d:DesignHeight="48" d:DesignWidth="512">
+    <UserControl.Resources>
+        <gotowindow:ExecutableToIconValueConverter x:Key="IconConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="iconColumn" Width="48"/>
+            <ColumnDefinition Name="processColumn" Width="120"/>
+            <ColumnDefinition Name="titleColumn" Width="*" />
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0" Source="{Binding Path=Executable, Converter={StaticResource IconConverter}}" Margin="8,8,8,8" />
+        <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Foreground="Gray" Text="{Binding Path=ProcessName}" />
+        <TextBlock  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Title}" />
+    </Grid>
+</UserControl>

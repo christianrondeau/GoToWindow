@@ -39,9 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IWindow.cs" />
+    <Compile Include="IWindowEntry.cs" />
     <Compile Include="ProcessExtensions.cs" />
-    <Compile Include="Window.cs" />
+    <Compile Include="WindowEntry.cs" />
     <Compile Include="WindowsList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowsListFactory.cs" />
