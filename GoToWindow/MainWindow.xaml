@@ -2,9 +2,22 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gotowindow="clr-namespace:GoToWindow"
-        Title="Go To Window" Height="350" Width="525" WindowStartupLocation="CenterScreen" SourceInitialized="Window_SourceInitialized">
+        Title="Go To Window" Height="350" Width="525"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Icon="AppIcon.ico"
+        Topmost="True"
+        ShowInTaskbar="False"
+        SourceInitialized="Window_SourceInitialized"
+        PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
-        <ListView Name="windowsListView" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="windowsListView_MouseDoubleClick">
+        <Grid.RowDefinitions>
+            <RowDefinition Name="searchRow" Height="48"/>
+            <RowDefinition Name="windowsListRow" Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Row="0" Name="searchTextBox" />
+        <ListView Grid.Row="1" Name="windowsListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="windowsListView_MouseDoubleClick">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <gotowindow:WindowListEntry />

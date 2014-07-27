@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -60,8 +63,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ExecutableToIconValueConverter.cs" />
+    <Compile Include="ExitCommand.cs" />
+    <Compile Include="GoToWindowContext.cs" />
     <Compile Include="InterceptAltTab.cs" />
-    <Compile Include="TrayIcon.cs" />
+    <Compile Include="OpenMainWindowCommand.cs" />
     <Compile Include="WindowListEntry.xaml.cs">
       <DependentUpon>WindowListEntry.xaml</DependentUpon>
     </Compile>
@@ -73,7 +78,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HookWrapper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
