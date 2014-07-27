@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 
-namespace GoToWindow
+namespace GoToWindow.Api
 {
 	public class InterceptAltTab : IDisposable
 	{

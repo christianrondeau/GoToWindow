@@ -23,7 +23,6 @@ namespace GoToWindow
     {
         public MainWindow()
         {
-
             InitializeComponent();
         }
 

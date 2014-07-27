@@ -62,15 +62,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ExecutableToIconValueConverter.cs" />
-    <Compile Include="ExitCommand.cs" />
+    <Compile Include="Converters\ExecutableToIconValueConverter.cs" />
+    <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="GoToWindowContext.cs" />
-    <Compile Include="InterceptAltTab.cs" />
-    <Compile Include="OpenMainWindowCommand.cs" />
-    <Compile Include="WindowListEntry.xaml.cs">
+    <Compile Include="Commands\OpenMainWindowCommand.cs" />
+    <Compile Include="Controls\WindowListEntry.xaml.cs">
       <DependentUpon>WindowListEntry.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -78,11 +77,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WindowListEntry.xaml">
+    <Page Include="Controls\WindowListEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,7 +115,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="AppIcon.ico" />
+    <Resource Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoToWindow.Api\GoToWindow.Api.csproj">

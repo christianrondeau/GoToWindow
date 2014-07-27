@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace GoToWindow
+namespace GoToWindow.Converters
 {
     [ValueConversion(typeof(string), typeof(BitmapFrame))]
     public class ExecutableToIconValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (value == null)
+                return null;
+
             var iconStream = new MemoryStream();
 
             using(var icon = Icon.ExtractAssociatedIcon((string)value))

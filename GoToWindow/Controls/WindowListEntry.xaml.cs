@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GoToWindow
+namespace GoToWindow.Controls
 {
     /// <summary>
     /// Interaction logic for WindowListEntry.xaml
