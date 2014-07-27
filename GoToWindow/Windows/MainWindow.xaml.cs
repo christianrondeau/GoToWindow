@@ -100,6 +100,7 @@ namespace GoToWindow
             if (e.Key == Key.Down && windowsListView.SelectedIndex < windowsListView.Items.Count - 1)
             {
                 windowsListView.SelectedIndex++;
+                windowsListView.ScrollIntoView(windowsListView.SelectedItem);
                 e.Handled = true;
                 return;
             }
@@ -107,6 +108,17 @@ namespace GoToWindow
             if (e.Key == Key.Up && windowsListView.SelectedIndex > 0)
             {
                 windowsListView.SelectedIndex--;
+                windowsListView.ScrollIntoView(windowsListView.SelectedItem);
+                e.Handled = true;
+                return;
+            }
+        }
+
+        private void windowsListView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                FocusSelectedWindowItem();
                 e.Handled = true;
                 return;
             }

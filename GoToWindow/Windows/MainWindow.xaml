@@ -64,6 +64,7 @@
             <ListView Grid.Row="1" Name="windowsListView"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       MouseDoubleClick="windowsListView_MouseDoubleClick"
+                      PreviewKeyDown="windowsListView_PreviewKeyDown"
                       BorderBrush="Transparent"
                       MaxHeight="288">
                 <ListView.Style>
