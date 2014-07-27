@@ -1,4 +1,6 @@
 ﻿using GoToWindow.Api;
+using GoToWindow.Commands;
+using GoToWindow.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,6 +23,8 @@ namespace GoToWindow
 {
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel _viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,13 +32,19 @@ namespace GoToWindow
 
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
-            var windows = WindowsListFactory.Load();
-            windowsListView.ItemsSource = windows.Windows;
-
             if (windowsListView.Items.Count > 1)
                 windowsListView.SelectedIndex = 1;
             else if (windowsListView.Items.Count > 0)
                 windowsListView.SelectedIndex = 0;
+
+            _viewModel = MainWindowViewModel.Load();
+            _viewModel.Close += viewModel_Close;
+            DataContext = _viewModel;
+        }
+
+        void viewModel_Close(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private void windowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -63,8 +73,7 @@ namespace GoToWindow
         {
             var currentSelection = windowsListView.SelectedItem;
 
-            var view = (CollectionView)CollectionViewSource.GetDefaultView(windowsListView.ItemsSource);
-            view.Filter = item => SearchFilter((IWindowEntry)item, searchTextBox.Text);
+            _viewModel.Windows.View.Filter = item => SearchFilter((IWindowEntry)item, searchTextBox.Text);
 
             if (windowsListView.SelectedIndex == -1 && windowsListView.Items.Count > 0)
                 windowsListView.SelectedIndex = 0;
@@ -128,6 +137,11 @@ namespace GoToWindow
         private void clearSearchButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void GoToWindowShortcut(object sender, ExecutedRoutedEventArgs e)
+        {
+            Console.WriteLine("Yeah!" + e.Parameter);
         }
     }
 }

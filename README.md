@@ -18,6 +18,8 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * Start typing keywords to filter the list. Note that only windows that contain all words in either the window title _or_ the process name will be shown.
 
+* Press `Alt` + `Number (1 - 9)` to directly open the application at the selected index from the list.
+
 * Press `Escape` to close the window.
 
 ## Contributors

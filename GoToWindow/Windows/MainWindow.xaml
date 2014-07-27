@@ -31,6 +31,35 @@
             </Setter>
         </Style>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="1"
+                Gesture="ALT+1"/>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="2"
+                Gesture="ALT+2"/>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="3"
+                Gesture="ALT+3"/>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="4"
+                Gesture="ALT+4"/>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="5"
+                Gesture="ALT+5"/>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="6"
+                Gesture="ALT+6"/>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="7"
+                Gesture="ALT+7"/>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="8"
+                Gesture="ALT+8"/>
+        <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
+                CommandParameter="9"
+                Gesture="ALT+9"/>
+    </Window.InputBindings>
     <Grid Margin="32">
         <Grid.RowDefinitions>
             <RowDefinition Name="searchRow" Height="48"/>
@@ -66,7 +95,9 @@
                       MouseDoubleClick="windowsListView_MouseDoubleClick"
                       PreviewKeyDown="windowsListView_PreviewKeyDown"
                       BorderBrush="Transparent"
-                      MaxHeight="288">
+                      MaxHeight="288"
+                      ItemsSource="{Binding Windows.View}"
+                      SelectedItem="{Binding SelectedWindowEntry, Mode=TwoWay}">
                 <ListView.Style>
                     <Style TargetType="ListView">
                         <Style.Triggers>
