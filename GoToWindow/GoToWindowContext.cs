@@ -9,6 +9,7 @@ namespace GoToWindow
     public interface IGoToWindowContext
     {
         void Show();
+        void Hide();
     }
 
     public class GoToWindowContext : IGoToWindowContext
@@ -17,11 +18,16 @@ namespace GoToWindow
 
         public void Show()
         {
-            if (_mainWindow != null && _mainWindow.IsLoaded)
-                _mainWindow.Close();
+            Hide();
 
             _mainWindow = new MainWindow();
             _mainWindow.Show();
+        }
+
+        public void Hide()
+        {
+            if (_mainWindow != null && _mainWindow.IsLoaded)
+                _mainWindow.Close();
         }
     }
 }

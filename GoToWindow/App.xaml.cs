@@ -49,5 +49,10 @@ namespace GoToWindow
                 _keyHandler = null;
             }
         }
+
+        private void Application_Deactivated(object sender, EventArgs e)
+        {
+            _context.Hide();
+        }
     }
 }
