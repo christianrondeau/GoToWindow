@@ -20,6 +20,11 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * Press `Escape` to close the window.
 
+## Contributors
+
+  * [Christian Rondeau](https://github.com/christianrondeau) - Main Developer
+  * [David Cote](https://github.com/cotedav) - User Interface Design
+
 ## License
 
 Copyright (c) 2014 Christian Rondeau. Licensed under the [MIT license](LICENSE.md).
