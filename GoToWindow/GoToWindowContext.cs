@@ -21,7 +21,13 @@ namespace GoToWindow
             Hide();
 
             _mainWindow = new MainWindow();
+            _mainWindow.Closing += _mainWindow_Closing;
             _mainWindow.Show();
+        }
+
+        void _mainWindow_Closing(object sender, EventArgs e)
+        {
+            _mainWindow = null;
         }
 
         public void Hide()

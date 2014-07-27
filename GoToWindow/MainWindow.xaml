@@ -13,24 +13,49 @@
         FocusManager.FocusedElement="{Binding ElementName=searchTextBox}"
         SourceInitialized="Window_SourceInitialized"
         PreviewKeyDown="Window_PreviewKeyDown">
+    <Window.Resources>
+        <Style x:Key="RoundButton" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="RoundButtonBorder" CornerRadius="22" Margin="0" BorderThickness="0" Background="LightGray" Padding="2, 0, 0, 0">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="12" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="RoundButtonBorder" Property="Background" Value="DarkGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Margin="32">
         <Grid.RowDefinitions>
             <RowDefinition Name="searchRow" Height="48"/>
             <RowDefinition Name="windowsListRow" Height="Auto"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" BorderThickness="0" CornerRadius="28" Background="White" Cursor="IBeam"  MouseDown="searchBox_MouseDown">
+        <Border Grid.Row="0" BorderThickness="0" CornerRadius="28" Background="White" Cursor="IBeam" MouseDown="searchBox_MouseDown">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="16" Direction="-75" Opacity="0.8" />
             </Border.Effect>
-            <Viewbox Stretch="Uniform" HorizontalAlignment="Left" Margin="32, 0, 32, 0">
-                <TextBox Margin="4" Name="searchTextBox" TextChanged="searchTextBox_TextChanged" PreviewKeyDown="searchTextBox_PreviewKeyDown" SelectionOpacity="0">
-                    <TextBox.Template>
-                        <ControlTemplate TargetType="{x:Type TextBox}">
-                            <ScrollViewer Name="PART_ContentHost"/>
-                        </ControlTemplate>
-                    </TextBox.Template>
-                </TextBox>
-            </Viewbox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="42" />
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Column="0" Stretch="Uniform" HorizontalAlignment="Left" Margin="32, 0, 32, 0">
+                    <TextBox Margin="4" Name="searchTextBox" TextChanged="searchTextBox_TextChanged" PreviewKeyDown="searchTextBox_PreviewKeyDown">
+                        <TextBox.Template>
+                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                <ScrollViewer Name="PART_ContentHost"/>
+                            </ControlTemplate>
+                        </TextBox.Template>
+                    </TextBox>
+                </Viewbox>
+                <Button Cursor="Hand" HorizontalAlignment="Left" Name="clearSearchButton" Grid.Column="1" Width="32" Height="32" Style="{StaticResource RoundButton}" Click="clearSearchButton_Click">x</Button>
+            </Grid>
         </Border>
         <Border Grid.Row="1" BorderThickness="0" Background="White" Margin="0, 14, 0, 0">
             <Border.Effect>
@@ -40,6 +65,23 @@
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       MouseDoubleClick="windowsListView_MouseDoubleClick"
                       BorderBrush="Transparent">
+                <ListView.Style>
+                    <Style TargetType="ListView">
+                        <Style.Triggers>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListView">
+                                            <Grid Height="32" >
+                                                <TextBlock Margin="8" VerticalAlignment="Center" Foreground="Gray" Text="No opened windows matching your keywords"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Style>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <gotowindow:WindowListEntry />

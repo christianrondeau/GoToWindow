@@ -112,5 +112,10 @@ namespace GoToWindow
                 return;
             }
         }
+
+        private void clearSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
