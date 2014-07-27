@@ -31,9 +31,19 @@ namespace GoToWindow
         {
             var windows = WindowsListFactory.Load();
             windowsListView.ItemsSource = windows.Windows;
+
+            if (windowsListView.Items.Count > 1)
+                windowsListView.SelectedIndex = 1;
+            else if (windowsListView.Items.Count > 0)
+                windowsListView.SelectedIndex = 0;
         }
 
         private void windowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            FocusSelectedWindowItem();
+        }
+
+        private void FocusSelectedWindowItem()
         {
             var windowEntry = windowsListView.SelectedItem as IWindowEntry;
             if (windowEntry != null)
@@ -51,8 +61,13 @@ namespace GoToWindow
 
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            var currentSelection = windowsListView.SelectedItem;
+
             var view = (CollectionView)CollectionViewSource.GetDefaultView(windowsListView.ItemsSource);
             view.Filter = item => SearchFilter((IWindowEntry)item, searchTextBox.Text);
+
+            if (windowsListView.SelectedIndex == -1 && windowsListView.Items.Count > 0)
+                windowsListView.SelectedIndex = 0;
         }
 
         private bool SearchFilter(IWindowEntry window, string text)
@@ -72,6 +87,30 @@ namespace GoToWindow
         {
             searchTextBox.Focus();
             searchTextBox.CaretIndex = searchTextBox.Text.Length;
+        }
+
+        private void searchTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                FocusSelectedWindowItem();
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.Down && windowsListView.SelectedIndex < windowsListView.Items.Count - 1)
+            {
+                windowsListView.SelectedIndex++;
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.Up && windowsListView.SelectedIndex > 0)
+            {
+                windowsListView.SelectedIndex--;
+                e.Handled = true;
+                return;
+            }
         }
     }
 }

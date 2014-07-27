@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Name="searchBox" Cursor="IBeam"  MouseDown="searchBox_MouseDown" Background="White">
             <Viewbox Stretch="Uniform" HorizontalAlignment="Left">
-                <TextBox Name="searchTextBox" TextChanged="searchTextBox_TextChanged" SelectionOpacity="0">
+                <TextBox Name="searchTextBox" TextChanged="searchTextBox_TextChanged" PreviewKeyDown="searchTextBox_PreviewKeyDown" SelectionOpacity="0">
                     <TextBox.Template>
                         <ControlTemplate TargetType="{x:Type TextBox}">
                             <ScrollViewer Name="PART_ContentHost"/>
