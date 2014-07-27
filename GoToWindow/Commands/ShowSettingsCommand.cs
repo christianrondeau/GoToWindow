@@ -10,9 +10,11 @@ namespace GoToWindow.Commands
     public class ShowSettingsCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
+        private IGoToWindowContext _context;
 
-        public ShowSettingsCommand()
+        public ShowSettingsCommand(IGoToWindowContext context)
         {
+            _context = context;
         }
 
         public bool CanExecute(object parameter)
@@ -25,7 +27,7 @@ namespace GoToWindow.Commands
             if (Application.Current.Windows.OfType<SettingsWindow>().Count() > 0)
                 return;
 
-            new SettingsWindow().Show();
+            new SettingsWindow(_context).ShowDialog();
         }
     }
 }

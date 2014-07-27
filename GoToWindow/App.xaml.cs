@@ -18,7 +18,6 @@ namespace GoToWindow
     public partial class App : Application
     {
         private readonly IGoToWindowContext _context = new GoToWindowContext();
-        private InterceptAltTab _keyHandler;
         private Mutex _mutex;
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -37,8 +36,7 @@ namespace GoToWindow
             trayIcon.DoubleClickCommand = new OpenMainWindowCommand(_context);
             trayIcon.ContextMenu = CreateContextMenu();
 
-            if (GoToWindow.Properties.Settings.Default.HookAltTab)
-                _keyHandler = new InterceptAltTab(HandleAltTab);
+            _context.EnableAltTabHook(GoToWindow.Properties.Settings.Default.HookAltTab);
         }
 
         private ContextMenu CreateContextMenu()
@@ -47,7 +45,7 @@ namespace GoToWindow
             var showMenu = new MenuItem { Header = "Show", Command = new OpenMainWindowCommand(_context) };
             contextMenu.Items.Add(showMenu);
 
-            var settingsMenu = new MenuItem { Header = "Settings", Command = new ShowSettingsCommand() };
+            var settingsMenu = new MenuItem { Header = "Settings", Command = new ShowSettingsCommand(_context) };
             contextMenu.Items.Add(settingsMenu);
 
             contextMenu.Items.Add(new Separator());
@@ -58,29 +56,17 @@ namespace GoToWindow
             return contextMenu;
         }
 
-        delegate void CommandDelegate(object parameters);
-
-        private void HandleAltTab()
-        {
-            var cmd = new OpenMainWindowCommand(_context);
-            Application.Current.Dispatcher.BeginInvoke(
-                new CommandDelegate(cmd.Execute),
-                DispatcherPriority.Normal,
-                new Object[] { null });
-        }
-
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            if (_context != null)
+            {
+                _context.Dispose();
+            }
+
             if (_mutex != null)
             {
                 _mutex.ReleaseMutex();
                 _mutex.Dispose();
-            }
-
-            if (_keyHandler != null)
-            {
-                _keyHandler.Dispose();
-                _keyHandler = null;
             }
         }
 

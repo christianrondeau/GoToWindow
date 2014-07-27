@@ -63,6 +63,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BindingExtensions\SettingsBindingExtension.cs" />
+    <Compile Include="CommandDelegate.cs" />
+    <Compile Include="Commands\CommandDelegate.cs" />
     <Compile Include="Commands\ShowSettingsCommand.cs" />
     <Compile Include="Converters\ExecutableToIconValueConverter.cs" />
     <Compile Include="Commands\ExitCommand.cs" />
