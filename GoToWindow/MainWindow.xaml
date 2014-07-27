@@ -9,6 +9,7 @@
         Icon="AppIcon.ico"
         Topmost="True"
         ShowInTaskbar="False"
+        FocusManager.FocusedElement="{Binding ElementName=searchTextBox}"
         SourceInitialized="Window_SourceInitialized"
         PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
@@ -16,8 +17,21 @@
             <RowDefinition Name="searchRow" Height="48"/>
             <RowDefinition Name="windowsListRow" Height="*"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" Name="searchTextBox" />
-        <ListView Grid.Row="1" Name="windowsListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="windowsListView_MouseDoubleClick">
+        <Grid Grid.Row="0" Name="searchBox" Cursor="IBeam"  MouseDown="searchBox_MouseDown" Background="White">
+            <Viewbox Stretch="Uniform" HorizontalAlignment="Left">
+                <TextBox Name="searchTextBox" TextChanged="searchTextBox_TextChanged" SelectionOpacity="0">
+                    <TextBox.Template>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <ScrollViewer Name="PART_ContentHost"/>
+                        </ControlTemplate>
+                    </TextBox.Template>
+                </TextBox>
+            </Viewbox>
+        </Grid>
+        <ListView Grid.Row="1" Name="windowsListView"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  MouseDoubleClick="windowsListView_MouseDoubleClick"
+                  BorderBrush="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <gotowindow:WindowListEntry />
