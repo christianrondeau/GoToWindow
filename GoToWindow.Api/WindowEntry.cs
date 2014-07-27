@@ -9,9 +9,9 @@ namespace GoToWindow.Api
         public string Executable { get; set; }
         public string Title { get; set; }
 
-        public void Focus()
+        public bool Focus()
         {
-            WindowToForeground.ForceWindowToForeground(HWnd);
+            return WindowToForeground.ForceWindowToForeground(HWnd);
         }
 
         public override string ToString()

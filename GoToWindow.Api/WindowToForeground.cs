@@ -105,11 +105,14 @@ namespace GoToWindow.Api
             }
         }
 
-        public static void ForceWindowToForeground(IntPtr hwnd)
+        public static bool ForceWindowToForeground(IntPtr hwnd)
         {
+            bool result = false;
+
             AttachedThreadInputAction(() =>
             {
-                BringWindowToTop(hwnd);
+                if (!BringWindowToTop(hwnd))
+                    return;
 
                 WINDOWPLACEMENT state;
                 GetWindowPlacement(hwnd, out state);
@@ -117,7 +120,11 @@ namespace GoToWindow.Api
                 {
                     ShowWindow(hwnd, SW_RESTORE);
                 }
+
+                result = true;
             });
+
+            return result;
         }
     }
 }

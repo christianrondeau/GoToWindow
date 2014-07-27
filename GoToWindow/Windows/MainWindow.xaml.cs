@@ -47,7 +47,8 @@ namespace GoToWindow
             var windowEntry = windowsListView.SelectedItem as IWindowEntry;
             if (windowEntry != null)
             {
-                windowEntry.Focus();
+                if (!windowEntry.Focus())
+                    MessageBox.Show("Could not show window. Try running with elevated privileges (Run as Administrator)", "Could Not Show Window", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 Close();
             }
         }

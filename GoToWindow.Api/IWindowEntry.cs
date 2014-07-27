@@ -9,6 +9,6 @@ namespace GoToWindow.Api
         string Executable { get; set; }
         string Title { get; set; }
 
-        void Focus();
+        bool Focus();
     }
 }
