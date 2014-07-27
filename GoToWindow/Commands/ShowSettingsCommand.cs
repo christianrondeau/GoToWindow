@@ -1,14 +1,17 @@
-﻿using System;
+﻿using GoToWindow.Windows;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace GoToWindow.Commands
 {
-    public class ExitCommand : ICommand
+    public class ShowSettingsCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
 
-        public ExitCommand()
+        public ShowSettingsCommand()
         {
         }
 
@@ -19,7 +22,10 @@ namespace GoToWindow.Commands
 
         public void Execute(object parameter)
         {
-            Application.Current.Shutdown();
+            if (Application.Current.Windows.OfType<SettingsWindow>().Count() > 0)
+                return;
+
+            new SettingsWindow().Show();
         }
     }
 }

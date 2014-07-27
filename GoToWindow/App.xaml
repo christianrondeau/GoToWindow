@@ -1,11 +1,12 @@
 ﻿<Application x:Class="GoToWindow.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:properties="clr-namespace:GoToWindow.Properties"
              ShutdownMode="OnExplicitShutdown"
              Startup="Application_Startup"
              Exit="Application_Exit"
              Deactivated="Application_Deactivated">
     <Application.Resources>
-         
+        <properties:Settings x:Key="Settings" />
     </Application.Resources>
 </Application>

@@ -7,7 +7,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         WindowStyle="None"
-        Icon="..\Resources\AppIcon.ico"
+        Icon="/GoToWindow;component/Resources/AppIcon.ico"
         Topmost="True"
         ShowInTaskbar="False"
         FocusManager.FocusedElement="{Binding ElementName=searchTextBox}"

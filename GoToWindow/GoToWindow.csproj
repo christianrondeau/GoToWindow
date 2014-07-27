@@ -62,12 +62,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BindingExtensions\SettingsBindingExtension.cs" />
+    <Compile Include="Commands\ShowSettingsCommand.cs" />
     <Compile Include="Converters\ExecutableToIconValueConverter.cs" />
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="GoToWindowContext.cs" />
     <Compile Include="Commands\OpenMainWindowCommand.cs" />
     <Compile Include="Controls\WindowListEntry.xaml.cs">
       <DependentUpon>WindowListEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -82,6 +87,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Controls\WindowListEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace GoToWindow
+namespace GoToWindow.Commands
 {
     public class OpenMainWindowCommand : ICommand
     {
