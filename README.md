@@ -18,9 +18,15 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * Start typing keywords to filter the list. Note that only windows that contain all words in either the window title _or_ the process name will be shown.
 
+* If no opened window is found, press `Enter` to search directly in the Windows Search charm.
+
 * Press `Alt` + `Number (1 - 9)` to directly open the application at the selected index from the list.
 
 * Press `Escape` to close the window.
+
+## Tips and gotchas
+
+* To switch to an application that has elevated privileges (Run as Administrator), GoToWindow must also run with elevated privileges.
 
 ## Contributors
 

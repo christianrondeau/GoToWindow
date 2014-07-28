@@ -75,7 +75,10 @@
                     <ColumnDefinition Width="42" />
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="0" Stretch="Uniform" HorizontalAlignment="Left" Margin="32, 0, 32, 0">
-                    <TextBox Margin="4" Name="searchTextBox" TextChanged="searchTextBox_TextChanged" PreviewKeyDown="searchTextBox_PreviewKeyDown">
+                    <TextBox Margin="4" Name="searchTextBox"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="searchTextBox_TextChanged"
+                             PreviewKeyDown="searchTextBox_PreviewKeyDown">
                         <TextBox.Template>
                             <ControlTemplate TargetType="{x:Type TextBox}">
                                 <ScrollViewer Name="PART_ContentHost"/>
@@ -105,9 +108,11 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListView">
-                                            <Grid Height="48" >
-                                                <TextBlock Margin="16" VerticalAlignment="Center" Foreground="Gray" Text="No opened windows matching your keywords"/>
-                                            </Grid>
+                                            <StackPanel Orientation="Horizontal" Height="48" >
+                                                <TextBlock Margin="16, 16, 0, 16" VerticalAlignment="Center" Foreground="Gray">Search for '</TextBlock>
+                                                <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold" Text="{Binding SearchText}"></TextBlock>
+                                                <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Gray">' using Windows Search</TextBlock>
+                                            </StackPanel>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>

@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="InterceptAltTab.cs" />
     <Compile Include="IWindowEntry.cs" />
+    <Compile Include="KeyboardSend.cs" />
     <Compile Include="ProcessExtensions.cs" />
     <Compile Include="WindowEntry.cs" />
     <Compile Include="WindowsList.cs" />

@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +60,26 @@ namespace GoToWindow
             {
                 if (!windowEntry.Focus())
                     MessageBox.Show("Could not show window. Try running with elevated privileges (Run as Administrator)", "Could Not Show Window", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                
                 Close();
+            }
+            else if(!String.IsNullOrWhiteSpace(searchTextBox.Text))
+            {
+                KeyboardSend.KeyDown(KeyboardSend.LWin);
+                KeyboardSend.PressKey((byte)'S');
+                KeyboardSend.KeyUp(KeyboardSend.LWin);
+
+                Thread.Sleep(100);
+
+                foreach(var c in searchTextBox.Text.Trim())
+                {
+                    var uc = Char.ToUpper(c);
+                    // Spaces, numbers and letters
+                    if (uc == 0x20 || uc >= 0x30 && uc <= 0x39 || uc >= 0x41 && uc <= 0x5a)
+                    {
+                        KeyboardSend.PressKey((byte)uc);
+                    }
+                }
             }
         }
 

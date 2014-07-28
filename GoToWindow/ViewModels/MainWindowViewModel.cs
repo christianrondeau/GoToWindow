@@ -2,6 +2,7 @@
 using GoToWindow.Commands;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace GoToWindow.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         public static MainWindowViewModel Load()
         {
@@ -21,8 +22,27 @@ namespace GoToWindow.ViewModels
             return instance;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
         public CollectionViewSource Windows { get; private set; }
         public IWindowEntry SelectedWindowEntry { get; set; }
+
+        private string _searchText;
+
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged("SearchText");
+            }
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
 
         public ICommand GoToWindowEntryShortcut { get; private set; }
 
