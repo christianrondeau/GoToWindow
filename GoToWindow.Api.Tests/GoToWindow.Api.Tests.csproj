@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GivenAWindow.cs" />
     <Compile Include="WindowListFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowTests.cs" />
@@ -58,6 +59,10 @@
     <ProjectReference Include="..\GoToWindow.Api\GoToWindow.Api.csproj">
       <Project>{c0e88c89-8430-43ba-a5d5-a92eafd48a79}</Project>
       <Name>GoToWindow.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GoToWindow.FakeApp\GoToWindow.FakeApp.csproj">
+      <Project>{068f2a79-e158-4f06-a312-9d4479081a20}</Project>
+      <Name>GoToWindow.FakeApp</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

@@ -1,0 +1,25 @@
+﻿using System.Reflection;
+using System.Resources;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Windows;
+
+[assembly: AssemblyTitle("Go To Window Fake App (Tests)")]
+[assembly: AssemblyDescription("Fake application for testing Go To Window")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Christian Rondeau")]
+[assembly: AssemblyProduct("Go To Window")]
+[assembly: AssemblyCopyright("Copyright © Christian Rondeau 2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+
+[assembly: ComVisible(false)]
+
+
+[assembly: ThemeInfo(
+    ResourceDictionaryLocation.None,
+    ResourceDictionaryLocation.SourceAssembly
+)]
+
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

@@ -10,5 +10,6 @@ namespace GoToWindow.Api
         string Title { get; set; }
 
         bool Focus();
+        bool IsSameButHWnd(IWindowEntry other);
     }
 }

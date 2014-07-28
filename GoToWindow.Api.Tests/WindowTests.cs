@@ -8,9 +8,7 @@ namespace GoToWindow.Api.Tests
         [TestMethod]
         public void ToString_GetsTheWindowTitle()
         {
-            const string expectedTitle = "Some App: Some Window Title";
-
-            Assert.AreEqual(expectedTitle, new WindowEntry { Title = expectedTitle }.ToString());
+            Assert.AreEqual("Title [process:path]", new WindowEntry { Title = "Title", ProcessName = "process", Executable = "path" }.ToString());
         }
     }
 }

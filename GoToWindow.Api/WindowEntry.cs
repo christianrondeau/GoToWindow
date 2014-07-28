@@ -14,9 +14,17 @@ namespace GoToWindow.Api
             return WindowToForeground.ForceWindowToForeground(HWnd);
         }
 
+        public bool IsSameButHWnd(IWindowEntry other)
+        {
+            if (other == null)
+                return false;
+
+            return ProcessName == other.ProcessName && Executable == other.Executable && Title == other.Title;
+        }
+
         public override string ToString()
         {
-            return Title;
+            return String.Format("{0} [{1}:{2}]", Title, ProcessName, Executable);
         }
     }
 }
