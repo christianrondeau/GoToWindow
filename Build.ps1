@@ -29,9 +29,14 @@ Function ZipFiles($Filename, $Source)
 	/v:m
 
 $ReleaseFolder = "$PSScriptRoot\Release"
+$ReleaseZip = "$ReleaseFolder\GoToWindow.zip"
 	
 If(!(Test-Path -Path $ReleaseFolder )){
     New-Item -ItemType directory -Path $ReleaseFolder
 }
-	
-ZipFiles "$ReleaseFolder\GoToWindow.zip" "$PSScriptRoot\GoToWindow\bin\Release"
+
+If(Test-Path -Path $ReleaseZip) {
+	Remove-Item -Confirm:$false .\Release\GoToWindow.zip
+}
+
+ZipFiles $ReleaseZip "$PSScriptRoot\GoToWindow\bin\Release"
