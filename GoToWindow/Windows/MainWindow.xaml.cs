@@ -1,4 +1,5 @@
-﻿using GoToWindow.Api;
+﻿using System.Windows.Controls.Primitives;
+using GoToWindow.Api;
 using GoToWindow.Commands;
 using GoToWindow.ViewModels;
 using System;
@@ -33,11 +34,6 @@ namespace GoToWindow
 
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
-            if (windowsListView.Items.Count > 1)
-                windowsListView.SelectedIndex = 1;
-            else if (windowsListView.Items.Count > 0)
-                windowsListView.SelectedIndex = 0;
-
             _viewModel = MainWindowViewModel.Load();
             _viewModel.Close += viewModel_Close;
             DataContext = _viewModel;
@@ -162,6 +158,22 @@ namespace GoToWindow
         private void GoToWindowShortcut(object sender, ExecutedRoutedEventArgs e)
         {
             Console.WriteLine("Yeah!" + e.Parameter);
+        }
+
+        private void windowsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            EventHandler eventHandler = null;
+            eventHandler = delegate
+            {
+                if (windowsListView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated) return;
+                windowsListView.ItemContainerGenerator.StatusChanged -= eventHandler;
+
+                if (windowsListView.Items.Count > 1)
+                    windowsListView.SelectedIndex = 1;
+                else if (windowsListView.Items.Count > 0)
+                    windowsListView.SelectedIndex = 0;
+            };
+            windowsListView.ItemContainerGenerator.StatusChanged += eventHandler;
         }
     }
 }
