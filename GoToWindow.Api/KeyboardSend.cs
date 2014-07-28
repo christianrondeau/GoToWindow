@@ -20,12 +20,12 @@ namespace GoToWindow.Api
 
         public static void KeyDown(byte vKey)
         {
-            keybd_event((byte)vKey, 0, KEYEVENTF_EXTENDEDKEY, 0);
+            keybd_event(vKey, 0, KEYEVENTF_EXTENDEDKEY, 0);
         }
 
         public static void KeyUp(byte vKey)
         {
-            keybd_event((byte)vKey, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+            keybd_event(vKey, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
         }
     }
 }

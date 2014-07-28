@@ -8,10 +8,6 @@ namespace GoToWindow.Commands
     {
         public event EventHandler CanExecuteChanged;
 
-        public ExitCommand()
-        {
-        }
-
         public bool CanExecute(object parameter)
         {
             return true;

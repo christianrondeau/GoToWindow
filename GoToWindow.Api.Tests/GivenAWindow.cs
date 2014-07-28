@@ -14,13 +14,13 @@ namespace GoToWindow.Api.Tests
             return Path.Combine(executablePath, filename);
         }
 
-        private Process _process;
+        private readonly Process _process;
         public IWindowEntry Expected { get; private set; }
 
         public GivenAWindow(string title)
         {
             var filename = GetResourcePath("GoToWindow.FakeApp.exe");
-            var processName = "GoToWindow.FakeApp";
+            const string processName = "GoToWindow.FakeApp";
 
             _process = new Process
             {

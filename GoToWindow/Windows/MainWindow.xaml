@@ -94,7 +94,7 @@
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="16" Direction="-75" Opacity="0.8" />
             </Border.Effect>
-            <ListView Grid.Row="1" Name="windowsListView"
+            <ListView Name="windowsListView"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       MouseDoubleClick="windowsListView_MouseDoubleClick"
                       PreviewKeyDown="windowsListView_PreviewKeyDown"

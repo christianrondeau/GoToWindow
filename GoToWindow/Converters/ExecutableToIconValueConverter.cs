@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -23,6 +20,9 @@ namespace GoToWindow.Converters
 
             using(var icon = Icon.ExtractAssociatedIcon((string)value))
             {
+                if (icon == null)
+                    return null;
+
                 using (var bmp = icon.ToBitmap())
                 {
                     bmp.Save(iconStream, ImageFormat.Png);

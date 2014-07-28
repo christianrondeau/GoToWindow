@@ -1,25 +1,13 @@
 ﻿using System.Windows.Controls.Primitives;
 using GoToWindow.Api;
-using GoToWindow.Commands;
 using GoToWindow.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GoToWindow
 {
@@ -87,8 +75,6 @@ namespace GoToWindow
 
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var currentSelection = windowsListView.SelectedItem;
-
             _viewModel.Windows.View.Filter = item => SearchFilter((IWindowEntry)item, searchTextBox.Text);
 
             if (windowsListView.SelectedIndex == -1 && windowsListView.Items.Count > 0)
@@ -153,11 +139,6 @@ namespace GoToWindow
         private void clearSearchButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void GoToWindowShortcut(object sender, ExecutedRoutedEventArgs e)
-        {
-            Console.WriteLine("Yeah!" + e.Parameter);
         }
 
         private void windowsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

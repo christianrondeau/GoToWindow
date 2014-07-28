@@ -1,7 +1,6 @@
 ﻿using GoToWindow.Windows;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -10,7 +9,7 @@ namespace GoToWindow.Commands
     public class ShowSettingsCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        private IGoToWindowContext _context;
+        private readonly IGoToWindowContext _context;
 
         public ShowSettingsCommand(IGoToWindowContext context)
         {
@@ -24,7 +23,7 @@ namespace GoToWindow.Commands
 
         public void Execute(object parameter)
         {
-            if (Application.Current.Windows.OfType<SettingsWindow>().Count() > 0)
+            if (Application.Current.Windows.OfType<SettingsWindow>().Any())
                 return;
 
             new SettingsWindow(_context).ShowDialog();

@@ -1,17 +1,9 @@
-﻿using GoToWindow.Api;
-using GoToWindow.Commands;
-using GoToWindow.Windows;
+﻿using GoToWindow.Commands;
 using Hardcodet.Wpf.TaskbarNotification;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace GoToWindow
 {
@@ -19,6 +11,7 @@ namespace GoToWindow
     {
         private readonly IGoToWindowContext _context = new GoToWindowContext();
         private Mutex _mutex;
+        private TaskbarIcon _trayIcon;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -30,11 +23,13 @@ namespace GoToWindow
                 return;
             }
             
-            TaskbarIcon trayIcon = new TaskbarIcon();
-            trayIcon.Icon = GoToWindow.Properties.Resources.AppIcon;
-            trayIcon.ToolTipText = "Go To Window";
-            trayIcon.DoubleClickCommand = new OpenMainWindowCommand(_context);
-            trayIcon.ContextMenu = CreateContextMenu();
+            _trayIcon = new TaskbarIcon
+            {
+                Icon = GoToWindow.Properties.Resources.AppIcon,
+                ToolTipText = "Go To Window",
+                DoubleClickCommand = new OpenMainWindowCommand(_context),
+                ContextMenu = CreateContextMenu()
+            };
 
             _context.EnableAltTabHook(GoToWindow.Properties.Settings.Default.HookAltTab);
         }
@@ -66,6 +61,11 @@ namespace GoToWindow
             if (_mutex != null)
             {
                 _mutex.Dispose();
+            }
+
+            if (_trayIcon != null)
+            {
+                _trayIcon.Dispose();
             }
         }
 
