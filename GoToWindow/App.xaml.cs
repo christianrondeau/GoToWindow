@@ -65,7 +65,6 @@ namespace GoToWindow
 
             if (_mutex != null)
             {
-                _mutex.ReleaseMutex();
                 _mutex.Dispose();
             }
         }
