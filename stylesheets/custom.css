@@ -1,3 +1,9 @@
 #downloads {
 	background-position-x: 92px;
 }
+
+img.noborder {
+	border: 0 !important;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+}
