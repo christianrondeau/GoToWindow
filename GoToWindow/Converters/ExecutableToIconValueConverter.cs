@@ -13,11 +13,12 @@ namespace GoToWindow.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null)
+            if (String.IsNullOrEmpty((string)value) || !File.Exists((string)value))
                 return null;
 
             var iconStream = new MemoryStream();
 
+            //TODO: Get window's icon instead of process icon
             using(var icon = Icon.ExtractAssociatedIcon((string)value))
             {
                 if (icon == null)
