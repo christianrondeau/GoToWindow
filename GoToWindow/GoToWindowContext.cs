@@ -23,7 +23,7 @@ namespace GoToWindow
         {
             if (_mainWindow != null && _mainWindow.IsLoaded)
             {
-                Hide();
+                _mainWindow.TabAgain();
             }
             else
             {

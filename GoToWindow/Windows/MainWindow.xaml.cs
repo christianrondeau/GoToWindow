@@ -20,6 +20,11 @@ namespace GoToWindow
             InitializeComponent();
         }
 
+        public void TabAgain()
+        {
+            FocusSelectedWindowItem();
+        }
+
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
             _viewModel = MainWindowViewModel.Load();
