@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls.Primitives;
+﻿using System.ComponentModel;
+using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 using GoToWindow.Api;
 using GoToWindow.ViewModels;
 using System;
@@ -14,6 +16,7 @@ namespace GoToWindow
     public partial class MainWindow : Window
     {
         private MainWindowViewModel _viewModel;
+        private bool _isClosing;
 
         public MainWindow()
         {
@@ -34,7 +37,8 @@ namespace GoToWindow
 
         void viewModel_Close(object sender, EventArgs e)
         {
-            Close();
+            if (!_isClosing)
+                Close();
         }
 
         private void windowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -49,8 +53,9 @@ namespace GoToWindow
             {
                 if (!windowEntry.Focus())
                     MessageBox.Show("Could not show window. Try running with elevated privileges (Run as Administrator)", "Could Not Show Window", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                
-                Close();
+
+                if (!_isClosing)
+                    Close();
             }
             else if(!String.IsNullOrWhiteSpace(searchTextBox.Text))
             {
@@ -74,6 +79,8 @@ namespace GoToWindow
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (_isClosing) return;
+
             if (e.Key == Key.Escape)
                 Close();
         }
@@ -107,6 +114,8 @@ namespace GoToWindow
 
         private void searchTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (_isClosing) return;
+
             if(e.Key == Key.Enter)
             {
                 FocusSelectedWindowItem();
@@ -143,7 +152,8 @@ namespace GoToWindow
 
         private void clearSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            if (!_isClosing)
+                Close();
         }
 
         private void windowsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -164,7 +174,25 @@ namespace GoToWindow
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
+            new WindowEntry { HWnd = new WindowInteropHelper(this).Handle }.Focus();
             Activate();
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            if (!_isClosing)
+                Close();
+        }
+
+        private void Window_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!_isClosing)
+                Close();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            _isClosing = true;
         }
     }
 }

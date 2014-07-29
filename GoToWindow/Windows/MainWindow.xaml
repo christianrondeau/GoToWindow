@@ -13,7 +13,10 @@
         FocusManager.FocusedElement="{Binding ElementName=searchTextBox}"
         SourceInitialized="Window_SourceInitialized"
         ContentRendered="Window_ContentRendered"
-        PreviewKeyDown="Window_PreviewKeyDown">
+        PreviewKeyDown="Window_PreviewKeyDown"
+        Deactivated="Window_Deactivated"
+        LostFocus="Window_LostFocus"
+        Closing="Window_Closing">
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="{x:Type Button}">
             <Setter Property="Template">
