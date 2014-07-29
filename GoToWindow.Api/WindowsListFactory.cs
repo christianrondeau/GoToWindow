@@ -13,6 +13,13 @@ namespace GoToWindow.Api
     {
         delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
+        public enum GetAncestorFlags
+        {
+            GetParent = 1,
+            GetRoot = 2,
+            GetRootOwner = 3
+        }
+
         [DllImport("user32.dll")]
         static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
 
@@ -31,6 +38,15 @@ namespace GoToWindow.Api
         [DllImport("user32.dll", SetLastError = true)]
         static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
+        [DllImport("user32.dll", ExactSpelling = true)]
+        static extern IntPtr GetAncestor(IntPtr hwnd, GetAncestorFlags flags);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetLastActivePopup(IntPtr hWnd);
+
         public static WindowsList Load()
         {
             var lShellWindow = GetShellWindow();
@@ -38,14 +54,13 @@ namespace GoToWindow.Api
 
             EnumWindows((hWnd, lParam) =>
             {
-                if (hWnd == lShellWindow)
+                string title;
+                if (!EligibleForAltTab(hWnd, lShellWindow, out title))
                     return true;
 
-                if (!IsWindowVisible(hWnd))
-                    return true;
+                var windowTitle = GetWindowTitle(hWnd);
 
-                var lLength = GetWindowTextLength(hWnd);
-                if (lLength == 0)
+                if (windowTitle == null)
                     return true;
 
                 uint processId;
@@ -56,21 +71,91 @@ namespace GoToWindow.Api
 
                 var process = Process.GetProcessById((int)processId);
 
-                var builder = new StringBuilder(lLength);
-                GetWindowText(hWnd, builder, lLength + 1);
-
                 windows.Add(new WindowEntry
                 {
                     HWnd = hWnd,
-                    Title = builder.ToString(),
+                    Title = windowTitle,
                     ProcessName = process.ProcessName,
-                    Executable = process.GetExecutablePath()
+                    Executable = process.GetExecutablePath(),
                 });
 
                 return true;
             }, 0);
 
             return new WindowsList(windows);
+        }
+
+        private static string GetWindowTitle(IntPtr hWnd)
+        {
+            var lLength = GetWindowTextLength(hWnd);
+            if (lLength == 0)
+                return null;
+
+            var builder = new StringBuilder(lLength);
+            GetWindowText(hWnd, builder, lLength + 1);
+            return builder.ToString();
+        }
+
+        private static bool EligibleForAltTab(IntPtr hWnd, IntPtr lShellWindow, out string title)
+        {
+            // http://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
+
+            if (hWnd == lShellWindow)
+            {
+                title = null;
+                return false;
+            }
+
+            var root = GetAncestor(hWnd, GetAncestorFlags.GetRootOwner);
+
+            if (GetLastVisibleActivePopUpOfWindow(root) != hWnd)
+            {
+                title = null; 
+                return false;
+            }
+
+            var classNameStringBuilder = new StringBuilder(256);
+            var length = GetClassName(hWnd, classNameStringBuilder, classNameStringBuilder.Capacity);
+            if (length == 0)
+            {
+                title = null;
+                return false;
+            }
+
+            var className = classNameStringBuilder.ToString();
+
+            if (className == "Shell_TrayWnd" || //Windows taskbar
+                className == "DV2ControlHost" || //Windows startmenu, if open
+                className == "MsgrIMEWindowClass" || //Live messenger's notifybox i think
+                className == "SysShadow" || //Live messenger's shadow-hack
+                className.StartsWith("WMP9MediaBarFlyout")) //WMP's "now playing" taskbar-toolbar
+            {
+                title = null;
+                return false;
+            }
+
+            title = GetWindowTitle(hWnd);
+
+            if (className == "Button" && title == "Start")
+                return false;
+
+            return true;
+        }
+
+        private static IntPtr GetLastVisibleActivePopUpOfWindow(IntPtr window)
+        {
+            while (true)
+            {
+                var lastPopUp = GetLastActivePopup(window);
+
+                if (IsWindowVisible(lastPopUp))
+                    return lastPopUp;
+
+                if (lastPopUp == window)
+                    return IntPtr.Zero;
+
+                window = lastPopUp;
+            }
         }
     }
 }
