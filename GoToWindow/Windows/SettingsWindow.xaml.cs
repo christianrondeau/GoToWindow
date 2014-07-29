@@ -88,6 +88,8 @@ namespace GoToWindow.Windows
 
             var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
             noElevatedPrivilegesWarning.Visibility = (principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200)) ? Visibility.Hidden : Visibility.Visible;
+
+            versionTextBlock.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
     }
 }
