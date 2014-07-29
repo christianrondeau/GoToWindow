@@ -21,11 +21,16 @@ namespace GoToWindow
 
         public void Show()
         {
-            Hide();
-
-            _mainWindow = new MainWindow();
-            _mainWindow.Closing += _mainWindow_Closing;
-            _mainWindow.Show();
+            if (_mainWindow != null && _mainWindow.IsLoaded)
+            {
+                Hide();
+            }
+            else
+            {
+                _mainWindow = new MainWindow();
+                _mainWindow.Closing += _mainWindow_Closing;
+                _mainWindow.Show();
+            }
         }
 
         void _mainWindow_Closing(object sender, EventArgs e)
@@ -41,7 +46,7 @@ namespace GoToWindow
 
         public void EnableAltTabHook(bool enabled)
         {
-            if(_hooks == null && enabled)
+            if (_hooks == null && enabled)
             {
                 _hooks = new InterceptAltTab(HandleAltTab);
             }
