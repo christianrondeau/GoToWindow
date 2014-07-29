@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using GoToWindow.Api;
 
 namespace GoToWindow.Converters
 {
@@ -13,21 +14,43 @@ namespace GoToWindow.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (String.IsNullOrEmpty((string)value) || !File.Exists((string)value))
+            var window = value as IWindowEntry;
+
+            if (window == null)
                 return null;
 
+            return ConvertFromHandle(window.IconHandle) ?? ConvertFromFile(window.Executable);
+        }
+
+        private static object ConvertFromHandle(IntPtr iconHandle)
+        {
+            if (iconHandle == IntPtr.Zero)
+                return null;
+
+            using (var icon = Icon.FromHandle(iconHandle))
+            {
+                return ConvertFromIcon(icon);
+            }
+        }
+
+        private static BitmapFrame ConvertFromFile(string path)
+        {
+            if (String.IsNullOrEmpty(path) || !File.Exists(path))
+                return null;
+
+            using (var icon = Icon.ExtractAssociatedIcon(path))
+            {
+                return ConvertFromIcon(icon);
+            }
+        }
+
+        private static BitmapFrame ConvertFromIcon(Icon icon)
+        {
             var iconStream = new MemoryStream();
 
-            //TODO: Get window's icon instead of process icon
-            using(var icon = Icon.ExtractAssociatedIcon((string)value))
+            using (var bmp = icon.ToBitmap())
             {
-                if (icon == null)
-                    return null;
-
-                using (var bmp = icon.ToBitmap())
-                {
-                    bmp.Save(iconStream, ImageFormat.Png);
-                }
+                bmp.Save(iconStream, ImageFormat.Png);
             }
 
             iconStream.Position = 0;

@@ -15,7 +15,7 @@
             <ColumnDefinition Name="processColumn" Width="120"/>
             <ColumnDefinition Name="titleColumn" Width="*" />
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="0" Source="{Binding Path=Executable, Converter={StaticResource IconConverter}}" Margin="8,8,8,8" />
+        <Image Grid.Column="0" Source="{Binding Path=DataContext, RelativeSource={RelativeSource Self}, Converter={StaticResource IconConverter}}" Margin="8,8,8,8" />
         <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Foreground="Gray" Text="{Binding Path=ProcessName}" />
         <TextBlock  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Title}" />
     </Grid>

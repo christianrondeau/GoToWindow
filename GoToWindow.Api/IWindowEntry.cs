@@ -8,6 +8,7 @@ namespace GoToWindow.Api
         string ProcessName { get; set; }
         string Executable { get; set; }
         string Title { get; set; }
+        IntPtr IconHandle { get; set; }
 
         bool Focus();
         bool IsSameButHWnd(IWindowEntry other);

@@ -8,6 +8,7 @@ namespace GoToWindow.Api
         public string ProcessName { get; set; }
         public string Executable { get; set; }
         public string Title { get; set; }
+        public IntPtr IconHandle { get; set; }
 
         public bool Focus()
         {
