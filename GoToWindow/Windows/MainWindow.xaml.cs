@@ -103,7 +103,7 @@ namespace GoToWindow
 
         private static bool StringContains(string text, string partial)
         {
-            return partial.Split(' ').All(word => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(text, word, CompareOptions.IgnoreCase) > -1);
+            return partial.Split(' ').All(word => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(text, word, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) > -1);
         }
 
         private void searchBox_MouseDown(object sender, MouseButtonEventArgs e)
