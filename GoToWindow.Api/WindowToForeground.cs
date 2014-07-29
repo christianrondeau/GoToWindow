@@ -10,9 +10,8 @@ namespace GoToWindow.Api
     internal static class WindowToForeground
     {
 // ReSharper disable InconsistentNaming
-        public const uint SW_SHOW = 5;
-        public const uint SW_MINIMIZE = 6;
-		public const uint SW_RESTORE = 9;
+        private const int SC_RESTORE = 0xF120;
+        private const uint WM_SYSCOMMAND = 0x0112;
 
         [Serializable]
         [StructLayout(LayoutKind.Sequential)]
@@ -56,9 +55,6 @@ namespace GoToWindow.Api
         }
         // ReSharper restore InconsistentNaming
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-
         [DllImport("user32.dll")]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr processId);
 
@@ -69,19 +65,17 @@ namespace GoToWindow.Api
         public static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
-        public static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool BringWindowToTop(IntPtr hWnd);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool BringWindowToTop(HandleRef hWnd);
+        static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        public static extern bool ShowWindow(IntPtr hWnd, uint nCmdShow);
+        public static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
 
         [DllImport("user32.dll")]
         internal static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
+
+        [DllImport("user32.dll")]
+        private static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, Int32 wParam, Int32 lParam);
+
 
         public static void AttachedThreadInputAction(Action action)
         {
@@ -111,15 +105,14 @@ namespace GoToWindow.Api
 
             AttachedThreadInputAction(() =>
             {
-                if (!BringWindowToTop(hwnd))
-                    return;
-
                 WINDOWPLACEMENT state;
                 GetWindowPlacement(hwnd, out state);
                 if (state.ShowCmd == ShowWindowCommands.ShowMinimized)
                 {
-                    ShowWindow(hwnd, SW_RESTORE);
+                    PostMessage(hwnd, WM_SYSCOMMAND, SC_RESTORE, 0);
                 }
+
+                SetForegroundWindow(hwnd);
 
                 result = true;
             });
