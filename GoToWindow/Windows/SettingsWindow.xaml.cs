@@ -19,13 +19,13 @@ namespace GoToWindow.Windows
             InitializeComponent();
         }
 
-        private void okButton_Click(object sender, RoutedEventArgs e)
+        private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Save();
 
-            if(_originalStartWithWindowsIsChecked != startWithWindowsCheckbox.IsChecked)
+            if(_originalStartWithWindowsIsChecked != StartWithWindowsCheckbox.IsChecked)
             {
-                UpdateStartWithWindows(startWithWindowsCheckbox.IsChecked == true);
+                UpdateStartWithWindows(StartWithWindowsCheckbox.IsChecked == true);
             }
 
             _context.EnableAltTabHook(Properties.Settings.Default.HookAltTab);
@@ -72,7 +72,7 @@ namespace GoToWindow.Windows
             }
         }
 
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
@@ -83,13 +83,13 @@ namespace GoToWindow.Windows
             if (runList != null)
             {
                 var executablePath = Assembly.GetExecutingAssembly().Location;
-                startWithWindowsCheckbox.IsChecked = _originalStartWithWindowsIsChecked = ((string) runList.GetValue("GoToWindow") == executablePath);
+                StartWithWindowsCheckbox.IsChecked = _originalStartWithWindowsIsChecked = ((string) runList.GetValue("GoToWindow") == executablePath);
             }
 
             var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-            noElevatedPrivilegesWarning.Visibility = (principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200)) ? Visibility.Hidden : Visibility.Visible;
+            NoElevatedPrivilegesWarning.Visibility = (principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200)) ? Visibility.Hidden : Visibility.Visible;
 
-            versionTextBlock.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            VersionTextBlock.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
     }
 }

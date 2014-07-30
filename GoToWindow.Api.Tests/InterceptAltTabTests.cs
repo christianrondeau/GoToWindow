@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GoToWindow.Api.Tests
 {
@@ -12,7 +9,7 @@ namespace GoToWindow.Api.Tests
         public void CanInterceptAltTab()
         {
             var intercepted = false;
-            using(var interceptor = new InterceptAltTab(() => intercepted = true))
+            using (new InterceptAltTab(() => intercepted = true))
             {
                 KeyboardSend.KeyDown(KeyboardSend.LAlt);
                 KeyboardSend.KeyPress(KeyboardSend.Tab);

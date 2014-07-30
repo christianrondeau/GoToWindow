@@ -1,17 +1,16 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls.Primitives;
-using System.Windows.Interop;
-using GoToWindow.Api;
-using GoToWindow.ViewModels;
-using System;
+﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using GoToWindow.Api;
+using GoToWindow.ViewModels;
 
-namespace GoToWindow
+namespace GoToWindow.Windows
 {
     public partial class MainWindow : Window
     {
@@ -31,24 +30,24 @@ namespace GoToWindow
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
             _viewModel = MainWindowViewModel.Load();
-            _viewModel.Close += viewModel_Close;
+            _viewModel.Close += ViewModel_Close;
             DataContext = _viewModel;
         }
 
-        void viewModel_Close(object sender, EventArgs e)
+        void ViewModel_Close(object sender, EventArgs e)
         {
             if (!_isClosing)
                 Close();
         }
 
-        private void windowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void WindowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             FocusSelectedWindowItem();
         }
 
         private void FocusSelectedWindowItem()
         {
-            var windowEntry = windowsListView.SelectedItem as IWindowEntry;
+            var windowEntry = WindowsListView.SelectedItem as IWindowEntry;
             if (windowEntry != null)
             {
                 if (!windowEntry.Focus())
@@ -57,22 +56,27 @@ namespace GoToWindow
                 if (!_isClosing)
                     Close();
             }
-            else if(!String.IsNullOrWhiteSpace(searchTextBox.Text))
+            else if(!String.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
-                KeyboardSend.KeyDown(KeyboardSend.LWin);
-                KeyboardSend.KeyPress((byte)'S');
-                KeyboardSend.KeyUp(KeyboardSend.LWin);
+                SearchInWindowsSearch();
+            }
+        }
 
-                Thread.Sleep(100);
+        private void SearchInWindowsSearch()
+        {
+            KeyboardSend.KeyDown(KeyboardSend.LWin);
+            KeyboardSend.KeyPress((byte) 'S');
+            KeyboardSend.KeyUp(KeyboardSend.LWin);
 
-                foreach(var c in searchTextBox.Text.Trim())
+            Thread.Sleep(100);
+
+            foreach (var c in SearchTextBox.Text.Trim())
+            {
+                var uc = Char.ToUpper(c);
+                // Spaces, numbers and letters
+                if (uc == 0x20 || uc >= 0x30 && uc <= 0x39 || uc >= 0x41 && uc <= 0x5a)
                 {
-                    var uc = Char.ToUpper(c);
-                    // Spaces, numbers and letters
-                    if (uc == 0x20 || uc >= 0x30 && uc <= 0x39 || uc >= 0x41 && uc <= 0x5a)
-                    {
-                        KeyboardSend.KeyPress((byte)uc);
-                    }
+                    KeyboardSend.KeyPress((byte) uc);
                 }
             }
         }
@@ -85,12 +89,12 @@ namespace GoToWindow
                 Close();
         }
 
-        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _viewModel.Windows.View.Filter = item => SearchFilter((IWindowEntry)item, searchTextBox.Text);
+            _viewModel.Windows.View.Filter = item => SearchFilter((IWindowEntry)item, SearchTextBox.Text);
 
-            if (windowsListView.SelectedIndex == -1 && windowsListView.Items.Count > 0)
-                windowsListView.SelectedIndex = 0;
+            if (WindowsListView.SelectedIndex == -1 && WindowsListView.Items.Count > 0)
+                WindowsListView.SelectedIndex = 0;
         }
 
         private bool SearchFilter(IWindowEntry window, string text)
@@ -106,13 +110,13 @@ namespace GoToWindow
             return partial.Split(' ').All(word => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(text, word, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) > -1);
         }
 
-        private void searchBox_MouseDown(object sender, MouseButtonEventArgs e)
+        private void SearchBox_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            searchTextBox.Focus();
-            searchTextBox.CaretIndex = searchTextBox.Text.Length;
+            SearchTextBox.Focus();
+            SearchTextBox.CaretIndex = SearchTextBox.Text.Length;
         }
 
-        private void searchTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void SearchTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (_isClosing) return;
 
@@ -123,24 +127,24 @@ namespace GoToWindow
                 return;
             }
 
-            if (e.Key == Key.Down && windowsListView.SelectedIndex < windowsListView.Items.Count - 1)
+            if (e.Key == Key.Down && WindowsListView.SelectedIndex < WindowsListView.Items.Count - 1)
             {
-                windowsListView.SelectedIndex++;
-                windowsListView.ScrollIntoView(windowsListView.SelectedItem);
+                WindowsListView.SelectedIndex++;
+                WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
                 e.Handled = true;
                 return;
             }
 
-            if (e.Key == Key.Up && windowsListView.SelectedIndex > 0)
+            if (e.Key == Key.Up && WindowsListView.SelectedIndex > 0)
             {
-                windowsListView.SelectedIndex--;
-                windowsListView.ScrollIntoView(windowsListView.SelectedItem);
+                WindowsListView.SelectedIndex--;
+                WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
                 e.Handled = true;
                 return;
             }
         }
 
-        private void windowsListView_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void WindowsListView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -150,26 +154,26 @@ namespace GoToWindow
             }
         }
 
-        private void clearSearchButton_Click(object sender, RoutedEventArgs e)
+        private void ClearSearchButton_Click(object sender, RoutedEventArgs e)
         {
             if (!_isClosing)
                 Close();
         }
 
-        private void windowsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void WindowsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             EventHandler eventHandler = null;
             eventHandler = delegate
             {
-                if (windowsListView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated) return;
-                windowsListView.ItemContainerGenerator.StatusChanged -= eventHandler;
+                if (WindowsListView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated) return;
+                WindowsListView.ItemContainerGenerator.StatusChanged -= eventHandler;
 
-                if (windowsListView.Items.Count > 1)
-                    windowsListView.SelectedIndex = 1;
-                else if (windowsListView.Items.Count > 0)
-                    windowsListView.SelectedIndex = 0;
+                if (WindowsListView.Items.Count > 1)
+                    WindowsListView.SelectedIndex = 1;
+                else if (WindowsListView.Items.Count > 0)
+                    WindowsListView.SelectedIndex = 0;
             };
-            windowsListView.ItemContainerGenerator.StatusChanged += eventHandler;
+            WindowsListView.ItemContainerGenerator.StatusChanged += eventHandler;
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)

@@ -11,8 +11,10 @@ namespace GoToWindow.Api
         [DllImport("user32.dll")]
         private static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
+        // ReSharper disable InconsistentNaming
         private const int KEYEVENTF_EXTENDEDKEY = 1;
         private const int KEYEVENTF_KEYUP = 2;
+        // ReSharper restore InconsistentNaming
 
         public static void KeyPress(byte vKey)
         {

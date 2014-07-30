@@ -1,7 +1,11 @@
-﻿<Window x:Class="GoToWindow.MainWindow"
+﻿<Window x:Class="GoToWindow.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gotowindowControls="clr-namespace:GoToWindow.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:GoToWindow.ViewModels"
+        mc:Ignorable="d"
         Title="Go To Window" Height="Auto" Width="640"
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
@@ -10,12 +14,12 @@
         Icon="/GoToWindow;component/Resources/AppIcon.ico"
         Topmost="True"
         ShowInTaskbar="False"
-        FocusManager.FocusedElement="{Binding ElementName=searchTextBox}"
+        FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
         SourceInitialized="Window_SourceInitialized"
         ContentRendered="Window_ContentRendered"
         PreviewKeyDown="Window_PreviewKeyDown"
         Deactivated="Window_Deactivated"
-        Closing="Window_Closing">
+        Closing="Window_Closing" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -65,10 +69,10 @@
     </Window.InputBindings>
     <Grid Margin="32">
         <Grid.RowDefinitions>
-            <RowDefinition Name="searchRow" Height="48"/>
-            <RowDefinition Name="windowsListRow" Height="Auto"/>
+            <RowDefinition Name="SearchRow" Height="48"/>
+            <RowDefinition Name="WindowsListRow" Height="Auto"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" BorderThickness="0" CornerRadius="28" Background="White" Cursor="IBeam" MouseDown="searchBox_MouseDown">
+        <Border Grid.Row="0" BorderThickness="0" CornerRadius="28" Background="White" Cursor="IBeam" MouseDown="SearchBox_MouseDown">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="16" Direction="-75" Opacity="0.8" />
             </Border.Effect>
@@ -78,10 +82,10 @@
                     <ColumnDefinition Width="42" />
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="0" Stretch="Uniform" HorizontalAlignment="Left" Margin="32, 0, 32, 0">
-                    <TextBox Margin="4" Name="searchTextBox"
+                    <TextBox Margin="4" Name="SearchTextBox"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             TextChanged="searchTextBox_TextChanged"
-                             PreviewKeyDown="searchTextBox_PreviewKeyDown">
+                             TextChanged="SearchTextBox_TextChanged"
+                             PreviewKeyDown="SearchTextBox_PreviewKeyDown">
                         <TextBox.Template>
                             <ControlTemplate TargetType="{x:Type TextBox}">
                                 <ScrollViewer Name="PART_ContentHost"/>
@@ -89,18 +93,18 @@
                         </TextBox.Template>
                     </TextBox>
                 </Viewbox>
-                <Button Cursor="Hand" HorizontalAlignment="Left" Name="clearSearchButton" Grid.Column="1" Width="32" Height="32" Style="{StaticResource RoundButton}" Click="clearSearchButton_Click">x</Button>
+                <Button Cursor="Hand" HorizontalAlignment="Left" Name="ClearSearchButton" Grid.Column="1" Width="32" Height="32" Style="{StaticResource RoundButton}" Click="ClearSearchButton_Click">x</Button>
             </Grid>
         </Border>
         <Border Grid.Row="1" BorderThickness="0" Background="White" Margin="0, 14, 0, 0">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="16" Direction="-75" Opacity="0.8" />
             </Border.Effect>
-            <ListView Name="windowsListView"
+            <ListView Name="WindowsListView"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      MouseDoubleClick="windowsListView_MouseDoubleClick"
-                      PreviewKeyDown="windowsListView_PreviewKeyDown"
-                      DataContextChanged="windowsListView_DataContextChanged"
+                      MouseDoubleClick="WindowsListView_MouseDoubleClick"
+                      PreviewKeyDown="WindowsListView_PreviewKeyDown"
+                      DataContextChanged="WindowsListView_DataContextChanged"
                       BorderBrush="Transparent"
                       MaxHeight="288"
                       ItemsSource="{Binding Windows.View}"
@@ -112,7 +116,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListView">
-                                            <StackPanel Orientation="Horizontal" Height="48" >
+                                            <StackPanel Orientation="Horizontal" Height="48">
                                                 <TextBlock Margin="16, 16, 0, 16" VerticalAlignment="Center" Foreground="Gray">Search for '</TextBlock>
                                                 <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold" Text="{Binding SearchText}"></TextBlock>
                                                 <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Gray">' using Windows Search</TextBlock>

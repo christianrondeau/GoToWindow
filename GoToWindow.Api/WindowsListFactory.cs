@@ -12,8 +12,8 @@ namespace GoToWindow.Api
     /// </remarks>
     public static class WindowsListFactory
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(WindowsListFactory).Assembly, "GoToWindow");
-        private const int MAX_LAST_ACTIVE_POPUP_ITERATIONS = 50;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(WindowsListFactory).Assembly, "GoToWindow");
+        private const int MaxLastActivePopupIterations = 50;
 
         delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
@@ -65,7 +65,8 @@ namespace GoToWindow.Api
             return new WindowsList(windows);
         }
 
-        private static readonly string[] WindowsClassNamesToSkip = new[] {
+        private static readonly string[] WindowsClassNamesToSkip =
+        {
             "Shell_TrayWnd",
             "DV2ControlHost",
             "MsgrIMEWindowClass",
@@ -104,7 +105,7 @@ namespace GoToWindow.Api
 
         private static IntPtr GetLastVisibleActivePopUpOfWindow(IntPtr window)
         {
-            int level = MAX_LAST_ACTIVE_POPUP_ITERATIONS;
+            int level = MaxLastActivePopupIterations;
             var currentWindow = window;
             while (level-- > 0)
             {
@@ -119,7 +120,7 @@ namespace GoToWindow.Api
                 currentWindow = lastPopUp;
             }
 
-            _log.Warn(string.Format("Could not find last active popup for window {0} after {1} iterations", window, MAX_LAST_ACTIVE_POPUP_ITERATIONS));
+            Log.Warn(string.Format("Could not find last active popup for window {0} after {1} iterations", window, MaxLastActivePopupIterations));
             return IntPtr.Zero;
         }
     }

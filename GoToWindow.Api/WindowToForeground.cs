@@ -74,7 +74,7 @@ namespace GoToWindow.Api
         internal static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
 
         [DllImport("user32.dll")]
-        private static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, Int32 wParam, Int32 lParam);
+        private static extern bool PostMessage(IntPtr hWnd, UInt32 msg, Int32 wParam, Int32 lParam);
 
 
         public static void AttachedThreadInputAction(Action action)

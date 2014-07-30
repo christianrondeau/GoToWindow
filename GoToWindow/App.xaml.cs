@@ -10,7 +10,7 @@ namespace GoToWindow
 {
     public partial class App : Application
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(App).Assembly, "GoToWindow");
+        private static readonly ILog Log = LogManager.GetLogger(typeof(App).Assembly, "GoToWindow");
 
         private readonly IGoToWindowContext _context = new GoToWindowContext();
         private Mutex _mutex;
@@ -22,8 +22,8 @@ namespace GoToWindow
             _mutex = new Mutex(true, "GoToWindow", out mutexCreated);
             if (!mutexCreated)
             {
-                _log.Warn("Application already running. Shutting down.");
-                Application.Current.Shutdown(1);
+                Log.Warn("Application already running. Shutting down.");
+                Current.Shutdown(1);
                 return;
             }
             
@@ -37,7 +37,7 @@ namespace GoToWindow
 
             _context.EnableAltTabHook(GoToWindow.Properties.Settings.Default.HookAltTab);
 
-            _log.Info("Application started.");
+            Log.Info("Application started.");
         }
 
         private ContextMenu CreateContextMenu()
@@ -74,7 +74,7 @@ namespace GoToWindow
                 _trayIcon.Dispose();
             }
 
-            _log.Info("Application exited.");
+            Log.Info("Application exited.");
         }
 
         private void Application_Deactivated(object sender, EventArgs e)
@@ -84,7 +84,7 @@ namespace GoToWindow
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            _log.Fatal(e.Exception);
+            Log.Fatal(e.Exception);
         }
     }
 }

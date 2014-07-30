@@ -13,8 +13,10 @@ namespace GoToWindow.ViewModels
         public static MainWindowViewModel Load()
         {
             var instance = new MainWindowViewModel();
-            var viewSource = new CollectionViewSource();
-            viewSource.Source = WindowsListFactory.Load().Windows;
+            var viewSource = new CollectionViewSource
+            {
+                Source = WindowsListFactory.Load().Windows
+            };
             instance.Windows = viewSource;
             return instance;
         }
@@ -48,7 +50,7 @@ namespace GoToWindow.ViewModels
         public MainWindowViewModel()
         {
             var goToWindowEntryShortcutCommand = new GoToWindowEntryShortcutCommand(GetEntryAt);
-            goToWindowEntryShortcutCommand.Executed += goToWindowEntryShortcutCommand_Executed;
+            goToWindowEntryShortcutCommand.Executed += GoToWindowEntryShortcutCommand_Executed;
             GoToWindowEntryShortcut = goToWindowEntryShortcutCommand;
         }
 
@@ -62,7 +64,7 @@ namespace GoToWindow.ViewModels
             return null;
         }
 
-        void goToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
+        void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
         {
             if (Close != null)
                 Close(this, new EventArgs());

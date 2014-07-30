@@ -53,6 +53,7 @@ namespace GoToWindow.Api
 
             try
             {
+                // ReSharper disable once RedundantAssignment
                 var size = buffer.Capacity;
                 if (QueryFullProcessImageName(hprocess, 0, buffer, out size))
                 {

@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Threading;
+using GoToWindow.Windows;
 
 namespace GoToWindow
 {
@@ -28,12 +29,12 @@ namespace GoToWindow
             else
             {
                 _mainWindow = new MainWindow();
-                _mainWindow.Closing += _mainWindow_Closing;
+                _mainWindow.Closing += MainWindow_Closing;
                 _mainWindow.Show();
             }
         }
 
-        void _mainWindow_Closing(object sender, EventArgs e)
+        void MainWindow_Closing(object sender, EventArgs e)
         {
             _mainWindow = null;
         }

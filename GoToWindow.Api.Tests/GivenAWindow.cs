@@ -15,7 +15,7 @@ namespace GoToWindow.Api.Tests
         }
 
         private readonly Process _process;
-        private string _executable;
+        private readonly string _executable;
         public IWindowEntry ExpectedWindow { get; private set; }
         public Process Process { get { return _process; } }
         public string Executable { get { return _executable; } }
