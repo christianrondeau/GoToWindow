@@ -9,14 +9,14 @@ namespace GoToWindow.Api.Tests
     public class WindowListFactoryTests
     {
         [TestMethod]
-        public void CanGetAListOfActiveWindows_ContainingVisualStudio()
+        public void CanGetAListOfActiveWindows_VerifyTestProcess()
         {
-            using (var givenAWindow = new GivenAWindow("GoToWindow.CanGetAListOfActiveWindows_ContainingVisualStudio"))
+            using (var app = new GivenAnApp("GoToWindow.CanGetAListOfActiveWindows_VerifyTestProcess"))
             {
                 var windowsList = WindowsListFactory.Load();
                 var windows = windowsList.Windows;
 
-                AssertExists(windows, givenAWindow.Expected);
+                AssertExists(windows, app.ExpectedWindow);
             }
         }
 

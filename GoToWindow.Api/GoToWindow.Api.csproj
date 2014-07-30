@@ -44,6 +44,8 @@
     <Compile Include="KeyboardSend.cs" />
     <Compile Include="ProcessExtensions.cs" />
     <Compile Include="WindowEntry.cs" />
+    <Compile Include="WindowEntryFactory.cs" />
+    <Compile Include="WindowIcon.cs" />
     <Compile Include="WindowsList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowsListFactory.cs" />

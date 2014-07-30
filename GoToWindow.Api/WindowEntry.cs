@@ -5,6 +5,7 @@ namespace GoToWindow.Api
     public class WindowEntry : IWindowEntry
     {
         public IntPtr HWnd { get; set; }
+        public uint ProcessId { get; set; }
         public string ProcessName { get; set; }
         public string Executable { get; set; }
         public string Title { get; set; }

@@ -6,7 +6,7 @@ using System.Threading;
 namespace GoToWindow.Api.Tests
 {
 
-    public class GivenAWindow : IDisposable
+    public class GivenAnApp : IDisposable
     {
         public static string GetResourcePath(string filename)
         {
@@ -15,18 +15,21 @@ namespace GoToWindow.Api.Tests
         }
 
         private readonly Process _process;
-        public IWindowEntry Expected { get; private set; }
+        private string _executable;
+        public IWindowEntry ExpectedWindow { get; private set; }
+        public Process Process { get { return _process; } }
+        public string Executable { get { return _executable; } }
 
-        public GivenAWindow(string title)
+        public GivenAnApp(string title)
         {
-            var filename = GetResourcePath("GoToWindow.FakeApp.exe");
+            _executable = GetResourcePath("GoToWindow.FakeApp.exe");
             const string processName = "GoToWindow.FakeApp";
 
             _process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = filename,
+                    FileName = _executable,
                     Arguments = "\"" + title + "\""
                 }
             };
@@ -36,11 +39,11 @@ namespace GoToWindow.Api.Tests
 
             Thread.Sleep(1000); //TODO: Instead wait for some console output
 
-            Expected = new WindowEntry
+            ExpectedWindow = new WindowEntry
             {
                 Title = title,
                 ProcessName = processName,
-                Executable = filename
+                Executable = _executable
             };
         }
 

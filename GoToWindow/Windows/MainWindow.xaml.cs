@@ -60,7 +60,7 @@ namespace GoToWindow
             else if(!String.IsNullOrWhiteSpace(searchTextBox.Text))
             {
                 KeyboardSend.KeyDown(KeyboardSend.LWin);
-                KeyboardSend.PressKey((byte)'S');
+                KeyboardSend.KeyPress((byte)'S');
                 KeyboardSend.KeyUp(KeyboardSend.LWin);
 
                 Thread.Sleep(100);
@@ -71,7 +71,7 @@ namespace GoToWindow
                     // Spaces, numbers and letters
                     if (uc == 0x20 || uc >= 0x30 && uc <= 0x39 || uc >= 0x41 && uc <= 0x5a)
                     {
-                        KeyboardSend.PressKey((byte)uc);
+                        KeyboardSend.KeyPress((byte)uc);
                     }
                 }
             }

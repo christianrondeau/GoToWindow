@@ -51,9 +51,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="GivenAWindow.cs" />
+    <Compile Include="InterceptAltTabTests.cs" />
+    <Compile Include="ProcessExtensionsTests.cs" />
+    <Compile Include="WindowEntryFactoryTests.cs" />
     <Compile Include="WindowListFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WindowTests.cs" />
+    <Compile Include="WindowEntryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoToWindow.Api\GoToWindow.Api.csproj">

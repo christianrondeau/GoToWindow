@@ -4,7 +4,9 @@ namespace GoToWindow.Api
 {
     public static class KeyboardSend
     {
-        public static byte LWin = 0x5B;
+        public static byte LWin = 0x5B; //VK_LWIN
+        public static byte LAlt = 0xA4; //VK_LMENU
+        public static byte Tab = 0x09; //VK_TAB
 
         [DllImport("user32.dll")]
         private static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
@@ -12,7 +14,7 @@ namespace GoToWindow.Api
         private const int KEYEVENTF_EXTENDEDKEY = 1;
         private const int KEYEVENTF_KEYUP = 2;
 
-        public static void PressKey(byte vKey)
+        public static void KeyPress(byte vKey)
         {
             KeyDown(vKey);
             KeyUp(vKey);
