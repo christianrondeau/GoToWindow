@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
