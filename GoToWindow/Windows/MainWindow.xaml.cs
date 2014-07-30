@@ -184,12 +184,6 @@ namespace GoToWindow
                 Close();
         }
 
-        private void Window_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (!_isClosing)
-                Close();
-        }
-
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             _isClosing = true;

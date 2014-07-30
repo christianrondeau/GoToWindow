@@ -15,14 +15,13 @@
         ContentRendered="Window_ContentRendered"
         PreviewKeyDown="Window_PreviewKeyDown"
         Deactivated="Window_Deactivated"
-        LostFocus="Window_LostFocus"
         Closing="Window_Closing">
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="RoundButtonBorder" CornerRadius="22" Margin="0" BorderThickness="0" Background="LightGray" Padding="2, 0, 0, 0">
+                        <Border x:Name="RoundButtonBorder" CornerRadius="22" Margin="0" BorderThickness="0" Background="LightGray" Padding=".5, 0, 0, 0">
                             <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="12" />
                         </Border>
                         <ControlTemplate.Triggers>
