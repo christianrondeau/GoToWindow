@@ -7,3 +7,10 @@ img.noborder {
 	box-shadow: none !important;
 	-webkit-box-shadow: none !important;
 }
+
+#version {
+    margin-top: 7px;
+    margin-left: 72px;
+    position: absolute;
+    color: grey;
+}
