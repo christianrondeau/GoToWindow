@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using log4net.Config;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Go To Window Api")]
@@ -13,6 +14,8 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 [assembly: Guid("3ed6b690-258c-481f-8cc6-1e11718b81f9")]
+
+[assembly: XmlConfigurator(ConfigFile = "log4net.config")]
 
 [assembly: AssemblyVersion("0.0.7")]
 [assembly: AssemblyFileVersion("0.0.7")]

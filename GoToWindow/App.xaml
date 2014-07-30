@@ -5,7 +5,8 @@
              ShutdownMode="OnExplicitShutdown"
              Startup="Application_Startup"
              Exit="Application_Exit"
-             Deactivated="Application_Deactivated">
+             Deactivated="Application_Deactivated"
+             DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
         <properties:Settings x:Key="Settings" />
     </Application.Resources>

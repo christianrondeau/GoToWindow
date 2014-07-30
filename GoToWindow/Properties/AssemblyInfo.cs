@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using log4net.Config;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -17,6 +18,8 @@ using System.Windows;
     ResourceDictionaryLocation.None,
     ResourceDictionaryLocation.SourceAssembly
 )]
+
+[assembly: XmlConfigurator(ConfigFile = "log4net.config")]
 
 [assembly: AssemblyVersion("0.0.7")]
 [assembly: AssemblyFileVersion("0.0.7")]

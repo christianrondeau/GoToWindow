@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -11,6 +12,9 @@ namespace GoToWindow.Api
     /// </remarks>
     public class WindowsListFactory
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(WindowsListFactory).Assembly, "GoToWindow");
+        private const int MAX_LAST_ACTIVE_POPUP_ITERATIONS = 50;
+
         delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
         public enum GetAncestorFlags
@@ -145,18 +149,23 @@ namespace GoToWindow.Api
 
         private static IntPtr GetLastVisibleActivePopUpOfWindow(IntPtr window)
         {
-            while (true)
+            int level = MAX_LAST_ACTIVE_POPUP_ITERATIONS;
+            var currentWindow = window;
+            while (level-- > 0)
             {
-                var lastPopUp = GetLastActivePopup(window);
+                var lastPopUp = GetLastActivePopup(currentWindow);
 
                 if (IsWindowVisible(lastPopUp))
                     return lastPopUp;
 
-                if (lastPopUp == window)
+                if (lastPopUp == currentWindow)
                     return IntPtr.Zero;
 
-                window = lastPopUp;
+                currentWindow = lastPopUp;
             }
+
+            _log.Warn(string.Format("Could not find last active popup for window {0} after {1} iterations", window, MAX_LAST_ACTIVE_POPUP_ITERATIONS));
+            return IntPtr.Zero;
         }
 
         // ReSharper disable InconsistentNaming
