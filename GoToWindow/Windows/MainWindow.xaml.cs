@@ -13,6 +13,8 @@ namespace GoToWindow.Windows
 {
     public partial class MainWindow : Window
     {
+        private static int PageCount = 4;
+
         private MainWindowViewModel _viewModel;
         private bool _isClosing;
         private bool _releasedAlt;
@@ -29,9 +31,9 @@ namespace GoToWindow.Windows
                 _closeOnAltUp = true;
 
             if (Keyboard.IsKeyDown(Key.LeftShift))
-                ScrollToPreviousWindowEntry();
+                ScrollToPreviousWindowEntry(1);
             else
-                ScrollToNextWindowEntry();
+                ScrollToNextWindowEntry(1);
         }
 
         private void Window_SourceInitialized(object sender, EventArgs e)
@@ -115,11 +117,19 @@ namespace GoToWindow.Windows
                     break;
 
                 case Key.Down:
-                    ScrollToNextWindowEntry();
+                    ScrollToNextWindowEntry(1);
                     break;
 
                 case Key.Up:
-                    ScrollToPreviousWindowEntry();
+                    ScrollToPreviousWindowEntry(1);
+                    break;
+
+                case Key.PageDown:
+                    ScrollToNextWindowEntry(PageCount);
+                    break;
+
+                case Key.PageUp:
+                    ScrollToPreviousWindowEntry(PageCount);
                     break;
 
                 default:
@@ -129,21 +139,29 @@ namespace GoToWindow.Windows
             e.Handled = true;
         }
 
-        private void ScrollToPreviousWindowEntry()
+        private void ScrollToPreviousWindowEntry(int count)
         {
+            const int minIndex = 0;
+
             if (WindowsListView.SelectedIndex <= 0)
                 return;
 
-            WindowsListView.SelectedIndex--;
+            var newIndex = WindowsListView.SelectedIndex - count;
+
+            WindowsListView.SelectedIndex = newIndex <= minIndex ? minIndex : newIndex;
             WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
         }
 
-        private void ScrollToNextWindowEntry()
+        private void ScrollToNextWindowEntry(int count)
         {
-            if (WindowsListView.SelectedIndex >= WindowsListView.Items.Count - 1)
+            var maxIndex = WindowsListView.Items.Count - 1;
+
+            if (WindowsListView.SelectedIndex >= maxIndex)
                 return;
 
-            WindowsListView.SelectedIndex++;
+            var newIndex = WindowsListView.SelectedIndex + count;
+
+            WindowsListView.SelectedIndex = newIndex >= maxIndex ? maxIndex : newIndex;
             WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
         }
 
