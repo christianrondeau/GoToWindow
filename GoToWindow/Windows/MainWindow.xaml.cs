@@ -152,8 +152,8 @@ namespace GoToWindow.Windows
                 var newIndex = WindowsListView.SelectedIndex - count;
 
                 WindowsListView.SelectedIndex = newIndex <= minIndex ? minIndex : newIndex;
-                WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
             }
+            WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
         }
 
         private void ScrollToNextWindowEntry(int count)
@@ -169,8 +169,8 @@ namespace GoToWindow.Windows
                 var newIndex = WindowsListView.SelectedIndex + count;
 
                 WindowsListView.SelectedIndex = newIndex >= maxIndex ? maxIndex : newIndex;
-                WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
             }
+            WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
         }
 
         private void WindowsListView_PreviewKeyDown(object sender, KeyEventArgs e)
