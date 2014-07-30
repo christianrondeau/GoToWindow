@@ -49,6 +49,7 @@
     <Compile Include="WindowsList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowsListFactory.cs" />
+    <Compile Include="WindowsSearch.cs" />
     <Compile Include="WindowToForeground.cs" />
   </ItemGroup>
   <ItemGroup>

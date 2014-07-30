@@ -18,6 +18,7 @@
         SourceInitialized="Window_SourceInitialized"
         ContentRendered="Window_ContentRendered"
         PreviewKeyDown="Window_PreviewKeyDown"
+        PreviewKeyUp="Window_PreviewKeyUp"
         Deactivated="Window_Deactivated"
         Closing="Window_Closing" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>

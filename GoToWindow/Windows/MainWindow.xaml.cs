@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -16,6 +15,8 @@ namespace GoToWindow.Windows
     {
         private MainWindowViewModel _viewModel;
         private bool _isClosing;
+        private bool _releasedAlt;
+        private bool _closeOnAltUp;
 
         public MainWindow()
         {
@@ -24,7 +25,13 @@ namespace GoToWindow.Windows
 
         public void TabAgain()
         {
-            FocusSelectedWindowItem();
+            if (!_releasedAlt)
+                _closeOnAltUp = true;
+
+            if (Keyboard.IsKeyDown(Key.LeftShift))
+                ScrollToPreviousWindowEntry();
+            else
+                ScrollToNextWindowEntry();
         }
 
         private void Window_SourceInitialized(object sender, EventArgs e)
@@ -58,26 +65,7 @@ namespace GoToWindow.Windows
             }
             else if(!String.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
-                SearchInWindowsSearch();
-            }
-        }
-
-        private void SearchInWindowsSearch()
-        {
-            KeyboardSend.KeyDown(KeyboardSend.LWin);
-            KeyboardSend.KeyPress((byte) 'S');
-            KeyboardSend.KeyUp(KeyboardSend.LWin);
-
-            Thread.Sleep(100);
-
-            foreach (var c in SearchTextBox.Text.Trim())
-            {
-                var uc = Char.ToUpper(c);
-                // Spaces, numbers and letters
-                if (uc == 0x20 || uc >= 0x30 && uc <= 0x39 || uc >= 0x41 && uc <= 0x5a)
-                {
-                    KeyboardSend.KeyPress((byte) uc);
-                }
+                WindowsSearch.Launch(SearchTextBox.Text);
             }
         }
 
@@ -120,28 +108,43 @@ namespace GoToWindow.Windows
         {
             if (_isClosing) return;
 
-            if(e.Key == Key.Enter)
+            switch (e.Key)
             {
-                FocusSelectedWindowItem();
-                e.Handled = true;
-                return;
+                case Key.Enter:
+                    FocusSelectedWindowItem();
+                    break;
+
+                case Key.Down:
+                    ScrollToNextWindowEntry();
+                    break;
+
+                case Key.Up:
+                    ScrollToPreviousWindowEntry();
+                    break;
+
+                default:
+                    return;
             }
 
-            if (e.Key == Key.Down && WindowsListView.SelectedIndex < WindowsListView.Items.Count - 1)
-            {
-                WindowsListView.SelectedIndex++;
-                WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
-                e.Handled = true;
-                return;
-            }
+            e.Handled = true;
+        }
 
-            if (e.Key == Key.Up && WindowsListView.SelectedIndex > 0)
-            {
-                WindowsListView.SelectedIndex--;
-                WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
-                e.Handled = true;
+        private void ScrollToPreviousWindowEntry()
+        {
+            if (WindowsListView.SelectedIndex <= 0)
                 return;
-            }
+
+            WindowsListView.SelectedIndex--;
+            WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
+        }
+
+        private void ScrollToNextWindowEntry()
+        {
+            if (WindowsListView.SelectedIndex >= WindowsListView.Items.Count - 1)
+                return;
+
+            WindowsListView.SelectedIndex++;
+            WindowsListView.ScrollIntoView(WindowsListView.SelectedItem);
         }
 
         private void WindowsListView_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -168,9 +171,7 @@ namespace GoToWindow.Windows
                 if (WindowsListView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated) return;
                 WindowsListView.ItemContainerGenerator.StatusChanged -= eventHandler;
 
-                if (WindowsListView.Items.Count > 1)
-                    WindowsListView.SelectedIndex = 1;
-                else if (WindowsListView.Items.Count > 0)
+                if (WindowsListView.Items.Count > 0)
                     WindowsListView.SelectedIndex = 0;
             };
             WindowsListView.ItemContainerGenerator.StatusChanged += eventHandler;
@@ -190,6 +191,17 @@ namespace GoToWindow.Windows
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             _isClosing = true;
+        }
+
+        private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftAlt || e.Key == Key.System && e.SystemKey == Key.LeftAlt)
+            {
+                if (_closeOnAltUp)
+                    FocusSelectedWindowItem();
+
+                _releasedAlt = true;
+            }
         }
     }
 }
