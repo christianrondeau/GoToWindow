@@ -174,7 +174,6 @@ namespace GoToWindow
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            new WindowEntry { HWnd = new WindowInteropHelper(this).Handle }.Focus();
             Activate();
         }
 
