@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using GoToWindow.Api;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -86,8 +87,18 @@ namespace GoToWindow.Windows
                 StartWithWindowsCheckbox.IsChecked = _originalStartWithWindowsIsChecked = ((string) runList.GetValue("GoToWindow") == executablePath);
             }
 
-            var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-            NoElevatedPrivilegesWarning.Visibility = (principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200)) ? Visibility.Hidden : Visibility.Visible;
+            if (WindowsVersion.IsWindows8())
+            {
+                var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+                NoElevatedPrivilegesWarning.Visibility = (principal.IsInRole(WindowsBuiltInRole.Administrator) ||
+                                                          principal.IsInRole(0x200))
+                    ? Visibility.Hidden
+                    : Visibility.Visible;
+            }
+            else
+            {
+                NoElevatedPrivilegesWarning.Visibility = Visibility.Hidden;
+            }
 
             VersionTextBlock.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }

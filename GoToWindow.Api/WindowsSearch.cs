@@ -9,7 +9,8 @@ namespace GoToWindow.Api
         public static void Launch(string query)
         {
             KeyboardSend.KeyDown(KeyboardSend.LWin);
-            KeyboardSend.KeyPress((byte)'S');
+            if (WindowsVersion.IsWindows8())
+                KeyboardSend.KeyPress((byte) 'S');
             KeyboardSend.KeyUp(KeyboardSend.LWin);
 
             if (String.IsNullOrEmpty(query)) return;
