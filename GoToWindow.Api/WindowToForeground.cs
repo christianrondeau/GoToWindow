@@ -119,5 +119,10 @@ namespace GoToWindow.Api
 
             return result;
         }
+
+        public static bool HasFocus(IntPtr HWnd)
+        {
+            return GetForegroundWindow() == HWnd;
+        }
     }
 }

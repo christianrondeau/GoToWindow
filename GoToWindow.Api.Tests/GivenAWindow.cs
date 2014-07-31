@@ -42,8 +42,10 @@ namespace GoToWindow.Api.Tests
             ExpectedWindow = new WindowEntry
             {
                 Title = title,
+                ProcessId = (uint)_process.Id,
                 ProcessName = processName,
-                Executable = _executable
+                Executable = _executable,
+                HWnd = _process.MainWindowHandle
             };
         }
 

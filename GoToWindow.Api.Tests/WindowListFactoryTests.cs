@@ -22,7 +22,7 @@ namespace GoToWindow.Api.Tests
 
         private void AssertExists(IList<IWindowEntry> windows, IWindowEntry expected)
         {
-            var containsExpected = windows.Any(expected.IsSameButHWnd);
+            var containsExpected = windows.Any(expected.IsSameWindow);
             Assert.IsTrue(containsExpected, String.Format("Expected window {0}.\r\nWindows List:\r\n{1}", expected, String.Join("\r\n", windows)));
         }
     }

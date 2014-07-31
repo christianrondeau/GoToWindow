@@ -8,10 +8,22 @@ namespace GoToWindow.Api.Tests
         [TestMethod]
         public void CanGiveFocusToAWindow()
         {
-            using (var app = new GivenAnApp("GoToWindow.GetGetWindowEntry_FromTestWindow"))
+            using (var app1 = new GivenAnApp("GoToWindow.GetGetWindowEntry_FromTestWindow1"))
             {
-                var window = WindowEntryFactory.Create(app.Process.MainWindowHandle);
-                window.Focus();
+                var window1 = WindowEntryFactory.Create(app1.Process.MainWindowHandle);
+
+                using (var app2 = new GivenAnApp("GoToWindow.GetGetWindowEntry_FromTestWindow2"))
+                {
+                    var window2 = WindowEntryFactory.Create(app2.Process.MainWindowHandle);
+
+                    Assert.IsFalse(window1.HasFocus());
+                    Assert.IsTrue(window2.HasFocus());
+
+                    window1.Focus();
+
+                    Assert.IsTrue(window1.HasFocus());
+                }
+                
             }
 
             Assert.IsTrue(true, "This test just ensures the code doesn't crash");

@@ -12,6 +12,7 @@ namespace GoToWindow.Api
         IntPtr IconHandle { get; set; }
 
         bool Focus();
-        bool IsSameButHWnd(IWindowEntry other);
+        bool HasFocus();
+        bool IsSameWindow(IWindowEntry other);
     }
 }
