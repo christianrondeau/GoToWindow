@@ -1,8 +1,21 @@
 ﻿<Window x:Class="GoToWindow.FakeApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" Initialized="Window_Initialized" Icon="Resources/AppIcon.ico">
-    <Grid>
-        
+        Title="MainWindow" Height="350" Width="525" Initialized="Window_Initialized" Icon="Resources/AppIcon.ico" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp">
+    <Grid Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" BorderBrush="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
+                <MenuItem Header="_Menu">
+                    <MenuItem Header="C_rash" Click="Menu_Crash" />
+                    <MenuItem Header="_Message Box" Click="Menu_MessageBox" />
+                    <MenuItem Header="_Close" Click="Menu_Close" />
+                </MenuItem>
+            </Menu>
+            <Grid DockPanel.Dock="Bottom" Margin="0, 10, 0, 0">
+                <Label Content="Go To Window Fake App (Unit Tests)" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top" FontWeight="Bold"/>
+                <Label Content="Key Inputs" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                <ListBox x:Name="KeyInputsListBox" HorizontalAlignment="Left" Margin="10,72,0,10" Width="215"/>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Window>
