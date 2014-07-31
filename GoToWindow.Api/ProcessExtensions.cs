@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -8,6 +9,8 @@ namespace GoToWindow.Api
 {
     public static class ProcessExtensions
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ProcessExtensions).Assembly, "GoToWindow");
+
         // ReSharper disable InconsistentNaming
         [Flags]
         public enum ProcessAccessFlags : uint
@@ -37,10 +40,18 @@ namespace GoToWindow.Api
 
         public static string GetExecutablePath(this Process process)
         {
-            //If running on Vista or later use the new function
-            return Environment.OSVersion.Version.Major >= 6 
-                ? GetExecutablePathAboveVista(process.Id)
-                : process.MainModule.FileName;
+            try
+            {
+                //If running on Vista or later use the new function
+                return Environment.OSVersion.Version.Major >= 6
+                    ? GetExecutablePathAboveVista(process.Id)
+                    : process.MainModule.FileName;
+            }
+            catch(Win32Exception exc)
+            {
+                Log.Error(exc);
+                return null;
+            }
         }
 
         private static string GetExecutablePathAboveVista(int processId)
