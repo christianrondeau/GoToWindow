@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using GoToWindow.Api;
 using GoToWindow.ViewModels;
+using System.Collections.Generic;
 
 namespace GoToWindow.Windows
 {
@@ -67,7 +68,7 @@ namespace GoToWindow.Windows
             }
             else if(!String.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
-                WindowsSearch.Launch(SearchTextBox.Text);
+                List<string> results = WindowsSearch.Search(SearchTextBox.Text);
             }
         }
 
