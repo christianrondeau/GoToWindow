@@ -23,51 +23,6 @@ namespace GoToWindow.Api
     /// </summary>
     public static class WindowsSearch
     {
-        // Displays each matching line in each file
-        static void DisplayMatchingLines(StringCollection fileList)
-        {
-            // launch findstr
-            ProcessStartInfo si = new ProcessStartInfo();
-
-            // run findstr with number, case insensitive, literal
-            si.Arguments = "/N /i /P /L ";
-
-            // add search userQuery as parameters to findstr
-            foreach (string term in termList)
-            {
-                // exact on each phrase
-                si.Arguments += "/C:\"" + term + "\" ";
-            }
-
-            // loading from each file passed on standardinput
-            si.Arguments += " /F:/";
-            si.FileName = "findstr.exe";
-            si.CreateNoWindow = true;
-            si.WindowStyle = ProcessWindowStyle.Hidden;
-            si.RedirectStandardOutput = true;
-            si.UseShellExecute = false;
-            si.RedirectStandardInput = true;
-
-            // Execute FINDSTR
-            Process p = Process.Start(si);
-
-            StreamWriter writer = p.StandardInput;
-            StreamReader readerFindstrResults = p.StandardOutput;
-
-            foreach (string file in fileList)
-            {
-                writer.WriteLine(file);
-            }
-            writer.Close();
-
-            String line;
-            while ((line = readerFindstrResults.ReadLine()) != null)
-            {
-                Debug.WriteLine(line);
-            }
-            readerFindstrResults.Close();
-        }
-
         [STAThread]
         public static List<string> Search(string query)
         {
@@ -196,6 +151,5 @@ namespace GoToWindow.Api
 
         // Set of extensions to search for
         static string[] exts;
-
     }
 }
