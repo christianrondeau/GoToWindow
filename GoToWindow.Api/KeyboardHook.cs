@@ -4,8 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace GoToWindow.Api
 {
-	public class InterceptAltTab : IDisposable
-	{
+    public class KeyboardHook : IDisposable
+    {
+        private readonly KeyboardShortcut _shortcut;
 		private readonly Action _callback;
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -34,7 +35,6 @@ namespace GoToWindow.Api
 		// ReSharper disable InconsistentNaming
 		private const int WH_KEYBOARD_LL = 13;
 		private const int WM_SYSKEYDOWN = 0x0104;
-        private const int VK_TAB = 0x09;
 		private static IntPtr _hookID = IntPtr.Zero;
 		// ReSharper restore InconsistentNaming
 
@@ -43,8 +43,14 @@ namespace GoToWindow.Api
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly LowLevelKeyboardProc _proc;
         
-		public InterceptAltTab(Action callback)
+		public KeyboardHook(Action callback)
 		{
+		    _shortcut = new KeyboardShortcut
+		    {
+		        VirtualKeyCode = KeyboardVirtualCodes.Tab,
+		        Modifier = KeyboardVirtualCodes.Modifiers.Alt
+		    };
+
             _callback = callback;
             // ReSharper disable once RedundantDelegateCreation
             _proc = new LowLevelKeyboardProc(HookCallback);
@@ -68,7 +74,7 @@ namespace GoToWindow.Api
 		    {
 		        var keyInfo = (Kbdllhookstruct) Marshal.PtrToStructure(lParam, typeof (Kbdllhookstruct));
 
-                if (keyInfo.VkCode == VK_TAB && HasAltModifier(keyInfo.Flags))
+                if (_shortcut.IsDown(keyInfo.VkCode, keyInfo.Flags))
 		        {
 		            if (wParam == (IntPtr) WM_SYSKEYDOWN)
 		                _callback();
@@ -78,11 +84,6 @@ namespace GoToWindow.Api
 		    }
 
 		    return CallNextHookEx(_hookID, nCode, wParam, lParam);
-		}
-
-		private static bool HasAltModifier(int flags)
-		{
-			return (flags & 0x20) == 0x20;
 		}
 	}
 }

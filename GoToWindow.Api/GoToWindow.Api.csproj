@@ -39,9 +39,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InterceptAltTab.cs" />
+    <Compile Include="KeyboardHook.cs" />
     <Compile Include="IWindowEntry.cs" />
     <Compile Include="KeyboardSend.cs" />
+    <Compile Include="KeyboardShortcut.cs" />
+    <Compile Include="KeyboardVirtualCodes.cs" />
     <Compile Include="ProcessExtensions.cs" />
     <Compile Include="WindowEntry.cs" />
     <Compile Include="WindowEntryFactory.cs" />

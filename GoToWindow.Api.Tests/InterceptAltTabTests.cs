@@ -9,7 +9,7 @@ namespace GoToWindow.Api.Tests
         public void CanInterceptAltTab()
         {
             var intercepted = false;
-            using (new InterceptAltTab(() => intercepted = true))
+            using (new KeyboardHook(() => intercepted = true))
             {
                 KeyboardSend.KeyDown(KeyboardSend.LAlt);
                 KeyboardSend.KeyPress(KeyboardSend.Tab);

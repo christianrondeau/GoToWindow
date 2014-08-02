@@ -18,7 +18,7 @@ namespace GoToWindow
         delegate void ActionDelegate();
 
         private MainWindow _mainWindow;
-        private InterceptAltTab _hooks;
+        private KeyboardHook _hooks;
 
         public void Show()
         {
@@ -49,7 +49,7 @@ namespace GoToWindow
         {
             if (_hooks == null && enabled)
             {
-                _hooks = new InterceptAltTab(HandleAltTab);
+                _hooks = new KeyboardHook(HandleAltTab);
             }
             else if (_hooks != null && !enabled)
             {
