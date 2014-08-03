@@ -1,10 +1,12 @@
-﻿using GoToWindow.Api;
+﻿using System.Collections.Generic;
 using GoToWindow.Commands;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
+using GoToWindow.Core.Plugins;
+using GoToWindow.Extensibility;
 
 namespace GoToWindow.ViewModels
 {
@@ -12,10 +14,14 @@ namespace GoToWindow.ViewModels
     {
         public static MainWindowViewModel Load()
         {
+            var plugin = new BasicWindowsListPlugin();
+            var list = new List<IGoToWindowSearchResult>();
+            list.AddRange(plugin.BuildInitialSearchResultList());
+
             var instance = new MainWindowViewModel();
             var viewSource = new CollectionViewSource
             {
-                Source = WindowsListFactory.Load().Windows
+                Source = list.ToArray()
             };
             instance.Windows = viewSource;
             return instance;
@@ -23,7 +29,7 @@ namespace GoToWindow.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
         public CollectionViewSource Windows { get; private set; }
-        public IWindowEntry SelectedWindowEntry { get; set; }
+        public IGoToWindowSearchResult SelectedWindowEntry { get; set; }
 
         private string _searchText;
 
@@ -54,9 +60,9 @@ namespace GoToWindow.ViewModels
             GoToWindowEntryShortcut = goToWindowEntryShortcutCommand;
         }
 
-        private IWindowEntry GetEntryAt(int index)
+        private IGoToWindowSearchResult GetEntryAt(int index)
         {
-            var items = Windows.View.Cast<IWindowEntry>().ToArray();
+            var items = Windows.View.Cast<IGoToWindowSearchResult>().ToArray();
 
             if (index < items.Length)
                 return items[index];

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using GoToWindow.Api;
+using GoToWindow.Extensibility;
 using GoToWindow.ViewModels;
 
 namespace GoToWindow.Windows
 {
     public partial class MainWindow : Window
     {
-        private static int PageCount = 4;
+        private const int PageCount = 4;
 
         private MainWindowViewModel _viewModel;
         private bool _isClosing;
@@ -56,11 +55,10 @@ namespace GoToWindow.Windows
 
         private void FocusSelectedWindowItem()
         {
-            var windowEntry = WindowsListView.SelectedItem as IWindowEntry;
+            var windowEntry = WindowsListView.SelectedItem as IGoToWindowSearchResult;
             if (windowEntry != null)
             {
-                if (!windowEntry.Focus())
-                    MessageBox.Show("Could not show window. Try running with elevated privileges (Run as Administrator)", "Could Not Show Window", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                windowEntry.Select();
 
                 if (!_isClosing)
                     Close();
@@ -81,23 +79,15 @@ namespace GoToWindow.Windows
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _viewModel.Windows.View.Filter = item => SearchFilter((IWindowEntry)item, SearchTextBox.Text);
+            _viewModel.Windows.View.Filter = item => SearchFilter((IGoToWindowSearchResult)item, SearchTextBox.Text);
 
             if (WindowsListView.SelectedIndex == -1 && WindowsListView.Items.Count > 0)
                 WindowsListView.SelectedIndex = 0;
         }
 
-        private bool SearchFilter(IWindowEntry window, string text)
+        private static bool SearchFilter(IGoToWindowSearchResult window, string text)
         {
-            if (string.IsNullOrEmpty(text))
-                return true;
-
-            return StringContains(window.ProcessName + " " + window.Title, text);
-        }
-
-        private static bool StringContains(string text, string partial)
-        {
-            return partial.Split(' ').All(word => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(text, word, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) > -1);
+            return string.IsNullOrEmpty(text) || window.IsShown(text);
         }
 
         private void SearchBox_MouseDown(object sender, MouseButtonEventArgs e)
