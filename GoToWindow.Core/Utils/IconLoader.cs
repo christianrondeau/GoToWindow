@@ -1,28 +1,20 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using GoToWindow.Api;
 
-namespace GoToWindow.Converters
+namespace GoToWindow.Core.Utils
 {
-    [ValueConversion(typeof(string), typeof(BitmapFrame))]
-    public class ExecutableToIconValueConverter : IValueConverter
+    public static class IconLoader
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public static BitmapFrame LoadIcon(IntPtr iconHandle, string executableFile)
         {
-            var window = value as IWindowEntry;
-
-            if (window == null)
-                return null;
-
-            return ConvertFromHandle(window.IconHandle) ?? ConvertFromFile(window.Executable);
+            return ConvertFromHandle(iconHandle) ?? ConvertFromFile(executableFile);
         }
 
-        private static object ConvertFromHandle(IntPtr iconHandle)
+        private static BitmapFrame ConvertFromHandle(IntPtr iconHandle)
         {
             if (iconHandle == IntPtr.Zero)
                 return null;
@@ -56,11 +48,6 @@ namespace GoToWindow.Converters
             iconStream.Position = 0;
             var decoder = new PngBitmapDecoder(iconStream, BitmapCreateOptions.None, BitmapCacheOption.None);
             return decoder.Frames.Last();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotSupportedException();
         }
     }
 }
