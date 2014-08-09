@@ -1,4 +1,5 @@
-﻿using GoToWindow.Api;
+﻿using System.Windows.Input;
+using GoToWindow.Api;
 using System;
 using System.Windows;
 using System.Windows.Threading;
@@ -18,7 +19,7 @@ namespace GoToWindow
         delegate void ActionDelegate();
 
         private MainWindow _mainWindow;
-        private KeyboardHook _hooks;
+        private HotKey _hooks;
 
         public void Show()
         {
@@ -49,7 +50,7 @@ namespace GoToWindow
         {
             if (_hooks == null && enabled)
             {
-                _hooks = new KeyboardHook(HandleAltTab);
+                _hooks = new HotKey(Key.Y, KeyModifier.Win, HandleAltTab);
             }
             else if (_hooks != null && !enabled)
             {
@@ -58,7 +59,7 @@ namespace GoToWindow
             }
         }
 
-        private void HandleAltTab()
+        private void HandleAltTab(HotKey hotKey)
         {
             Application.Current.Dispatcher.BeginInvoke(
                 new ActionDelegate(Show),
