@@ -32,6 +32,10 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * To use GoToWindow within an application that runs with elevated privileges (Run as Administrator), GoToWindow must also run with elevated privileges, otherwise the native `Alt` + `Tab` will show up.
 
+## Writing your own Plug-ins
+
+See the [Plugins](Plugins.md) document for more information on extending GoToWindow.
+
 ## Contributors
 
   * [Christian Rondeau](https://github.com/christianrondeau) - Main Developer
