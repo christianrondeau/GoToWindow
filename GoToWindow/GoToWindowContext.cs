@@ -3,6 +3,13 @@ using System;
 using System.Windows;
 using System.Windows.Threading;
 using GoToWindow.Windows;
+using GoToWindow.ViewModels;
+using System.ComponentModel.Composition;
+using GoToWindow.Extensibility;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
+using log4net;
+using GoToWindow.Core.Plugins.Core;
 
 namespace GoToWindow
 {
@@ -15,10 +22,36 @@ namespace GoToWindow
 
     public class GoToWindowContext : IGoToWindowContext
     {
-        delegate void ActionDelegate();
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ProcessExtensions).Assembly, "GoToWindow");
+
+        [Import(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
+        public IGoToWindowPlugin Plugin { get; set; }
 
         private MainWindow _mainWindow;
         private KeyboardHook _hooks;
+
+        public GoToWindowContext()
+        {
+            LoadPlugins();
+        }
+
+        private void LoadPlugins()
+        {
+            var catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(BasicWindowsListPlugin).Assembly));
+            var container = new CompositionContainer(catalog);
+
+            try
+            {
+                container.ComposeParts(this);
+            }
+            catch (CompositionException compositionException)
+            {
+                Log.Error(compositionException);
+                MessageBox.Show("An error occured in one of the plug-ins. Try updating or removing them and restart GoToWindow.", "Plugin Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
+        }
 
         public void Show()
         {
@@ -31,6 +64,10 @@ namespace GoToWindow
                 _mainWindow = new MainWindow();
                 _mainWindow.Closing += MainWindow_Closing;
                 _mainWindow.Show();
+
+                var viewModel = MainWindowViewModel.Load(Plugin);
+                viewModel.Close += Hide;
+                _mainWindow.DataContext = viewModel;
             }
         }
 
@@ -43,6 +80,11 @@ namespace GoToWindow
         {
             if (_mainWindow != null && _mainWindow.IsLoaded)
                 _mainWindow.Close();
+        }
+
+        private void Hide(object sender, EventArgs e)
+        {
+            Hide();
         }
 
         public void EnableAltTabHook(bool enabled)
@@ -61,7 +103,7 @@ namespace GoToWindow
         private void HandleAltTab()
         {
             Application.Current.Dispatcher.BeginInvoke(
-                new ActionDelegate(Show),
+                new Action(Show),
                 DispatcherPriority.Normal,
                 null);
         }

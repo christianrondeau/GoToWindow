@@ -12,7 +12,7 @@ namespace GoToWindow
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(App).Assembly, "GoToWindow");
 
-        private readonly IGoToWindowContext _context = new GoToWindowContext();
+        private IGoToWindowContext _context;
         private Mutex _mutex;
         private TaskbarIcon _trayIcon;
 
@@ -26,6 +26,8 @@ namespace GoToWindow
                 Current.Shutdown(1);
                 return;
             }
+
+            _context = new GoToWindowContext();
             
             _trayIcon = new TaskbarIcon
             {

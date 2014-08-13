@@ -14,7 +14,6 @@
         Topmost="True"
         ShowInTaskbar="False"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
-        SourceInitialized="Window_SourceInitialized"
         ContentRendered="Window_ContentRendered"
         PreviewKeyDown="Window_PreviewKeyDown"
         PreviewKeyUp="Window_PreviewKeyUp"

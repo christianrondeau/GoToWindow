@@ -6,4 +6,9 @@ namespace GoToWindow.Extensibility
     {
         IEnumerable<IGoToWindowSearchResult> BuildInitialSearchResultList();
     }
+
+    public static class GoToWindowPluginConstants
+    {
+        public const string GoToWindowPluginContractName = "GoToWindow.Plugin";
+    }
 }

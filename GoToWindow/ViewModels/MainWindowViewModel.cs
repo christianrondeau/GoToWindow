@@ -12,11 +12,12 @@ namespace GoToWindow.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        public static MainWindowViewModel Load()
+        public static MainWindowViewModel Load(IGoToWindowPlugin plugin)
         {
-            var plugin = new BasicWindowsListPlugin();
             var list = new List<IGoToWindowSearchResult>();
-            list.AddRange(plugin.BuildInitialSearchResultList());
+
+            if (plugin != null)
+                list.AddRange(plugin.BuildInitialSearchResultList());
 
             var instance = new MainWindowViewModel();
             var viewSource = new CollectionViewSource

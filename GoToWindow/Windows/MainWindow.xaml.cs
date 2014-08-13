@@ -14,10 +14,11 @@ namespace GoToWindow.Windows
     {
         private const int PageCount = 4;
 
-        private MainWindowViewModel _viewModel;
         private bool _isClosing;
         private bool _releasedAlt;
         private bool _closeOnAltUp;
+
+        private MainWindowViewModel ViewModel { get { return (MainWindowViewModel)DataContext; } }
 
         public MainWindow()
         {
@@ -33,13 +34,6 @@ namespace GoToWindow.Windows
                 ScrollToPreviousWindowEntry(1);
             else
                 ScrollToNextWindowEntry(1);
-        }
-
-        private void Window_SourceInitialized(object sender, EventArgs e)
-        {
-            _viewModel = MainWindowViewModel.Load();
-            _viewModel.Close += ViewModel_Close;
-            DataContext = _viewModel;
         }
 
         void ViewModel_Close(object sender, EventArgs e)
@@ -79,7 +73,10 @@ namespace GoToWindow.Windows
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _viewModel.Windows.View.Filter = item => SearchFilter((IGoToWindowSearchResult)item, SearchTextBox.Text);
+            if (ViewModel == null)
+                return;
+
+            ViewModel.Windows.View.Filter = item => SearchFilter((IGoToWindowSearchResult)item, SearchTextBox.Text);
 
             if (WindowsListView.SelectedIndex == -1 && WindowsListView.Items.Count > 0)
                 WindowsListView.SelectedIndex = 0;
