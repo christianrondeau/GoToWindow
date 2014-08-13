@@ -53,17 +53,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\WindowListEntry.xaml">
+    <Page Include="Plugins\Core\Controls\WindowListEntry.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Controls\WindowListEntry.xaml.cs">
+    <Compile Include="Plugins\Core\Controls\WindowListEntry.xaml.cs">
       <DependentUpon>WindowListEntry.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Plugins\BasicWindowSearchResult.cs" />
-    <Compile Include="Plugins\BasicWindowsListPlugin.cs" />
+    <Compile Include="Plugins\Core\ViewModel\BasicWindowSearchResult.cs" />
+    <Compile Include="Plugins\Core\BasicWindowsListPlugin.cs" />
     <Compile Include="Utils\IconLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

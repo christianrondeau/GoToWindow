@@ -5,25 +5,25 @@ using GoToWindow.Api;
 using GoToWindow.Core.Utils;
 using GoToWindow.Extensibility;
 using System.Windows.Controls;
-using GoToWindow.Core.Controls;
+using GoToWindow.Core.Plugins.Core.Controls;
 
-namespace GoToWindow.Core.Plugins
+namespace GoToWindow.Core.Plugins.Core.ViewModel
 {
     public class BasicWindowSearchResult : IGoToWindowSearchResult
     {
         private readonly IWindowEntry _entry;
         private BitmapFrame _icon;
-        private WindowListEntry _view;
+        private UserControl _view;
 
         public BitmapFrame Icon { get { return _icon ?? (_icon = LoadIcon()); } }
         public string Title { get { return _entry.Title; } }
         public string Process { get { return _entry.ProcessName; } }
         public UserControl View { get { return _view; } }
 
-        public BasicWindowSearchResult(IWindowEntry entry)
+        public BasicWindowSearchResult(IWindowEntry entry, UserControl view)
         {
             _entry = entry;
-            _view = new WindowListEntry();
+            _view = view;
         }
 
         public void Select()
