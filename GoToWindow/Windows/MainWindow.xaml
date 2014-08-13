@@ -1,7 +1,6 @@
 ﻿<Window x:Class="GoToWindow.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:gotowindowControls="clr-namespace:GoToWindow.Core.Controls;assembly=GoToWindow.Core"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:GoToWindow.ViewModels"
@@ -131,7 +130,7 @@
                 </ListView.Style>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <gotowindowControls:WindowListEntry Height="48" />
+                        <ContentControl Content="{Binding View}" Height="48" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
