@@ -32,7 +32,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
 
         public bool IsShown(string searchQuery)
         {
-            return StringContains(Process + " " + Title, searchQuery);
+            return string.IsNullOrEmpty(searchQuery) || StringContains(Process + " " + Title, searchQuery);
         }
 
         private BitmapFrame LoadIcon()

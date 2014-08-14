@@ -10,11 +10,14 @@ namespace GoToWindow.Plugins.Debug
     [Export(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
     public class DebugPlugin : IGoToWindowPlugin
     {
-        public IEnumerable<IGoToWindowSearchResult> BuildInitialSearchResultList()
+        public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.AfterCore; } }
+
+        public void BuildList(List<IGoToWindowSearchResult> list)
         {
-            return new[] {
-                new DebugSearchResult(new DebugListEntry())
-            };
+            list.Insert(0, new DebugSearchResult(
+                string.Format("Debug: Found {0} entries", list.Count),
+                new DebugListEntry())
+                );
         }
     }
 }

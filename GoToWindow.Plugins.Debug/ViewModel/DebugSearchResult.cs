@@ -13,10 +13,12 @@ namespace GoToWindow.Plugins.Debug.ViewModel
         private static readonly ILog Log = LogManager.GetLogger(typeof(DebugSearchResult).Assembly, "GoToWindow");
 
         public UserControl View { get; private set; }
+        public string Message { get; private set; }
 
-        public DebugSearchResult(UserControl view)
+        public DebugSearchResult(string message, UserControl view)
         {
             View = view;
+            Message = message;
         }
 
         public void Select()
@@ -27,7 +29,7 @@ namespace GoToWindow.Plugins.Debug.ViewModel
         public bool IsShown(string searchQuery)
         {
             Log.Debug(string.Format("Debug: Filter: '{0}'", searchQuery));
-            return true;
+            return searchQuery == "debug";
         }
 
         private BitmapFrame LoadIcon()

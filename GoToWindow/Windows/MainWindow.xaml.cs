@@ -76,15 +76,20 @@ namespace GoToWindow.Windows
             if (ViewModel == null)
                 return;
 
-            ViewModel.Windows.View.Filter = item => SearchFilter((IGoToWindowSearchResult)item, SearchTextBox.Text);
+            ApplyFilter(SearchTextBox.Text);
 
             if (WindowsListView.SelectedIndex == -1 && WindowsListView.Items.Count > 0)
                 WindowsListView.SelectedIndex = 0;
         }
 
+        private void ApplyFilter(string searchQuery)
+        {
+            ViewModel.Windows.View.Filter = item => SearchFilter((IGoToWindowSearchResult)item, searchQuery);
+        }
+
         private static bool SearchFilter(IGoToWindowSearchResult window, string text)
         {
-            return string.IsNullOrEmpty(text) || window.IsShown(text);
+            return window.IsShown(text);
         }
 
         private void SearchBox_MouseDown(object sender, MouseButtonEventArgs e)
@@ -174,6 +179,11 @@ namespace GoToWindow.Windows
         {
             if (!_isClosing)
                 Close();
+        }
+
+        private void Window_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ApplyFilter(SearchTextBox.Text);
         }
 
         private void WindowsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

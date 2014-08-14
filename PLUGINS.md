@@ -27,11 +27,14 @@ Implement `IGoToWindowPlugin`, and add an `Export` attribute to your class so Go
     [Export(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
     public class MyPlugin : IGoToWindowPlugin
     {
-        public IEnumerable<IGoToWindowSearchResult> BuildInitialSearchResultList()
+        public GoToWindowPluginSequence Sequence
         {
-            return new IGoToWindowSearchResult[] {
-                new MySearchResult();
-            };
+            get { return GoToWindowPluginSequence.AfterCore; }
+        }
+
+        public void BuildList(List<IGoToWindowSearchResult> list)
+        {
+            list.Add(new MySearchResult());
         }
     }
 

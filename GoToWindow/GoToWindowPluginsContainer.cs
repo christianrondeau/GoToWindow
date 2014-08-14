@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using GoToWindow.Windows;
 using GoToWindow.ViewModels;
@@ -17,7 +18,7 @@ namespace GoToWindow
         private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowPluginsContainer).Assembly, "GoToWindow");
 
         [ImportMany(GoToWindowPluginConstants.GoToWindowPluginContractName)]
-        public IEnumerable<IGoToWindowPlugin> Plugins { get; set; }
+        public List<IGoToWindowPlugin> Plugins { get; set; }
 
         public static GoToWindowPluginsContainer LoadPlugins()
         {
@@ -29,6 +30,8 @@ namespace GoToWindow
             {
                 var pluginsContainer = new GoToWindowPluginsContainer();
                 container.ComposeParts(pluginsContainer);
+
+                pluginsContainer.Plugins = pluginsContainer.Plugins.OrderBy(plugin => plugin.Sequence).ToList();
                 return pluginsContainer;
             }
             catch (CompositionException compositionException)

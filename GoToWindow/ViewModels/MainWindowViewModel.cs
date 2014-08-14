@@ -16,7 +16,7 @@ namespace GoToWindow.ViewModels
             var list = new List<IGoToWindowSearchResult>();
 
             foreach (var plugin in plugins)
-                list.AddRange(plugin.BuildInitialSearchResultList());
+                plugin.BuildList(list);
 
             var instance = new MainWindowViewModel();
             var viewSource = new CollectionViewSource

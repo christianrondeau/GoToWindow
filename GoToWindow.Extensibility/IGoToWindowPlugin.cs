@@ -4,6 +4,8 @@ namespace GoToWindow.Extensibility
 {
     public interface IGoToWindowPlugin
     {
-        IEnumerable<IGoToWindowSearchResult> BuildInitialSearchResultList();
+        GoToWindowPluginSequence Sequence { get; }
+
+        void BuildList(List<IGoToWindowSearchResult> list);
     }
 }

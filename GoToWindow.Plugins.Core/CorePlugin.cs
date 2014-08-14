@@ -11,9 +11,11 @@ namespace GoToWindow.Plugins.Core
     [Export(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
     public class CorePlugin : IGoToWindowPlugin
     {
-        public IEnumerable<IGoToWindowSearchResult> BuildInitialSearchResultList()
+        public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.Core; } }
+
+        public void BuildList(List<IGoToWindowSearchResult> list)
         {
-            return WindowsListFactory.Load().Windows.Select(ConvertWindowEntryToSearchResult);
+            list.AddRange(WindowsListFactory.Load().Windows.Select(ConvertWindowEntryToSearchResult));
         }
 
         private static IGoToWindowSearchResult ConvertWindowEntryToSearchResult(IWindowEntry entry)

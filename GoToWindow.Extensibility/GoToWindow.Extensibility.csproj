@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GoToWindowPluginConstants.cs" />
+    <Compile Include="GoToWindowPluginSequence.cs" />
     <Compile Include="IGoToWindowPlugin.cs" />
     <Compile Include="IGoToWindowSearchResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
