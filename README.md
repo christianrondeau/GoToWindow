@@ -32,6 +32,8 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * To use GoToWindow within an application that runs with elevated privileges (Run as Administrator), GoToWindow must also run with elevated privileges, otherwise the native `Alt` + `Tab` will show up.
 
+* By default, GoToWindow expands web browser's tabs. This slows down display a little bit. You can disable it in the Settings, under the Plugins tab.
+
 ## Writing your own Plug-ins
 
 See the [Plugins](PLUGINS.md) document for more information on extending GoToWindow.

@@ -12,7 +12,11 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 {
     [Export(GoToWindowConstants.PluginContractName, typeof(IGoToWindowPlugin))]
     public class ExpandBrowsersTabsPlugin : IGoToWindowPlugin
-    {
+	{
+		public string Id { get { return "GoToWindow.ExpandBrowsersTabs"; } }
+
+		public string Title { get { return "GoToWindow Expand Browser Tabs"; } }
+
         public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.AfterCore; } }
 
         public void BuildList(List<ISearchResult> list)

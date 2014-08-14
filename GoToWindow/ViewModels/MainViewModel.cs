@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using GoToWindow.Extensibility;
+using System.Collections.Specialized;
 
 namespace GoToWindow.ViewModels
 {
@@ -14,8 +15,9 @@ namespace GoToWindow.ViewModels
         public static MainViewModel Load(IEnumerable<IGoToWindowPlugin> plugins)
         {
             var list = new List<ISearchResult>();
+			var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
 
-            foreach (var plugin in plugins)
+			foreach (var plugin in plugins.Where(plugin => !disabledPlugins.Contains(plugin.Id)))
                 plugin.BuildList(list);
 
             var instance = new MainViewModel();

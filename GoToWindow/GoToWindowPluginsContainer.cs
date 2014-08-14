@@ -11,7 +11,12 @@ using System.Collections.Generic;
 
 namespace GoToWindow
 {
-    public class GoToWindowPluginsContainer
+	public interface IGoToWindowPluginsContainer
+	{
+		List<IGoToWindowPlugin> Plugins { get; set; }
+	}
+
+    public class GoToWindowPluginsContainer : IGoToWindowPluginsContainer
     {
         public const string PluginsFolderName = "Plugins";
 

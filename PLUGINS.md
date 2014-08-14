@@ -27,6 +27,10 @@ Implement `IGoToWindowPlugin`, and add an `Export` attribute to your class so Go
     [Export(GoToWindowConstants.PluginContractName, typeof(IGoToWindowPlugin))]
     public class MyPlugin : IGoToWindowPlugin
     {
+		public string Id { get { return "MyAmazingPlugin"; } }
+
+        public string Name { get { return "My Amazing Plugin"; } }
+
         public GoToWindowPluginSequence Sequence
         {
             get { return GoToWindowPluginSequence.AfterCore; }

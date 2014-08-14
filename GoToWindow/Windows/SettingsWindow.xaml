@@ -33,12 +33,11 @@
 				</Grid>
 			</TabItem>
 			<TabItem Header="_Plugins">
-				<ListView>
+				<ListView ItemsSource="{Binding Plugins}" d:DataContext="{d:DesignInstance viewModels:SettingsPluginViewModel}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel Orientation="Horizontal">
-								<CheckBox />
-								<Label>My Plugin</Label>
+								<CheckBox IsChecked="{Binding Enabled}" Content="{Binding Name}" />
 							</StackPanel>
 						</DataTemplate>
 					</ListView.ItemTemplate>

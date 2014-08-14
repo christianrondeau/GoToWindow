@@ -34,5 +34,16 @@ namespace GoToWindow.Properties {
                 this["HookAltTab"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection DisabledPlugins {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["DisabledPlugins"]));
+            }
+            set {
+                this["DisabledPlugins"] = value;
+            }
+        }
     }
 }

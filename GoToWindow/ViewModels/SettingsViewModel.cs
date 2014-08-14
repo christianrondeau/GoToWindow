@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -14,12 +15,12 @@ namespace GoToWindow.ViewModels
 {
 	public class SettingsViewModel
 	{
-		private readonly GoToWindowContext _context;
+		private readonly IGoToWindowContext _context;
 
 		private bool _originalHookAltTab;
 		private bool _originalStartWithWindows;
 
-		public SettingsViewModel(GoToWindowContext context)
+		public SettingsViewModel(IGoToWindowContext context)
 		{
 			_context = context;
 
@@ -30,6 +31,7 @@ namespace GoToWindow.ViewModels
 		public bool StartWithWindows { get; set; }
 		public Visibility NoElevatedPrivilegesWarning { get; set; }
 		public string Version { get; set; }
+		public List<SettingsPluginViewModel> Plugins { get; private set; }
 
 		public void Load()
 		{
@@ -39,6 +41,18 @@ namespace GoToWindow.ViewModels
 			NoElevatedPrivilegesWarning = GetHasElevatedPrivileges()
 				? Visibility.Hidden
 				: Visibility.Visible;
+
+			var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
+
+			Plugins = _context.PluginsContainer.Plugins
+				.Select(plugin => new SettingsPluginViewModel
+					{
+						Id = plugin.Id,
+						Enabled = !disabledPlugins.Contains(plugin.Id),
+						Name = plugin.Title
+					})
+				.OrderBy(plugin => plugin.Name)
+				.ToList();
 
 			Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
@@ -70,15 +84,20 @@ namespace GoToWindow.ViewModels
 		{
 			if (_originalStartWithWindows != StartWithWindows)
 			{
-				UpdateStartWithWindows(StartWithWindows == true);
+				UpdateStartWithWindows(StartWithWindows);
 			}
 
 			if(_originalHookAltTab != HookAltTab)
 			{
 				Properties.Settings.Default.HookAltTab = HookAltTab;
 				_context.EnableAltTabHook(Properties.Settings.Default.HookAltTab);
-				Properties.Settings.Default.Save();
 			}
+
+			StringCollection disabledPlugins = new StringCollection();
+			disabledPlugins.AddRange(Plugins.Where(plugin => !plugin.Enabled).Select(plugin => plugin.Id).ToArray());
+			Properties.Settings.Default.DisabledPlugins = disabledPlugins;
+
+			Properties.Settings.Default.Save();
 		}
 
 		private void UpdateStartWithWindows(bool active)

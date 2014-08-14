@@ -11,6 +11,7 @@ namespace GoToWindow
 {
     public interface IGoToWindowContext : IDisposable
     {
+		IGoToWindowPluginsContainer PluginsContainer { get; }
         void Init();
         void Show();
         void Hide();
@@ -22,13 +23,14 @@ namespace GoToWindow
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
 
-        private GoToWindowPluginsContainer _pluginsContainer;
         private MainWindow _mainWindow;
         private KeyboardHook _hooks;
 
+		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
+
         public GoToWindowContext()
         {
-            _pluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
+            PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
         }
 
         public void Init()
@@ -41,7 +43,7 @@ namespace GoToWindow
             _mainWindow.Height = 0;
             _mainWindow.Show();
 
-            var viewModel = MainViewModel.Load(_pluginsContainer.Plugins);
+            var viewModel = MainViewModel.Load(PluginsContainer.Plugins);
             viewModel.Close += Hide;
 
             if (_mainWindow != null) // If the window auto-closed
@@ -67,7 +69,7 @@ namespace GoToWindow
                 _mainWindow.Closing += MainWindow_Closing;
                 _mainWindow.Show();
 
-                var viewModel = MainViewModel.Load(_pluginsContainer.Plugins);
+                var viewModel = MainViewModel.Load(PluginsContainer.Plugins);
                 viewModel.Close += Hide;
                 _mainWindow.DataContext = viewModel;
             }

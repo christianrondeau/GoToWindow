@@ -9,7 +9,11 @@ namespace GoToWindow.Plugins.Debug
 {
     [Export(GoToWindowConstants.PluginContractName, typeof(IGoToWindowPlugin))]
     public class DebugPlugin : IGoToWindowPlugin
-    {
+	{
+		public string Id { get { return "GoToWindow.Debug"; } }
+
+		public string Title { get { return "GoToWindow Debugger"; } }
+
         public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.AfterCore; } }
 
         public void BuildList(List<ISearchResult> list)
