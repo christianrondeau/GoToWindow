@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Accessibility;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 {
@@ -11,57 +12,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 	/// </remarks>
 	public class InternetExplorerTab : TabBase, ITab
 	{
-		private string p;
-		private SHDocVw.InternetExplorer _ie;
-
-		public InternetExplorerTab(string title, SHDocVw.InternetExplorer ie)
-			: base(title)
-		{
-			_ie = ie;
-		}
-
-		public void Select()
-		{
-			string urlOfTabToActivate = _ie.LocationURL;
-			IntPtr hwnd = (IntPtr)_ie.HWND;
-			var directUi = GetDirectUIHWND(hwnd);
-			var iacc = AccessibleObjectFromWindow(directUi);
-			var tabRow = FindAccessibleDescendant(iacc, "Tab Row");
-
-			var tabs = AccChildren(tabRow);
-			int tc = tabs.Count;
-			int k = 0;
-
-			// walk through the tabs and tick the chosen one
-			foreach (var candidateTab in tabs)
-			{
-				k++;
-				if (k == tc) continue; // the last tab is "New Tab", which we don't want
-
-				string localUrl = UrlForTab(candidateTab); // // the URL on *this* tab
-
-				if (urlOfTabToActivate != null && localUrl.Equals(urlOfTabToActivate))
-				{
-					candidateTab.accDoDefaultAction(0);
-					break;
-				}
-			}
-		}
-
-		private static IntPtr GetDirectUIHWND(IntPtr ieFrame)
-		{
-			// try IE 9 first:
-			IntPtr intptr = FindWindowEx(ieFrame, IntPtr.Zero, "WorkerW", null);
-			if (intptr == IntPtr.Zero)
-			{
-				// IE8 and IE7
-				intptr = FindWindowEx(ieFrame, IntPtr.Zero, "CommandBarClass", null);
-			}
-			intptr = FindWindowEx(intptr, IntPtr.Zero, "ReBarWindow32", null);
-			intptr = FindWindowEx(intptr, IntPtr.Zero, "TabBandClass", null);
-			intptr = FindWindowEx(intptr, IntPtr.Zero, "DirectUIHWND", null);
-			return intptr;
-		}
+		private readonly SHDocVw.InternetExplorer _ie;
 
 		[DllImport("user32.dll", SetLastError = true)]
 		private static extern IntPtr FindWindowEx(
@@ -85,32 +36,83 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] object[] rgvarChildren,
 			out int pcObtained);
 
+		public InternetExplorerTab(string title, SHDocVw.InternetExplorer ie)
+			: base(title)
+		{
+			_ie = ie;
+		}
+
+		public void Select()
+		{
+			var urlOfTabToActivate = _ie.LocationURL;
+			var hwnd = (IntPtr)_ie.HWND;
+			var directUi = GetDirectUiHWnd(hwnd);
+			var iacc = AccessibleObjectFromWindow(directUi);
+			var tabRow = FindAccessibleDescendant(iacc, "Tab Row");
+
+			var tabs = AccChildren(tabRow);
+			var tc = tabs.Count;
+			var k = 0;
+
+			// walk through the tabs and tick the chosen one
+			foreach (var candidateTab in tabs)
+			{
+				k++;
+				if (k == tc) continue; // the last tab is "New Tab", which we don't want
+
+				var localUrl = UrlForTab(candidateTab); // // the URL on *this* tab
+
+				if (urlOfTabToActivate == null || !localUrl.Equals(urlOfTabToActivate)) continue;
+				
+				candidateTab.accDoDefaultAction(0);
+				
+				break;
+			}
+		}
+
+		private static IntPtr GetDirectUiHWnd(IntPtr ieFrame)
+		{
+			// try IE 9 first:
+			var intptr = FindWindowEx(ieFrame, IntPtr.Zero, "WorkerW", null);
+			if (intptr == IntPtr.Zero)
+			{
+				// IE8 and IE7
+				intptr = FindWindowEx(ieFrame, IntPtr.Zero, "CommandBarClass", null);
+			}
+			
+			intptr = FindWindowEx(intptr, IntPtr.Zero, "ReBarWindow32", null);
+			intptr = FindWindowEx(intptr, IntPtr.Zero, "TabBandClass", null);
+			intptr = FindWindowEx(intptr, IntPtr.Zero, "DirectUIHWND", null);
+			
+			return intptr;
+		}
+		
 		private static IAccessible AccessibleObjectFromWindow(IntPtr hwnd)
 		{
-			Guid guid = new Guid("{618736e0-3c3d-11cf-810c-00aa00389b71}"); // IAccessible
+			var guid = new Guid("{618736e0-3c3d-11cf-810c-00aa00389b71}"); // IAccessible
 			object obj = null;
-			uint id = 0U;
-			int num = AccessibleObjectFromWindow(hwnd, id, ref guid, ref obj);
+			const uint id = 0U;
+			AccessibleObjectFromWindow(hwnd, id, ref guid, ref obj);
 			var acc = obj as IAccessible;
 			return acc;
 		}
 
 		private static IAccessible FindAccessibleDescendant(IAccessible parent, String strName)
 		{
-			int c = parent.accChildCount;
-			if (c == 0)
+			var accessibleChildCount = parent.accChildCount;
+			if (accessibleChildCount == 0)
 				return null;
 
 			var children = AccChildren(parent);
 
-			foreach (var child in children)
+			foreach (var child in children.Where(child => child != null))
 			{
-				if (child == null) continue;
-				if (strName.Equals(child.get_accName(0)))
+				if (strName.Equals(child.accName[0]))
 					return child;
 
-				var x = FindAccessibleDescendant(child, strName);
-				if (x != null) return x;
+				var accessibleDescendant = FindAccessibleDescendant(child, strName);
+				
+				if (accessibleDescendant != null) return accessibleDescendant;
 			}
 
 			return null;
@@ -118,31 +120,22 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 
 		private static List<IAccessible> AccChildren(IAccessible accessible)
 		{
-			int childs;
-			object[] res = GetAccessibleChildren(accessible, out childs);
+			int children;
+			var res = GetAccessibleChildren(accessible, out children);
 			var list = new List<IAccessible>();
 			if (res == null) return list;
-
-			foreach (object obj in res)
-			{
-				IAccessible acc = obj as IAccessible;
-				if (acc != null) list.Add(acc);
-			}
+			list.AddRange(res.OfType<IAccessible>());
 			return list;
 		}
 
-		private static object[] GetAccessibleChildren(IAccessible ao, out int childs)
+		private static IEnumerable<object> GetAccessibleChildren(IAccessible ao, out int childs)
 		{
 			childs = 0;
-			object[] ret = null;
 			var count = ao.accChildCount;
 
-			if (count > 0)
-			{
-				ret = new object[count];
-				AccessibleChildren(ao, 0, count, ret, out childs);
-			}
-
+			if (count <= 0) return null;
+			var ret = new object[count];
+			AccessibleChildren(ao, 0, count, ret, out childs);
 			return ret;
 		}
 
@@ -150,22 +143,16 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 		{
 			try
 			{
-				var desc = tab.get_accDescription(0);
+				var desc = tab.accDescription[0];
 				if (desc != null)
 				{
-					if (desc.Contains("\n"))
-					{
-						string url = desc.Substring(desc.IndexOf("\n")).Trim();
-						return url;
-					}
-					else
-					{
-						return desc;
-					}
+					return desc.Contains("\n")
+						? desc.Substring(desc.IndexOf("\n", StringComparison.Ordinal)).Trim() 
+						: desc;
 				}
 			}
 			catch { }
-			return "??";
+			return "empty://";
 		}
 	}
 }

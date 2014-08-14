@@ -1,7 +1,7 @@
-﻿using log4net.Config;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using log4net.Config;
 
 [assembly: AssemblyTitle("Go To Window")]
 [assembly: AssemblyDescription("The keyboard-maniac alt-tab alternative")]
@@ -15,8 +15,8 @@ using System.Windows;
 [assembly: ComVisible(false)]
 
 [assembly: ThemeInfo(
-    ResourceDictionaryLocation.None,
-    ResourceDictionaryLocation.SourceAssembly
+	ResourceDictionaryLocation.None,
+	ResourceDictionaryLocation.SourceAssembly
 )]
 
 [assembly: XmlConfigurator(ConfigFile = "log4net.config")]

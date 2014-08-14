@@ -120,7 +120,7 @@
                                         <ControlTemplate TargetType="ListView">
                                             <StackPanel Orientation="Horizontal" Height="48">
                                                 <TextBlock Margin="16, 16, 0, 16" VerticalAlignment="Center" Foreground="Gray">Search for '</TextBlock>
-                                                <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold" Text="{Binding SearchText}"></TextBlock>
+                                                <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold" Text="{Binding SearchText}" />
                                                 <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Gray">' using Windows Search</TextBlock>
                                             </StackPanel>
                                         </ControlTemplate>

@@ -1,15 +1,12 @@
-﻿using GoToWindow.Api;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using GoToWindow.Api;
+using Microsoft.Win32;
 
 namespace GoToWindow.ViewModels
 {
@@ -93,7 +90,7 @@ namespace GoToWindow.ViewModels
 				_context.EnableAltTabHook(Properties.Settings.Default.HookAltTab);
 			}
 
-			StringCollection disabledPlugins = new StringCollection();
+			var disabledPlugins = new StringCollection();
 			disabledPlugins.AddRange(Plugins.Where(plugin => !plugin.Enabled).Select(plugin => plugin.Id).ToArray());
 			Properties.Settings.Default.DisabledPlugins = disabledPlugins;
 

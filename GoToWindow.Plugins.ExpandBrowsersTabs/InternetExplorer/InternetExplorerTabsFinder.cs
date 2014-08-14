@@ -1,12 +1,12 @@
-﻿using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 {
 	public class InternetExplorerTabsFinder : ITabsFinder
 	{
-		private bool _searchedOnce = false;
+		private bool _searchedOnce;
 
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr chromeWindowHandle)
 		{

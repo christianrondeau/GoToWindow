@@ -2,11 +2,11 @@
 
 namespace GoToWindow.Extensibility.Controls
 {
-    public partial class BasicListEntry : UserControl
-    {
-        public BasicListEntry()
-        {
-            InitializeComponent();
-        }
-    }
+	public partial class BasicListEntry : UserControl
+	{
+		public BasicListEntry()
+		{
+			InitializeComponent();
+		}
+	}
 }

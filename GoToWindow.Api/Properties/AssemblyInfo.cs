@@ -1,6 +1,6 @@
-﻿using log4net.Config;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using log4net.Config;
 
 [assembly: AssemblyTitle("Go To Window Api")]
 [assembly: AssemblyDescription("The keyboard-maniac alt-tab alternative")]
