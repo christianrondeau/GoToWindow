@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
 
-namespace GoToWindow.Core.Utils
+namespace GoToWindow.Plugins.Core.Utils
 {
     public static class IconLoader
     {

@@ -130,10 +130,6 @@
       <Project>{c0e88c89-8430-43ba-a5d5-a92eafd48a79}</Project>
       <Name>GoToWindow.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GoToWindow.Core\GoToWindow.Core.csproj">
-      <Project>{05405483-f47a-42c1-bb03-57e3d1b56918}</Project>
-      <Name>GoToWindow.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GoToWindow.Extensibility\GoToWindow.Extensibility.csproj">
       <Project>{672a2aa6-16b3-49bc-8fd8-535da2f17a82}</Project>
       <Name>GoToWindow.Extensibility</Name>

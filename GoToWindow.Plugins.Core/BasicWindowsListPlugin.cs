@@ -2,11 +2,11 @@
 using System.Linq;
 using GoToWindow.Api;
 using GoToWindow.Extensibility;
-using GoToWindow.Core.Plugins.Core.ViewModel;
-using GoToWindow.Core.Plugins.Core.Controls;
+using GoToWindow.Plugins.Core.ViewModel;
+using GoToWindow.Plugins.Core.Controls;
 using System.ComponentModel.Composition;
 
-namespace GoToWindow.Core.Plugins.Core
+namespace GoToWindow.Plugins.Core
 {
     [Export(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
     public class BasicWindowsListPlugin : IGoToWindowPlugin

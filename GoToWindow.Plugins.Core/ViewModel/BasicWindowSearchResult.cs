@@ -2,12 +2,12 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using GoToWindow.Api;
-using GoToWindow.Core.Utils;
+using GoToWindow.Plugins.Core.Utils;
 using GoToWindow.Extensibility;
 using System.Windows.Controls;
-using GoToWindow.Core.Plugins.Core.Controls;
+using GoToWindow.Plugins.Core.Controls;
 
-namespace GoToWindow.Core.Plugins.Core.ViewModel
+namespace GoToWindow.Plugins.Core.ViewModel
 {
     public class BasicWindowSearchResult : IGoToWindowSearchResult
     {

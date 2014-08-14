@@ -9,7 +9,6 @@ using GoToWindow.Extensibility;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using log4net;
-using GoToWindow.Core.Plugins.Core;
 
 namespace GoToWindow
 {
@@ -24,7 +23,7 @@ namespace GoToWindow
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ProcessExtensions).Assembly, "GoToWindow");
 
-        [Import(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
+        [Import(GoToWindowPluginConstants.GoToWindowPluginContractName)]
         public IGoToWindowPlugin Plugin { get; set; }
 
         private MainWindow _mainWindow;
@@ -38,7 +37,8 @@ namespace GoToWindow
         private void LoadPlugins()
         {
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(typeof(BasicWindowsListPlugin).Assembly));
+            //catalog.Catalogs.Add(new AssemblyCatalog(typeof(BasicWindowsListPlugin).Assembly));
+            catalog.Catalogs.Add(new DirectoryCatalog("Plugins"));
             var container = new CompositionContainer(catalog);
 
             try
@@ -48,7 +48,7 @@ namespace GoToWindow
             catch (CompositionException compositionException)
             {
                 Log.Error(compositionException);
-                MessageBox.Show("An error occured in one of the plug-ins. Try updating or removing them and restart GoToWindow.", "Plugin Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("An error occured while loading plug-ins. Try updating or removing plugins other than GoToWindow.Plugins.Core.dll from the Plugins directory and restart GoToWindow.", "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }
         }

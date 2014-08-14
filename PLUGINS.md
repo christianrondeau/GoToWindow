@@ -1,20 +1,28 @@
-# Go To Window - Plugins
+# GoToWindow - Plugins
+
+GoToWindow is extensible. Even the core functionality is a plug-in, that can be replaced if you wish. You can also write your own!
+
+## Built-in Plugins
+
+* `GoToWindow.Plugins.Core`: Loads the core windows list, as shown by the native `Alt` + `Tab` screen. 
+
+## Creating your own plugin
 
 **Warning! This is an alpha, and the plug-in signature is subject to change.**
 
-## GitHub Project Naming
+### GitHub Project Naming
 
-Plugins for GoToWindow should be named `GoToWindow-Plugin-YourPlugin`. This will make it easier to find plug-ins in the future.
+Plugins for GoToWindow, when open sourced on GitHub, should be named `GoToWindow-Plugin-YourPlugin`. This will make it easier to discover plug-ins for other people. Also, let us know!
 
-Also, if you think your extension should be part of GoToWindow's core, or if you need additional control from within your plug-ins, please create an issue.
+If you think your extension should be part of GoToWindow's core, or if you need additional control on how things are displayed or handled from within your plug-ins, please create an issue.
 
-## Creating your own plug-in
+### Writing your first plugin
 
-Create a `C#` project.
+Create a `C# 4.0` project. We suggest the convention `GoToWindow.Plugins.YourPlugin` for the project name, to clearly see the difference between plug-ins and dependencies.
 
-Reference `System.ComponentModel.Composition` and `GoToWindow.Extensibility`
+Next, Reference `System.ComponentModel.Composition` (from [MEF](http://msdn.microsoft.com/en-CA/library/dd460648(v=vs.110).aspx)) and `GoToWindow.Extensibility` (from GoToWindow's install directory).
 
-You can now implement `IGoToWindowPlugin`, and mark you class as `Export` for GoToWindow to discover it. Here is an example class:
+Implement `IGoToWindowPlugin`, and add an `Export` attribute to your class so GoToWindow can discover it. Here is an example class:
 
     [Export(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
     public class MyPlugin : IGoToWindowPlugin
@@ -27,7 +35,7 @@ You can now implement `IGoToWindowPlugin`, and mark you class as `Export` for Go
         }
     }
 
-You will also need a `IGoToWindowSearchResult` implementation that will define the list entry to show, and what to do when it is selected. Here is an example implementation:
+Note the `IGoToWindowSearchResult`. You must implement your own to define what user control to show, how to filter it and what to do when it is selected. Here is an example implementation:
 
     public class MySearchResult : IGoToWindowSearchResult
     {
@@ -49,4 +57,10 @@ You will also need a `IGoToWindowSearchResult` implementation that will define t
         }
     }
 
-Finally, drop the compiled DLL into the `GoToWindow\Plugins` directory, and restart GoToWindow.
+Finally, place the compiled plugin dll file into the `GoToWindow\Plugins` directory, and restart GoToWindow.
+
+### Debugging
+
+If you have trouble debugging, you can use the `GoToWindow.log` files, which should be generated next to `GoToWindow.exe`. If you wish to do so, you can also reference `log4net.dll` in your project, and generate your own logs as needed.
+
+Happy programming!

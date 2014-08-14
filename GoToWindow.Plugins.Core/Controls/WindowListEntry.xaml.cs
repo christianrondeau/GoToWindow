@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace GoToWindow.Core.Plugins.Core.Controls
+namespace GoToWindow.Plugins.Core.Controls
 {
     /// <summary>
     /// Interaction logic for WindowListEntry.xaml
