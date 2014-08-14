@@ -4,11 +4,6 @@ using System.Windows;
 using System.Windows.Threading;
 using GoToWindow.Windows;
 using GoToWindow.ViewModels;
-using System.ComponentModel.Composition;
-using GoToWindow.Extensibility;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using log4net;
 
 namespace GoToWindow
 {
@@ -21,36 +16,13 @@ namespace GoToWindow
 
     public class GoToWindowContext : IGoToWindowContext
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ProcessExtensions).Assembly, "GoToWindow");
-
-        [Import(GoToWindowPluginConstants.GoToWindowPluginContractName)]
-        public IGoToWindowPlugin Plugin { get; set; }
-
+        private GoToWindowPluginsContainer _pluginsContainer;
         private MainWindow _mainWindow;
         private KeyboardHook _hooks;
 
         public GoToWindowContext()
         {
-            LoadPlugins();
-        }
-
-        private void LoadPlugins()
-        {
-            var catalog = new AggregateCatalog();
-            //catalog.Catalogs.Add(new AssemblyCatalog(typeof(BasicWindowsListPlugin).Assembly));
-            catalog.Catalogs.Add(new DirectoryCatalog("Plugins"));
-            var container = new CompositionContainer(catalog);
-
-            try
-            {
-                container.ComposeParts(this);
-            }
-            catch (CompositionException compositionException)
-            {
-                Log.Error(compositionException);
-                MessageBox.Show("An error occured while loading plug-ins. Try updating or removing plugins other than GoToWindow.Plugins.Core.dll from the Plugins directory and restart GoToWindow.", "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
-            }
+            _pluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
         }
 
         public void Show()
@@ -65,7 +37,7 @@ namespace GoToWindow
                 _mainWindow.Closing += MainWindow_Closing;
                 _mainWindow.Show();
 
-                var viewModel = MainWindowViewModel.Load(Plugin);
+                var viewModel = MainWindowViewModel.Load(_pluginsContainer.Plugins);
                 viewModel.Close += Hide;
                 _mainWindow.DataContext = viewModel;
             }

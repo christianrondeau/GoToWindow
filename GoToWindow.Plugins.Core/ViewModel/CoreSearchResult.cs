@@ -5,11 +5,10 @@ using GoToWindow.Api;
 using GoToWindow.Plugins.Core.Utils;
 using GoToWindow.Extensibility;
 using System.Windows.Controls;
-using GoToWindow.Plugins.Core.Controls;
 
 namespace GoToWindow.Plugins.Core.ViewModel
 {
-    public class BasicWindowSearchResult : IGoToWindowSearchResult
+    public class CoreSearchResult : IGoToWindowSearchResult
     {
         private readonly IWindowEntry _entry;
         private BitmapFrame _icon;
@@ -20,7 +19,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
         public string Process { get { return _entry.ProcessName; } }
         public UserControl View { get { return _view; } }
 
-        public BasicWindowSearchResult(IWindowEntry entry, UserControl view)
+        public CoreSearchResult(IWindowEntry entry, UserControl view)
         {
             _entry = entry;
             _view = view;

@@ -69,6 +69,7 @@
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="GoToWindowContext.cs" />
     <Compile Include="Commands\OpenMainWindowCommand.cs" />
+    <Compile Include="GoToWindowPluginsContainer.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>

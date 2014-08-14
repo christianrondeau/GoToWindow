@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="GoToWindow.Plugins.Debug.Controls.DebugListEntry"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:debugViewModel="clr-namespace:GoToWindow.Plugins.Debug.ViewModel;assembly=GoToWindow.Plugins.Debug"
+             mc:Ignorable="d"
+             d:DesignHeight="48" d:DesignWidth="512" d:DataContext="{d:DesignInstance debugViewModel:DebugSearchResult}">
+    <Grid>
+        <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Foreground="Gray" Text="Debug" />
+    </Grid>
+</UserControl>

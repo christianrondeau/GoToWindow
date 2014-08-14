@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="GoToWindow.Plugins.Core.Controls.WindowListEntry"
+﻿<UserControl x:Class="GoToWindow.Plugins.Core.Controls.CoreListEntry"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:coreViewModel="clr-namespace:GoToWindow.Plugins.Core.ViewModel;assembly=GoToWindow.Plugins.Core"
              mc:Ignorable="d"
-             d:DesignHeight="48" d:DesignWidth="512" d:DataContext="{d:DesignInstance coreViewModel:BasicWindowSearchResult}">
+             d:DesignHeight="48" d:DesignWidth="512" d:DataContext="{d:DesignInstance coreViewModel:CoreSearchResult}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="IconColumn" Width="48"/>

@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Extensibility", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Plugins.Core", "GoToWindow.Plugins.Core\GoToWindow.Plugins.Core.csproj", "{05405483-F47A-42C1-BB03-57E3D1B56918}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Plugins.Debug", "GoToWindow.Plugins.Debug\GoToWindow.Plugins.Debug.csproj", "{15144D50-5E17-48FF-867D-144B118385E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,7 +44,6 @@ Global
 		{068F2A79-E158-4F06-A312-9D4479081A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{068F2A79-E158-4F06-A312-9D4479081A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{068F2A79-E158-4F06-A312-9D4479081A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{068F2A79-E158-4F06-A312-9D4479081A20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{672A2AA6-16B3-49BC-8FD8-535DA2F17A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{672A2AA6-16B3-49BC-8FD8-535DA2F17A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{672A2AA6-16B3-49BC-8FD8-535DA2F17A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +52,9 @@ Global
 		{05405483-F47A-42C1-BB03-57E3D1B56918}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05405483-F47A-42C1-BB03-57E3D1B56918}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05405483-F47A-42C1-BB03-57E3D1B56918}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15144D50-5E17-48FF-867D-144B118385E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15144D50-5E17-48FF-867D-144B118385E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15144D50-5E17-48FF-867D-144B118385E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

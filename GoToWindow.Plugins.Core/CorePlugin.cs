@@ -9,7 +9,7 @@ using System.ComponentModel.Composition;
 namespace GoToWindow.Plugins.Core
 {
     [Export(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
-    public class BasicWindowsListPlugin : IGoToWindowPlugin
+    public class CorePlugin : IGoToWindowPlugin
     {
         public IEnumerable<IGoToWindowSearchResult> BuildInitialSearchResultList()
         {
@@ -18,7 +18,7 @@ namespace GoToWindow.Plugins.Core
 
         private static IGoToWindowSearchResult ConvertWindowEntryToSearchResult(IWindowEntry entry)
         {
-            return new BasicWindowSearchResult(entry, new WindowListEntry());
+            return new CoreSearchResult(entry, new CoreListEntry());
         }
     }
 }
