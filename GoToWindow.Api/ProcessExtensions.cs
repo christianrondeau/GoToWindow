@@ -40,6 +40,9 @@ namespace GoToWindow.Api
 
         public static string GetExecutablePath(this Process process)
         {
+            if (process == null || process.Id == 0)
+                return null;
+
             try
             {
                 //If running on Vista or later use the new function
@@ -49,7 +52,7 @@ namespace GoToWindow.Api
             }
             catch(Win32Exception exc)
             {
-                Log.Error(exc);
+                Log.Error(string.Format("Error while trying to get executable path of process {0} with PID {1}", process.ProcessName, process.Id), exc);
                 return null;
             }
         }
