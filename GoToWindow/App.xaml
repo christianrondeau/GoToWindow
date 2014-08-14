@@ -6,6 +6,7 @@
              Startup="Application_Startup"
              Exit="Application_Exit"
              Deactivated="Application_Deactivated"
+             Activated="Application_Activated"
              DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
         <properties:Settings x:Key="Settings" />

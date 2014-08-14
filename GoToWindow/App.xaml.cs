@@ -39,6 +39,8 @@ namespace GoToWindow
 
             _context.EnableAltTabHook(GoToWindow.Properties.Settings.Default.HookAltTab);
 
+            _context.Init();
+
             Log.Info("Application started.");
         }
 
@@ -79,8 +81,15 @@ namespace GoToWindow
             Log.Info("Application exited.");
         }
 
+        private void Application_Activated(object sender, EventArgs e)
+        {
+            Log.Debug("Application activated.");
+        }
+
         private void Application_Deactivated(object sender, EventArgs e)
         {
+            Log.Debug("Application deactivated.");
+
             _context.Hide();
         }
 

@@ -4,11 +4,13 @@ using System.Windows;
 using System.Windows.Threading;
 using GoToWindow.Windows;
 using GoToWindow.ViewModels;
+using log4net;
 
 namespace GoToWindow
 {
     public interface IGoToWindowContext : IDisposable
     {
+        void Init();
         void Show();
         void Hide();
         void EnableAltTabHook(bool enabled);
@@ -16,6 +18,8 @@ namespace GoToWindow
 
     public class GoToWindowContext : IGoToWindowContext
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
+
         private GoToWindowPluginsContainer _pluginsContainer;
         private MainWindow _mainWindow;
         private KeyboardHook _hooks;
@@ -25,14 +29,35 @@ namespace GoToWindow
             _pluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
         }
 
+        public void Init()
+        {
+            // Launch the main window once to run JIT once
+            _mainWindow = new MainWindow();
+            _mainWindow.Closing += MainWindow_Closing;
+            _mainWindow.WindowStyle = WindowStyle.None;
+            _mainWindow.Width = 0;
+            _mainWindow.Height = 0;
+            _mainWindow.Show();
+
+            var viewModel = MainWindowViewModel.Load(_pluginsContainer.Plugins);
+            viewModel.Close += Hide;
+            _mainWindow.DataContext = viewModel;
+
+            _mainWindow.Close();
+        }
+
         public void Show()
         {
             if (_mainWindow != null && _mainWindow.IsLoaded)
             {
+                Log.Debug("Sending Tab Again to Main Window.");
+
                 _mainWindow.TabAgain();
             }
             else
             {
+                Log.Debug("Showing Main Window.");
+
                 _mainWindow = new MainWindow();
                 _mainWindow.Closing += MainWindow_Closing;
                 _mainWindow.Show();
@@ -51,7 +76,11 @@ namespace GoToWindow
         public void Hide()
         {
             if (_mainWindow != null && _mainWindow.IsLoaded)
+            {
+                Log.Debug("Hiding Main Window.");
                 _mainWindow.Close();
+            }
+                
         }
 
         private void Hide(object sender, EventArgs e)

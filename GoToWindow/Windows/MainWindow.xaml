@@ -18,7 +18,10 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         PreviewKeyUp="Window_PreviewKeyUp"
         Deactivated="Window_Deactivated"
-        Closing="Window_Closing" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}" DataContextChanged="Window_DataContextChanged">
+        Activated="Window_Activated"
+        Closing="Window_Closing"
+        DataContextChanged="Window_DataContextChanged"
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="{x:Type Button}">
             <Setter Property="Template">

@@ -7,11 +7,16 @@ using System.Windows.Input;
 using GoToWindow.Api;
 using GoToWindow.Extensibility;
 using GoToWindow.ViewModels;
+using System.Windows.Threading;
+using System.Windows.Interop;
+using log4net;
 
 namespace GoToWindow.Windows
 {
     public partial class MainWindow : Window
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MainWindow).Assembly, "GoToWindow");
+
         private const int PageCount = 4;
 
         private bool _isClosing;
@@ -56,10 +61,16 @@ namespace GoToWindow.Windows
 
                 if (!_isClosing)
                     Close();
+
+                return;
             }
-            else if(!String.IsNullOrWhiteSpace(SearchTextBox.Text))
+            
+            var searchQuery = SearchTextBox.Text;
+            if(!String.IsNullOrWhiteSpace(searchQuery))
             {
-                WindowsSearch.Launch(SearchTextBox.Text);
+                Log.Debug(string.Format("Launching Windows Search with '{0}'.", searchQuery));
+
+                WindowsSearch.Launch(searchQuery);
             }
         }
 
@@ -202,13 +213,28 @@ namespace GoToWindow.Windows
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            Activate();
+            var interopHelper = new WindowInteropHelper(this);
+            var thisEntry = WindowEntryFactory.Create(interopHelper.Handle);
+
+            if (!thisEntry.HasFocus())
+            {
+                Log.Debug("Window does not have focus when shown. Forcing focus.");
+                thisEntry.Focus();
+            }
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            Log.Debug("Window activated.");
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
             if (!_isClosing)
+            {
+                Log.Debug("Window deactivated.");
                 Close();
+            }
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
