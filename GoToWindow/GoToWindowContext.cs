@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using GoToWindow.Api;
 using GoToWindow.ViewModels;
@@ -23,8 +24,10 @@ namespace GoToWindow
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
 
-		private MainWindow _mainWindow;
-		private KeyboardHook _hooks;
+	    private bool _operationInProgress;
+		private MainViewModel _mainViewModel;
+        private MainWindow _mainWindow;
+        private KeyboardHook _hooks;
 
 		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
 
@@ -33,62 +36,71 @@ namespace GoToWindow
 			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
 		}
 
-		public void Init()
-		{
-			// Launch the main window once to run JIT once
-			_mainWindow = new MainWindow();
-			_mainWindow.Closing += MainWindow_Closing;
-			_mainWindow.WindowStyle = WindowStyle.None;
-			_mainWindow.Width = 0;
-			_mainWindow.Height = 0;
-			_mainWindow.Show();
+        public void Init()
+        {
+            _mainWindow = new MainWindow();
+			_mainViewModel = new MainViewModel();
+			//var previousWidth = _mainWindow.Width = 0;
+			//var previousHeight = _mainWindow.Height = 0;
+			_mainWindow.DataContext = _mainViewModel;
+			_mainViewModel.Close += Hide;
 
-			var viewModel = MainViewModel.Load(PluginsContainer.Plugins);
-			viewModel.Close += Hide;
+			//Show();
+        }
 
-			if (_mainWindow != null) // If the window auto-closed
-			{
-				_mainWindow.DataContext = viewModel;
-				_mainWindow.Close();
-			}
-		}
+        public void Show()
+        {
+            if (_operationInProgress)
+                return;
 
-		public void Show()
-		{
-			if (_mainWindow != null && _mainWindow.IsLoaded)
-			{
-				Log.Debug("Sending Tab Again to Main Window.");
+            if (_mainWindow.Visibility == Visibility.Visible && _mainWindow.IsLoaded)
+            {
+                Log.Debug("Sending Tab Again to Main Window.");
 
 				_mainWindow.TabAgain();
 			}
 			else
 			{
 				Log.Debug("Showing Main Window.");
+			    _operationInProgress = true;
 
-				_mainWindow = new MainWindow();
-				_mainWindow.Closing += MainWindow_Closing;
-				_mainWindow.Show();
+                _mainWindow.Show();
 
-				var viewModel = MainViewModel.Load(PluginsContainer.Plugins);
-				viewModel.Close += Hide;
-				_mainWindow.DataContext = viewModel;
-			}
-		}
+				var interopHelper = new WindowInteropHelper(_mainWindow);
+				var thisEntry = WindowEntryFactory.Create(interopHelper.Handle);
 
-		void MainWindow_Closing(object sender, EventArgs e)
+				_mainWindow.SetFocus();
+
+				if (!thisEntry.HasFocus())
+				{
+					Log.Debug("Window does not have focus when shown. Forcing focus.");
+					thisEntry.Focus();
+				}
+
+				Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Background);
+            }
+        }
+
+		private void LoadViewModel()
 		{
-			_mainWindow = null;
+			_mainWindow.BeginInit();
+			_mainViewModel.Load(PluginsContainer.Plugins);
+			_mainWindow.ApplyFilter();
+			_mainWindow.EndInit();
+		    _operationInProgress = false;
 		}
 
-		public void Hide()
-		{
-			if (_mainWindow != null && _mainWindow.IsLoaded)
-			{
-				Log.Debug("Hiding Main Window.");
-				_mainWindow.Close();
-			}
-				
-		}
+        public void Hide()
+        {
+            if (_operationInProgress || _mainWindow == null || !_mainWindow.IsLoaded) 
+                return;
+
+            Log.Debug("Hiding Main Window.");
+            _mainWindow.BeginInit();
+            _mainViewModel.Empty();
+            _mainWindow.EndInit();
+            Application.Current.Dispatcher.InvokeAsync(() => _mainWindow.Hide(), DispatcherPriority.Background);
+        }
 
 		private void Hide(object sender, EventArgs e)
 		{

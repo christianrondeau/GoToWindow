@@ -14,13 +14,11 @@
         Topmost="True"
         ShowInTaskbar="False"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
-        ContentRendered="Window_ContentRendered"
         PreviewKeyDown="Window_PreviewKeyDown"
         PreviewKeyUp="Window_PreviewKeyUp"
         Deactivated="Window_Deactivated"
         Activated="Window_Activated"
-        Closing="Window_Closing"
-        DataContextChanged="Window_DataContextChanged"
+        Loaded="Window_Loaded"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="{x:Type Button}">
