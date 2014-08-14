@@ -34,7 +34,7 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 ## Writing your own Plug-ins
 
-See the [Plugins](Plugins.md) document for more information on extending GoToWindow.
+See the [Plugins](PLUGINS.md) document for more information on extending GoToWindow.
 
 ## Contributors
 
