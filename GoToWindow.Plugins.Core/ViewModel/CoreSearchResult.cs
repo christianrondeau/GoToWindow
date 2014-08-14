@@ -10,7 +10,7 @@ using GoToWindow.Extensibility.ViewModel;
 
 namespace GoToWindow.Plugins.Core.ViewModel
 {
-    public class CoreSearchResult : SearchResultBase, IBasicSearchResult, ISearchResult
+    public class CoreSearchResult : SearchResultBase, IWindowSearchResult
     {
         private readonly IWindowEntry _entry;
         private BitmapFrame _icon;
@@ -18,6 +18,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
         public BitmapFrame Icon { get { return _icon ?? (_icon = LoadIcon()); } }
         public string Title { get { return _entry.Title; } }
         public string Process { get { return _entry.ProcessName; } }
+        public IntPtr HWnd { get { return _entry.HWnd; } }
 
         public CoreSearchResult(IWindowEntry entry, Func<UserControl> viewCtor)
             : base(viewCtor)

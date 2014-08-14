@@ -64,7 +64,7 @@ Finally, place the compiled plugin dll file into the `GoToWindow\Plugins` direct
 
 ### Extending the Existing List
 
-Since you have access to the previous plugins list in BuildList, you can modify it and replace entries by your own.
+Since you have access to the previous plugins list in BuildList, you can modify it and replace entries by your own. You'll need to find entries that implement `IWindowSearchResult`, which provide everything you need to interact with the window.
 
 ### Reusing the existing views
 

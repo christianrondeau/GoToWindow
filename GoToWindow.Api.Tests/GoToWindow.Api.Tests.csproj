@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="GivenAWindow.cs" />
     <Compile Include="InterceptAltTabTests.cs" />
+    <Compile Include="KeyboardSend.cs" />
     <Compile Include="ProcessExtensionsTests.cs" />
     <Compile Include="WindowEntryFactoryTests.cs" />
     <Compile Include="WindowListFactoryTests.cs" />
