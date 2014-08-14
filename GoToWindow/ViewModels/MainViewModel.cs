@@ -7,18 +7,38 @@ using System.Windows.Data;
 using System.Windows.Input;
 using GoToWindow.Extensibility;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using log4net;
 
 namespace GoToWindow.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
-    {
+	{
+		private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
+
         public static MainViewModel Load(IEnumerable<IGoToWindowPlugin> plugins)
         {
             var list = new List<ISearchResult>();
 			var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
 
 			foreach (var plugin in plugins.Where(plugin => !disabledPlugins.Contains(plugin.Id)))
-                plugin.BuildList(list);
+			{
+				Stopwatch stopwatch = null;
+
+				if (Log.IsDebugEnabled)
+				{
+					stopwatch = new Stopwatch();
+					stopwatch.Start();
+				}
+
+				plugin.BuildList(list);
+
+				if (stopwatch != null)
+				{
+					stopwatch.Stop();
+					Log.Debug(string.Format("Plugin '{0}' took {1} to execute, now at {2} results.", plugin.Title, stopwatch.Elapsed, list.Count));
+				}
+			}
 
             var instance = new MainViewModel();
             var viewSource = new CollectionViewSource
