@@ -6,6 +6,6 @@ namespace GoToWindow.Extensibility
     {
         GoToWindowPluginSequence Sequence { get; }
 
-        void BuildList(List<IGoToWindowSearchResult> list);
+        void BuildList(List<ISearchResult> list);
     }
 }

@@ -24,7 +24,7 @@ Next, Reference `System.ComponentModel.Composition` (from [MEF](http://msdn.micr
 
 Implement `IGoToWindowPlugin`, and add an `Export` attribute to your class so GoToWindow can discover it. Here is an example class:
 
-    [Export(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
+    [Export(GoToWindowConstants.PluginContractName, typeof(IGoToWindowPlugin))]
     public class MyPlugin : IGoToWindowPlugin
     {
         public GoToWindowPluginSequence Sequence
@@ -61,6 +61,50 @@ Note the `IGoToWindowSearchResult`. You must implement your own to define what u
     }
 
 Finally, place the compiled plugin dll file into the `GoToWindow\Plugins` directory, and restart GoToWindow.
+
+### Extending the Existing List
+
+Since you have access to the previous plugins list in BuildList, you can modify it and replace entries by your own.
+
+### Reusing the existing views
+
+If you want to add new entries, but still use GoToWindow's existing display, you can extend the basic search results. Note that to use the `BasicListEntry` view, your search result must implement `IBasicSearchResult`.
+
+
+    public class CustomSearchResult : SearchResultBase, IBasicSearchResult, ISearchResult
+    {
+        private readonly IBasicSearchResult _item;
+
+        public BitmapFrame Icon
+        {
+            get { return null; }
+        }
+
+        public string Title
+        {
+            get { return "My own entry!"; }
+        }
+
+        public string Process
+        {
+            get { return "Hello World"; }
+        }
+
+        public ChromeTabSearchResult()
+            : base(() => new BasicListEntry())
+        {
+        }
+
+        public void Select()
+        {
+            // Do Something
+        }
+
+        public bool IsShown(string searchQuery)
+        {
+            return IsShown(searchQuery, Process, Title);
+        }
+    }
 
 ### Debugging
 

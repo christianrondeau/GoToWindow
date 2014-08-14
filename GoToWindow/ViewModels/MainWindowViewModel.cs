@@ -13,7 +13,7 @@ namespace GoToWindow.ViewModels
     {
         public static MainWindowViewModel Load(IEnumerable<IGoToWindowPlugin> plugins)
         {
-            var list = new List<IGoToWindowSearchResult>();
+            var list = new List<ISearchResult>();
 
             foreach (var plugin in plugins)
                 plugin.BuildList(list);
@@ -29,7 +29,7 @@ namespace GoToWindow.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
         public CollectionViewSource Windows { get; private set; }
-        public IGoToWindowSearchResult SelectedWindowEntry { get; set; }
+        public ISearchResult SelectedWindowEntry { get; set; }
 
         private string _searchText;
 
@@ -60,9 +60,9 @@ namespace GoToWindow.ViewModels
             GoToWindowEntryShortcut = goToWindowEntryShortcutCommand;
         }
 
-        private IGoToWindowSearchResult GetEntryAt(int index)
+        private ISearchResult GetEntryAt(int index)
         {
-            var items = Windows.View.Cast<IGoToWindowSearchResult>().ToArray();
+            var items = Windows.View.Cast<ISearchResult>().ToArray();
 
             if (index < items.Length)
                 return items[index];

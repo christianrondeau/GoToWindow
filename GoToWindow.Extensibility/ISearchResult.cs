@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 
 namespace GoToWindow.Extensibility
 {
-    public interface IGoToWindowSearchResult
+    public interface ISearchResult
     {
         UserControl View { get; }
         void Select();

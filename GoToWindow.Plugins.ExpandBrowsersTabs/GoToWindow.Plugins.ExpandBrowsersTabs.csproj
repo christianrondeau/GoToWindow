@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{672A2AA6-16B3-49BC-8FD8-535DA2F17A82}</ProjectGuid>
+    <ProjectGuid>{D622114A-9CB3-4FBA-8381-7D028B1A3554}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GoToWindow.Extensibility</RootNamespace>
-    <AssemblyName>GoToWindow.Extensibility</AssemblyName>
+    <RootNamespace>GoToWindow.Plugins.ExpandBrowsersTabs</RootNamespace>
+    <AssemblyName>GoToWindow.Plugins.ExpandBrowsersTabs</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,6 +33,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -43,25 +44,21 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\BasicListEntry.xaml.cs">
-      <DependentUpon>BasicListEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GoToWindowConstants.cs" />
-    <Compile Include="GoToWindowPluginSequence.cs" />
-    <Compile Include="IGoToWindowPlugin.cs" />
-    <Compile Include="ISearchResult.cs" />
+    <Compile Include="ExpandBrowsersTabsPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\IBasicSearchResult.cs" />
-    <Compile Include="ViewModel\SearchResultBase.cs" />
+    <Compile Include="ViewModel\ChromeTabSearchResult.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Page Include="Controls\BasicListEntry.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <ProjectReference Include="..\GoToWindow.Extensibility\GoToWindow.Extensibility.csproj">
+      <Project>{672a2aa6-16b3-49bc-8fd8-535da2f17a82}</Project>
+      <Name>GoToWindow.Extensibility</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y $(TargetDir)*.* $(SolutionDir)\GoToWindow\bin\$(ConfigurationName)\Plugins\</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

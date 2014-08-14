@@ -17,7 +17,7 @@ namespace GoToWindow
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowPluginsContainer).Assembly, "GoToWindow");
 
-        [ImportMany(GoToWindowPluginConstants.GoToWindowPluginContractName)]
+        [ImportMany(GoToWindowConstants.PluginContractName)]
         public List<IGoToWindowPlugin> Plugins { get; set; }
 
         public static GoToWindowPluginsContainer LoadPlugins()

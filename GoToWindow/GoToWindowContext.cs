@@ -41,9 +41,12 @@ namespace GoToWindow
 
             var viewModel = MainWindowViewModel.Load(_pluginsContainer.Plugins);
             viewModel.Close += Hide;
-            _mainWindow.DataContext = viewModel;
 
-            _mainWindow.Close();
+            if (_mainWindow != null) // If the window auto-closed
+            {
+                _mainWindow.DataContext = viewModel;
+                _mainWindow.Close();
+            }
         }
 
         public void Show()

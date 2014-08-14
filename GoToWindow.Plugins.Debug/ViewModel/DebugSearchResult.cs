@@ -8,7 +8,7 @@ using log4net;
 
 namespace GoToWindow.Plugins.Debug.ViewModel
 {
-    public class DebugSearchResult : IGoToWindowSearchResult
+    public class DebugSearchResult : ISearchResult
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(DebugSearchResult).Assembly, "GoToWindow");
 

@@ -54,7 +54,7 @@ namespace GoToWindow.Windows
 
         private void FocusSelectedWindowItem()
         {
-            var windowEntry = WindowsListView.SelectedItem as IGoToWindowSearchResult;
+            var windowEntry = WindowsListView.SelectedItem as ISearchResult;
             if (windowEntry != null)
             {
                 windowEntry.Select();
@@ -95,10 +95,10 @@ namespace GoToWindow.Windows
 
         private void ApplyFilter(string searchQuery)
         {
-            ViewModel.Windows.View.Filter = item => SearchFilter((IGoToWindowSearchResult)item, searchQuery);
+            ViewModel.Windows.View.Filter = item => SearchFilter((ISearchResult)item, searchQuery);
         }
 
-        private static bool SearchFilter(IGoToWindowSearchResult window, string text)
+        private static bool SearchFilter(ISearchResult window, string text)
         {
             return window.IsShown(text);
         }

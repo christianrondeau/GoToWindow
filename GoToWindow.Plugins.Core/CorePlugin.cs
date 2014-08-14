@@ -2,25 +2,25 @@
 using System.Linq;
 using GoToWindow.Api;
 using GoToWindow.Extensibility;
+using GoToWindow.Extensibility.Controls;
 using GoToWindow.Plugins.Core.ViewModel;
-using GoToWindow.Plugins.Core.Controls;
 using System.ComponentModel.Composition;
 
 namespace GoToWindow.Plugins.Core
 {
-    [Export(GoToWindowPluginConstants.GoToWindowPluginContractName, typeof(IGoToWindowPlugin))]
+    [Export(GoToWindowConstants.PluginContractName, typeof(IGoToWindowPlugin))]
     public class CorePlugin : IGoToWindowPlugin
     {
         public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.Core; } }
 
-        public void BuildList(List<IGoToWindowSearchResult> list)
+        public void BuildList(List<ISearchResult> list)
         {
             list.AddRange(WindowsListFactory.Load().Windows.Select(ConvertWindowEntryToSearchResult));
         }
 
-        private static IGoToWindowSearchResult ConvertWindowEntryToSearchResult(IWindowEntry entry)
+        private static ISearchResult ConvertWindowEntryToSearchResult(IWindowEntry entry)
         {
-            return new CoreSearchResult(entry, new CoreListEntry());
+            return new CoreSearchResult(entry, () => new BasicListEntry());
         }
     }
 }

@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Plugins.Core", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Plugins.Debug", "GoToWindow.Plugins.Debug\GoToWindow.Plugins.Debug.csproj", "{15144D50-5E17-48FF-867D-144B118385E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Plugins.ExpandBrowsersTabs", "GoToWindow.Plugins.ExpandBrowsersTabs\GoToWindow.Plugins.ExpandBrowsersTabs.csproj", "{D622114A-9CB3-4FBA-8381-7D028B1A3554}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{15144D50-5E17-48FF-867D-144B118385E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{15144D50-5E17-48FF-867D-144B118385E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15144D50-5E17-48FF-867D-144B118385E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D622114A-9CB3-4FBA-8381-7D028B1A3554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D622114A-9CB3-4FBA-8381-7D028B1A3554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D622114A-9CB3-4FBA-8381-7D028B1A3554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D622114A-9CB3-4FBA-8381-7D028B1A3554}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

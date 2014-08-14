@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace GoToWindow.Extensibility
 {
-    public static class GoToWindowPluginConstants
+    public static class GoToWindowConstants
     {
-        public const string GoToWindowPluginContractName = "GoToWindow.Plugin";
+        public const string PluginContractName = "GoToWindow.Plugin";
     }
 }

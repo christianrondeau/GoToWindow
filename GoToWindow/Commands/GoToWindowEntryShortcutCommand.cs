@@ -6,12 +6,12 @@ namespace GoToWindow.Commands
 {
     public class GoToWindowEntryShortcutCommand : ICommand
     {
-        private readonly Func<int, IGoToWindowSearchResult> _getEntryAt;
+        private readonly Func<int, ISearchResult> _getEntryAt;
 
         public event EventHandler CanExecuteChanged;
         public event EventHandler Executed;
 
-        public GoToWindowEntryShortcutCommand(Func<int, IGoToWindowSearchResult> getEntryAt)
+        public GoToWindowEntryShortcutCommand(Func<int, ISearchResult> getEntryAt)
         {
             _getEntryAt = getEntryAt;
         }
