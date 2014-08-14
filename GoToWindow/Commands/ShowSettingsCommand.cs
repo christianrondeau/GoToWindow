@@ -23,10 +23,7 @@ namespace GoToWindow.Commands
 
         public void Execute(object parameter)
         {
-            if (Application.Current.Windows.OfType<SettingsWindow>().Any())
-                return;
-
-            new SettingsWindow(_context).ShowDialog();
+			_context.ShowSettings();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GoToWindow.Api;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using GoToWindow.Windows;
@@ -14,7 +15,8 @@ namespace GoToWindow
         void Show();
         void Hide();
         void EnableAltTabHook(bool enabled);
-    }
+		void ShowSettings();
+	}
 
     public class GoToWindowContext : IGoToWindowContext
     {
@@ -39,7 +41,7 @@ namespace GoToWindow
             _mainWindow.Height = 0;
             _mainWindow.Show();
 
-            var viewModel = MainWindowViewModel.Load(_pluginsContainer.Plugins);
+            var viewModel = MainViewModel.Load(_pluginsContainer.Plugins);
             viewModel.Close += Hide;
 
             if (_mainWindow != null) // If the window auto-closed
@@ -65,7 +67,7 @@ namespace GoToWindow
                 _mainWindow.Closing += MainWindow_Closing;
                 _mainWindow.Show();
 
-                var viewModel = MainWindowViewModel.Load(_pluginsContainer.Plugins);
+                var viewModel = MainViewModel.Load(_pluginsContainer.Plugins);
                 viewModel.Close += Hide;
                 _mainWindow.DataContext = viewModel;
             }
@@ -104,6 +106,16 @@ namespace GoToWindow
             }
         }
 
+		public void ShowSettings()
+		{
+			if (Application.Current.Windows.OfType<SettingsWindow>().Any())
+				return;
+
+			var settingswindow = new SettingsWindow();
+			settingswindow.DataContext = new SettingsViewModel(this);
+			settingswindow.ShowDialog();
+		}
+
         private void HandleAltTab()
         {
             Application.Current.Dispatcher.BeginInvoke(
@@ -120,5 +132,5 @@ namespace GoToWindow
                 _hooks = null;
             }
         }
-    }
+	}
 }

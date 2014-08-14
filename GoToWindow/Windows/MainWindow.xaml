@@ -21,7 +21,7 @@
         Activated="Window_Activated"
         Closing="Window_Closing"
         DataContextChanged="Window_DataContextChanged"
-        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+        d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="{x:Type Button}">
             <Setter Property="Template">

@@ -1,19 +1,61 @@
 ﻿<Window x:Class="GoToWindow.Windows.SettingsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:gotowindowBindingExtensions="clr-namespace:GoToWindow.BindingExtensions"
-        Title="Go To Window Settings" Icon="/GoToWindow;component/Resources/AppIcon.ico" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="ToolWindow" SizeToContent="WidthAndHeight" Initialized="Window_Initialized">
-    <Grid Height="200" Width="380">
-        <StackPanel Margin="10,10,0,0" Orientation="Horizontal">
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="GoToWindow v" />
-            <TextBlock Name="VersionTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="0.0.0"/>
-        </StackPanel>
-        <Label Content="Settings will be applied after Go To Window is restarted" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top"/>
-        <CheckBox Name="HookAltTabCheckbox" Content="Hook Alt+Tab" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" IsChecked="{gotowindowBindingExtensions:SettingBinding Path=HookAltTab}"/>
-        <CheckBox Name="StartWithWindowsCheckbox" Content="Start with Windows" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
-        <TextBlock Name="NoElevatedPrivilegesWarning" Foreground="Red" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" TextWrapping="Wrap" FontWeight="Bold" Width="360">Alt + Tab will not work in applications with elevated privileges (Run as Administrator). Restart GoToWindow as Administrator to solve.</TextBlock>
-        <Label Content="© Christian Rondeau 2014" HorizontalAlignment="Left" Margin="10,164,0,0" VerticalAlignment="Top" FontStyle="Italic"/>
-        <Button Name="OkButton" IsDefault="True" Content="Apply" HorizontalAlignment="Left" Margin="295,170,0,0" VerticalAlignment="Top" Width="75" Click="OkButton_Click"/>
-        <Button Name="CancelButton" IsCancel="True"  Content="Close" HorizontalAlignment="Left" Margin="215,170,0,0" VerticalAlignment="Top" Width="75" Click="CancelButton_Click"/>
-    </Grid>
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:gotowindowBindingExtensions="clr-namespace:GoToWindow.BindingExtensions"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:GoToWindow.ViewModels"
+	mc:Ignorable="d"
+    Title="Go To Window Settings" 
+	Icon="/GoToWindow;component/Resources/AppIcon.ico"
+	WindowStartupLocation="CenterScreen"
+	WindowStyle="ToolWindow"
+	SizeToContent="WidthAndHeight"
+	Width="600" Height="300"
+	MinWidth="500" MinHeight="250"
+	d:DesignWidth="600" d:DesignHeight="250"
+    d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Name="TabsRow" Height="*" />
+			<RowDefinition Name="ButtonsRow" Height="Auto" />
+		</Grid.RowDefinitions>
+		<TabControl Grid.Row="0" Margin="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<TabItem Header="_General">
+				<Grid>
+					<StackPanel Margin="10,10,0,0" Orientation="Horizontal">
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="GoToWindow v" />
+						<TextBlock x:Name="VersionTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="{Binding Version}" />
+					</StackPanel>
+					<CheckBox x:Name="HookAltTabCheckbox" Content="_Hook Alt+Tab" IsChecked="{Binding HookAltTab}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" />
+					<CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
+					<TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding NoElevatedPrivilegesWarning}" Foreground="Red" HorizontalAlignment="Left" Margin="10,81,10,0" VerticalAlignment="Top" TextWrapping="Wrap" FontWeight="Bold"><Run Text="Alt + Tab will not work in applications with elevated privileges (Run as Administrator). Restart GoToWindow as Administrator to solve."/></TextBlock>
+				</Grid>
+			</TabItem>
+			<TabItem Header="_Plugins">
+				<ListView>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<CheckBox />
+								<Label>My Plugin</Label>
+							</StackPanel>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</TabItem>
+		</TabControl>
+		<Grid Grid.Row="1" Margin="8,0,8,8" HorizontalAlignment="Stretch">
+			<Label Content="© Christian Rondeau 2014" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" FontStyle="Italic" />
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+				<StackPanel.Resources>
+					<Style TargetType="{x:Type Button}">
+						<Setter Property="Margin" Value="8,0,0,0"/>
+					</Style>
+				</StackPanel.Resources>
+				<Button x:Name="OkButton" IsDefault="True" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="OkButton_Click"/>
+				<Button x:Name="CancelButton" IsCancel="True"  Content="Close" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
+			</StackPanel>
+		</Grid>
+	</Grid>
 </Window>

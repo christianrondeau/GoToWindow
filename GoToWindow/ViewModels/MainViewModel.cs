@@ -9,16 +9,16 @@ using GoToWindow.Extensibility;
 
 namespace GoToWindow.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
-        public static MainWindowViewModel Load(IEnumerable<IGoToWindowPlugin> plugins)
+        public static MainViewModel Load(IEnumerable<IGoToWindowPlugin> plugins)
         {
             var list = new List<ISearchResult>();
 
             foreach (var plugin in plugins)
                 plugin.BuildList(list);
 
-            var instance = new MainWindowViewModel();
+            var instance = new MainViewModel();
             var viewSource = new CollectionViewSource
             {
                 Source = list.ToArray()
@@ -53,7 +53,7 @@ namespace GoToWindow.ViewModels
 
         public event EventHandler Close;
 
-        public MainWindowViewModel()
+        public MainViewModel()
         {
             var goToWindowEntryShortcutCommand = new GoToWindowEntryShortcutCommand(GetEntryAt);
             goToWindowEntryShortcutCommand.Executed += GoToWindowEntryShortcutCommand_Executed;

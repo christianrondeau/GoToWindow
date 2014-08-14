@@ -23,7 +23,7 @@ namespace GoToWindow.Windows
         private bool _releasedAlt;
         private bool _closeOnAltUp;
 
-        private MainWindowViewModel ViewModel { get { return (MainWindowViewModel)DataContext; } }
+        private MainViewModel ViewModel { get { return (MainViewModel)DataContext; } }
 
         public MainWindow()
         {
