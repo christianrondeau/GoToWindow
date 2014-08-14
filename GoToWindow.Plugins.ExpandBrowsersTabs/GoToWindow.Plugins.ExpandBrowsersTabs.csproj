@@ -48,9 +48,14 @@
   <ItemGroup>
     <Compile Include="Chrome\ChromeTab.cs" />
     <Compile Include="Chrome\ChromeTabsFinder.cs" />
+    <Compile Include="Contracts\ITab.cs" />
+    <Compile Include="Contracts\ITabsFinder.cs" />
+    <Compile Include="Contracts\TabBase.cs" />
     <Compile Include="ExpandBrowsersTabsPlugin.cs" />
+    <Compile Include="InternetExplorer\InternetExplorerTab.cs" />
+    <Compile Include="InternetExplorer\InternetExplorerTabsFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\ChromeTabSearchResult.cs" />
+    <Compile Include="ViewModel\TabSearchResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoToWindow.Api\GoToWindow.Api.csproj">
@@ -63,6 +68,26 @@
       <Name>GoToWindow.Extensibility</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Accessibility">
+      <Guid>{1EA4DBF0-3C3B-11CF-810C-00AA00389B71}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="SHDocVw">
+      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

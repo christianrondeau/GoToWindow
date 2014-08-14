@@ -7,6 +7,8 @@ using GoToWindow.Extensibility.ViewModel;
 using GoToWindow.Extensibility.Controls;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Chrome;
 using System;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
+using GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs
 {
@@ -19,8 +21,16 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 
         public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.AfterCore; } }
 
+		private static readonly IDictionary<string, Func<ITabsFinder>> TabsFinders = new Dictionary<string, Func<ITabsFinder>>
+		{
+			{ "chrome", () => new ChromeTabsFinder() },
+			{ "iexplore", () => new InternetExplorerTabsFinder() }
+		};
+
         public void BuildList(List<ISearchResult> list)
         {
+			var finders = new Dictionary<string, ITabsFinder>();
+
             for(int index = list.Count - 1; index >= 0; index--)
             {
                 var item = list[index] as IWindowSearchResult;
@@ -28,29 +38,26 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 				if (item == null)
 					continue;
 
-				switch(item.Process)
+				ITabsFinder finder;
+				if(!finders.TryGetValue(item.Process, out finder))
 				{
-					case "chrome":
-						ReplaceEntries(item, list, index, ChromeProcessToTabs);
-						break;
+					Func<ITabsFinder> finderCtor;
+					if (TabsFinders.TryGetValue(item.Process, out finderCtor))
+						finder = finderCtor();
+					else
+						continue;
 				}
+
+				var tabs = finder.GetTabsOfWindow(item.HWnd);
+
+				list.RemoveAt(index);
+				list.InsertRange(index, tabs.Select(tab => ConvertTabToResult(item, tab)));
             }
         }
 
-        private static void ReplaceEntries(IWindowSearchResult item, List<ISearchResult> list, int index, Func<IWindowSearchResult, IEnumerable<ISearchResult>> processConvertFunc)
+		private static ISearchResult ConvertTabToResult(IWindowSearchResult item, ITab tab)
         {
-			list.RemoveAt(index);
-			list.InsertRange(index, processConvertFunc(item));
-        }
-
-        private static IEnumerable<ISearchResult> ChromeProcessToTabs(IWindowSearchResult item)
-        {
-            var tabs = ChromeTabsFinder.GetTabsOfChromeWindow(item.HWnd);
-
-            foreach (var tab in tabs)
-            {
-                yield return new ChromeTabSearchResult(item, tab, () => new BasicListEntry());
-            }
+			return new TabSearchResult(item, tab, () => new BasicListEntry());
         }
     }
 }

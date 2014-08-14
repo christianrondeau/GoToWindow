@@ -3,14 +3,14 @@ using GoToWindow.Extensibility;
 using GoToWindow.Extensibility.ViewModel;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
-using GoToWindow.Plugins.ExpandBrowsersTabs.Chrome;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel
 {
-    public class ChromeTabSearchResult : SearchResultBase, IBasicSearchResult, ISearchResult
+    public class TabSearchResult : SearchResultBase, IBasicSearchResult, ISearchResult
     {
         private readonly IWindowSearchResult _item;
-        private readonly ChromeTab _tab;
+        private readonly ITab _tab;
 
         public BitmapFrame Icon
         {
@@ -27,7 +27,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel
             get { return _item.Process; }
         }
 
-        public ChromeTabSearchResult(IWindowSearchResult item, ChromeTab tab, Func<UserControl> viewCtor)
+        public TabSearchResult(IWindowSearchResult item, ITab tab, Func<UserControl> viewCtor)
             : base(viewCtor)
         {
             _item = item;

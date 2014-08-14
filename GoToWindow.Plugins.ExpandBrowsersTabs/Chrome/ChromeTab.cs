@@ -1,4 +1,5 @@
 ﻿using GoToWindow.Api;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,24 +8,23 @@ using System.Threading.Tasks;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
 {
-    public class ChromeTab
+    public class ChromeTab : TabBase, ITab
     {
-        public string Title { get; set; }
-        public int TabIndex { get; set; }
+        private int _tabIndex { get; set; }
 
         public ChromeTab(string title, int tabIndex)
+			: base(title)
         {
-            Title = title;
-            TabIndex = tabIndex;
+            _tabIndex = tabIndex;
         }
 
         public void Select()
         {
-            if (TabIndex <= 0 || TabIndex > 9)
+            if (_tabIndex <= 0 || _tabIndex > 9)
                 return;
 
             KeyboardSend.KeyDown(KeyboardSend.LCtrl);
-            KeyboardSend.KeyPress(KeyboardSend.GetNumber(TabIndex));
+            KeyboardSend.KeyPress(KeyboardSend.GetNumber(_tabIndex));
             KeyboardSend.KeyUp(KeyboardSend.LCtrl);
         }
     }

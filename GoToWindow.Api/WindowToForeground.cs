@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Runtime.InteropServices;
+using log4net;
 
 namespace GoToWindow.Api
 {
@@ -9,6 +10,8 @@ namespace GoToWindow.Api
     /// </remarks>
     internal static class WindowToForeground
     {
+		private static readonly ILog Log = LogManager.GetLogger(typeof(WindowToForeground).Assembly, "GoToWindow");
+
 // ReSharper disable InconsistentNaming
         private const int SC_RESTORE = 0xF120;
         private const uint WM_SYSCOMMAND = 0x0112;
@@ -89,8 +92,10 @@ namespace GoToWindow.Api
                     foreThread == appThread ||
                     AttachThreadInput(foreThread, appThread, true);
 
-                if (threadsAttached) action();
-                else throw new ThreadStateException("AttachThreadInput failed.");
+				if (threadsAttached)
+					action();
+				else 
+					Log.Warn(string.Format("Cannow bring window to foreground. Could not attach to thread {0} from fore thread {1}", appThread, foreThread));
             }
             finally
             {
