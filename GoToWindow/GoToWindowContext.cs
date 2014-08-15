@@ -43,7 +43,7 @@ namespace GoToWindow
 			//var previousWidth = _mainWindow.Width = 0;
 			//var previousHeight = _mainWindow.Height = 0;
 			_mainWindow.DataContext = _mainViewModel;
-			_mainViewModel.Close += Hide;
+			_mainViewModel.Close += _mainViewModel_Hide;
 
 			//Show();
         }
@@ -95,14 +95,22 @@ namespace GoToWindow
             if (_operationInProgress || _mainWindow == null || !_mainWindow.IsLoaded) 
                 return;
 
+			_operationInProgress = true;
+
             Log.Debug("Hiding Main Window.");
             _mainWindow.BeginInit();
             _mainViewModel.Empty();
             _mainWindow.EndInit();
-            Application.Current.Dispatcher.InvokeAsync(() => _mainWindow.Hide(), DispatcherPriority.Background);
+            Application.Current.Dispatcher.InvokeAsync(HideComplete, DispatcherPriority.Background);
         }
 
-		private void Hide(object sender, EventArgs e)
+		private void HideComplete()
+		{
+			_mainWindow.Hide();
+			_operationInProgress = false;
+		}
+
+		private void _mainViewModel_Hide(object sender, EventArgs e)
 		{
 			Hide();
 		}
