@@ -68,6 +68,7 @@
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
+    <Compile Include="ExitCodes.cs" />
     <Compile Include="GoToWindowContext.cs" />
     <Compile Include="Commands\OpenMainWindowCommand.cs" />
     <Compile Include="GoToWindowPluginsContainer.cs" />

@@ -33,6 +33,7 @@ namespace GoToWindow.ViewModels
 					stopwatch.Start();
 				}
 
+                //TODO: Make a timeout that ignores a plug-in if it's too long, and updates the result when finally getting a response
 				plugin.BuildList(list);
 
 				if (stopwatch != null)

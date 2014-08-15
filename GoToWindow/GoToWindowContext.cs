@@ -31,11 +31,7 @@ namespace GoToWindow
 
 		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
 
-		public GoToWindowContext()
-		{	
-		}
-
-        public void Init()
+	    public void Init()
         {
 			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
 

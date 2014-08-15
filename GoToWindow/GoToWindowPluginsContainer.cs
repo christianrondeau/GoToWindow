@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.IO;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Windows;
 using GoToWindow.Extensibility;
 using log4net;
@@ -25,23 +28,46 @@ namespace GoToWindow
 		public static GoToWindowPluginsContainer LoadPlugins()
 		{
 			var catalog = new AggregateCatalog();
-			catalog.Catalogs.Add(new DirectoryCatalog(PluginsFolderName));
-			var container = new CompositionContainer(catalog);
+		    try
+		    {
+		        catalog.Catalogs.Add(new DirectoryCatalog(PluginsFolderName));
+		    }
+		    catch (DirectoryNotFoundException exc)
+		    {
+                HandleError(exc, ExitCodes.PluginDirectoryNotFound, "Plugins directory not found. Check that the Plugins directory is created and at least contains at least GoToWindow.Plugins.Core.dll can be found and restart GoToWindow.");
+                return null;
+		    }
+
+		    var container = new CompositionContainer(catalog);
 
 			try
 			{
 				var pluginsContainer = new GoToWindowPluginsContainer();
 				container.ComposeParts(pluginsContainer);
 
+                if(pluginsContainer.Plugins == null || !pluginsContainer.Plugins.Any())
+                    throw new InstanceNotFoundException("No plug-ins found");
+
 				pluginsContainer.Plugins = pluginsContainer.Plugins.OrderBy(plugin => plugin.Sequence).ToList();
 				return pluginsContainer;
-			}
-			catch (CompositionException compositionException)
-			{
-				Log.Error(compositionException);
-				MessageBox.Show("An error occured while loading plug-ins. Try updating or removing plugins other than GoToWindow.Plugins.Core.dll from the Plugins directory and restart GoToWindow.", "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				throw;
-			}
+            }
+            catch (InstanceNotFoundException exc)
+            {
+                HandleError(exc, ExitCodes.NoPluginsFound, "No plug-ins found. Check that at least GoToWindow.Plugins.Core.dll can be found in the Plugins directory and restart GoToWindow.");
+                return null;
+            }
+            catch (CompositionException exc)
+            {
+                HandleError(exc, ExitCodes.ErrorLoadingPlugins, "An error occured while loading plug-ins. Try updating or removing plugins other than GoToWindow.Plugins.Core.dll from the Plugins directory and restart GoToWindow.");
+                return null;
+            }
 		}
+
+        private static void HandleError(Exception exc, ExitCodes exitCode, string message)
+	    {
+	        Log.Error(exc);
+	        MessageBox.Show(message, "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Application.Current.Shutdown((int)exitCode);
+	    }
 	}
 }
