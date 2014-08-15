@@ -1,21 +1,32 @@
+using System.ComponentModel;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using GoToWindow.Extensibility;
 using log4net;
 
 namespace GoToWindow.Plugins.Debug.ViewModel
 {
-	public class DebugSearchResult : ISearchResult
+    public class DebugSearchResult : ISearchResult, INotifyPropertyChanged
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(DebugSearchResult).Assembly, "GoToWindow");
 
 		public UserControl View { get; private set; }
-		public string Message { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-		public DebugSearchResult(string message, UserControl view)
+        private string _message;
+        public string Message
+        {
+            get { return _message; }
+            set
+            {
+                _message = value;
+                OnPropertyChanged("Message");
+            }
+        }
+
+		public DebugSearchResult(UserControl view)
 		{
 			View = view;
-			Message = message;
+			Message = "Debug";
 		}
 
 		public void Select()
@@ -25,13 +36,15 @@ namespace GoToWindow.Plugins.Debug.ViewModel
 
 		public bool IsShown(string searchQuery)
 		{
-			Log.Debug(string.Format("Debug: Filter: '{0}'", searchQuery));
-			return searchQuery == "debug";
+			var visible = searchQuery != null && searchQuery.StartsWith(":");
+		    Message = searchQuery;
+		    return visible;
 		}
 
-		private BitmapFrame LoadIcon()
-		{
-			return null;
-		}
+        protected void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
 	}
 }

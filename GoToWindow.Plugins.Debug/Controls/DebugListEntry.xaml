@@ -8,6 +8,6 @@
              d:DesignHeight="48" d:DesignWidth="512" d:DataContext="{d:DesignInstance debugViewModel:DebugSearchResult}"
              Background="Yellow">
     <Grid>
-        <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Foreground="Gray" Text="{Binding Message}" />
+        <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Foreground="Gray" Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </UserControl>

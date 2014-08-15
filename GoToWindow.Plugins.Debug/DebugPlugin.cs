@@ -18,7 +18,6 @@ namespace GoToWindow.Plugins.Debug
 		public void BuildList(List<ISearchResult> list)
 		{
 			list.Insert(0, new DebugSearchResult(
-				string.Format("Debug: Found {0} entries", list.Count),
 				new DebugListEntry())
 				);
 		}
