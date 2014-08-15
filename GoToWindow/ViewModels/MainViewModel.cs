@@ -55,12 +55,12 @@ namespace GoToWindow.ViewModels
 			IsEmpty = true;
 		}
 
+		private string _searchText;
+		private bool _isEmpty;
+
 		public event PropertyChangedEventHandler PropertyChanged;
-		public bool IsEmpty { get; private set; }
         public CollectionViewSource Windows { get; private set; }
         public ISearchResult SelectedWindowEntry { get; set; }
-
-        private string _searchText;
 
         public string SearchText
         {
@@ -71,6 +71,16 @@ namespace GoToWindow.ViewModels
                 OnPropertyChanged("SearchText");
             }
         }
+
+		public bool IsEmpty
+		{
+			get { return _isEmpty; }
+			private set
+			{
+				_isEmpty = value;
+				OnPropertyChanged("IsEmpty");
+			}
+		}
 
         protected void OnPropertyChanged(string name)
         {

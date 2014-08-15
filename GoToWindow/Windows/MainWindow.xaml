@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:GoToWindow.ViewModels"
+		xmlns:converters="clr-namespace:GoToWindow.Converters"
         mc:Ignorable="d"
         Title="Go To Window" Height="Auto" Width="640"
         WindowStartupLocation="CenterScreen"
@@ -37,6 +38,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
+		<converters:ValueConverterGroup x:Key="InvertAndVisibilityConverter">
+			<converters:InverseBooleanConverter />
+			<BooleanToVisibilityConverter />
+		</converters:ValueConverterGroup>
+		<BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
@@ -107,6 +113,7 @@
                       DataContextChanged="WindowsListView_DataContextChanged"
                       BorderBrush="Transparent"
                       MaxHeight="288"
+					  Visibility="{Binding IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InvertAndVisibilityConverter}}"
                       ItemsSource="{Binding Windows.View}"
                       SelectedItem="{Binding SelectedWindowEntry, Mode=TwoWay}">
                 <ListView.Style>

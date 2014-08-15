@@ -32,20 +32,17 @@ namespace GoToWindow
 		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
 
 		public GoToWindowContext()
-		{
-			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
+		{	
 		}
 
         public void Init()
         {
+			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
+
             _mainWindow = new MainWindow();
 			_mainViewModel = new MainViewModel();
-			//var previousWidth = _mainWindow.Width = 0;
-			//var previousHeight = _mainWindow.Height = 0;
 			_mainWindow.DataContext = _mainViewModel;
 			_mainViewModel.Close += _mainViewModel_Hide;
-
-			//Show();
         }
 
         public void Show()
@@ -81,15 +78,6 @@ namespace GoToWindow
             }
         }
 
-		private void LoadViewModel()
-		{
-			_mainWindow.BeginInit();
-			_mainViewModel.Load(PluginsContainer.Plugins);
-			_mainWindow.ApplyFilter();
-			_mainWindow.EndInit();
-		    _operationInProgress = false;
-		}
-
         public void Hide()
         {
             if (_operationInProgress || _mainWindow == null || !_mainWindow.IsLoaded) 
@@ -101,18 +89,8 @@ namespace GoToWindow
             _mainWindow.BeginInit();
             _mainViewModel.Empty();
             _mainWindow.EndInit();
-            Application.Current.Dispatcher.InvokeAsync(HideComplete, DispatcherPriority.Background);
-        }
-
-		private void HideComplete()
-		{
-			_mainWindow.Hide();
-			_operationInProgress = false;
-		}
-
-		private void _mainViewModel_Hide(object sender, EventArgs e)
-		{
-			Hide();
+			//TODO: Force updating of the list view, otherwise it flickers when re-opening
+            Application.Current.Dispatcher.Invoke(HideWindow, DispatcherPriority.ApplicationIdle);
 		}
 
 		public void EnableAltTabHook(bool enabled)
@@ -138,12 +116,29 @@ namespace GoToWindow
 			settingswindow.ShowDialog();
 		}
 
+		private void LoadViewModel()
+		{
+			_mainWindow.BeginInit();
+			_mainViewModel.Load(PluginsContainer.Plugins);
+			_mainWindow.ApplyFilter();
+			_mainWindow.EndInit();
+			_operationInProgress = false;
+		}
+
+		private void HideWindow()
+		{
+			_mainWindow.Hide();
+			_operationInProgress = false;
+		}
+
 		private void HandleAltTab()
 		{
-			Application.Current.Dispatcher.BeginInvoke(
-				new Action(Show),
-				DispatcherPriority.Normal,
-				null);
+			Application.Current.Dispatcher.InvokeAsync(Show, DispatcherPriority.Normal);
+		}
+
+		private void _mainViewModel_Hide(object sender, EventArgs e)
+		{
+			Hide();
 		}
 
 		public void Dispose()
