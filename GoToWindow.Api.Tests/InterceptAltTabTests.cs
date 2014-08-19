@@ -9,7 +9,13 @@ namespace GoToWindow.Api.Tests
 		public void CanInterceptAltTab()
 		{
 			var intercepted = false;
-			using (new KeyboardHook(() => intercepted = true))
+			var shortcut = new KeyboardShortcut
+			{
+				VirtualKeyCode = KeyboardVirtualCodes.Tab,
+				Modifier = KeyboardVirtualCodes.Modifiers.Alt
+			};
+
+			using (new KeyboardHook(shortcut, () => intercepted = true))
 			{
 				KeyboardSend.KeyDown(KeyboardSend.LAlt);
 				KeyboardSend.KeyPress(KeyboardSend.Tab);

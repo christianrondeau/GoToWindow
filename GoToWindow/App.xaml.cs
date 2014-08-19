@@ -37,7 +37,10 @@ namespace GoToWindow
 				ContextMenu = CreateContextMenu()
 			};
 
-			_context.EnableAltTabHook(GoToWindow.Properties.Settings.Default.HookAltTab);
+			_context.EnableAltTabHook(
+				GoToWindow.Properties.Settings.Default.HookAltTab,
+				GoToWindow.Properties.Settings.Default.ShortcutPressesBeforeOpen
+				);
 
 			_context.Init();
 

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:GoToWindow.ViewModels"
+	xmlns:converters="clr-namespace:GoToWindow.Converters"
 	mc:Ignorable="d"
     Title="Go To Window Settings" 
 	Icon="/GoToWindow;component/Resources/AppIcon.ico"
@@ -15,6 +16,9 @@
 	MinWidth="500" MinHeight="250"
 	d:DesignWidth="600" d:DesignHeight="250"
     d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
+	<Window.Resources>
+		<converters:IncrementIntConverter x:Key="IncrementIntConverter" />
+	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Name="TabsRow" Height="*" />
@@ -28,8 +32,13 @@
 						<TextBlock x:Name="VersionTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="{Binding Version}" />
 					</StackPanel>
 					<CheckBox x:Name="HookAltTabCheckbox" Content="_Hook Alt+Tab" IsChecked="{Binding HookAltTab}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" />
-					<CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
-					<TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding NoElevatedPrivilegesWarning}" Foreground="Red" HorizontalAlignment="Left" Margin="10,81,10,0" VerticalAlignment="Top" TextWrapping="Wrap" FontWeight="Bold"><Run Text="Alt + Tab will not work in applications with elevated privileges (Run as Administrator). Restart GoToWindow as Administrator to solve."/></TextBlock>
+					<Label Content="Shortcut Handling" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,61,0,0" />
+					<ComboBox x:Name="ShortcutPressesBeforeOpenComboBox" IsEnabled="{Binding HookAltTab}" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,65,0,0">
+						<ComboBoxItem Tag="1">Single (Alt + Tab)</ComboBoxItem>
+						<ComboBoxItem Tag="2">Twice (Alt + Tab + Tab)</ComboBoxItem>
+					</ComboBox>
+					<CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,92,0,0"/>
+					<TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding NoElevatedPrivilegesWarning}" Foreground="Red" HorizontalAlignment="Left" Margin="10,112,0,0" VerticalAlignment="Top" TextWrapping="Wrap" FontWeight="Bold"><Run Text="Alt + Tab will not work in applications with elevated privileges (Run as Administrator). Restart GoToWindow as Administrator to solve."/></TextBlock>
 				</Grid>
 			</TabItem>
 			<TabItem Header="_Plugins">

@@ -66,6 +66,7 @@
     <Compile Include="Commands\GoToWindowEntryShortcutCommand.cs" />
     <Compile Include="Commands\ShowSettingsCommand.cs" />
     <Compile Include="Commands\ExitCommand.cs" />
+    <Compile Include="Converters\IncrementIntConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="ExitCodes.cs" />

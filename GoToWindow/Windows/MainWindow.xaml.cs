@@ -69,7 +69,7 @@ namespace GoToWindow.Windows
             var searchQuery = SearchTextBox.Text;
             if(!String.IsNullOrWhiteSpace(searchQuery))
             {
-                Log.Debug(string.Format("Launching Windows Search with '{0}'.", searchQuery));
+                Log.DebugFormat("Launching Windows Search with '{0}'.", searchQuery);
 
                 WindowsSearch.Launch(searchQuery);
             }
