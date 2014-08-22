@@ -7,7 +7,7 @@ namespace GoToWindow.Api
 	/// <remarks>
 	/// Thanks to Shlomi Ohayon for the solution: http://www.shloemi.com/2012/09/solved-setforegroundwindow-win32-api-not-always-works/
 	/// </remarks>
-	internal static class WindowToForeground
+	public static class WindowToForeground
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(WindowToForeground).Assembly, "GoToWindow");
 
@@ -122,11 +122,6 @@ namespace GoToWindow.Api
 			});
 
 			return result;
-		}
-
-		public static bool HasFocus(IntPtr HWnd)
-		{
-			return GetForegroundWindow() == HWnd;
 		}
 	}
 }

@@ -16,12 +16,12 @@ namespace GoToWindow.Api.Tests
 				{
 					var window2 = WindowEntryFactory.Create(app2.Process.MainWindowHandle);
 
-					Assert.IsFalse(window1.HasFocus());
-					Assert.IsTrue(window2.HasFocus());
+					Assert.IsFalse(window1.IsForeground());
+					Assert.IsTrue(window2.IsForeground());
 
 					window1.Focus();
 
-					Assert.IsTrue(window1.HasFocus());
+					Assert.IsTrue(window1.IsForeground());
 				}
 				
 			}

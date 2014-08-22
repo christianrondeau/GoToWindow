@@ -16,9 +16,9 @@ namespace GoToWindow.Api
 			return WindowToForeground.ForceWindowToForeground(HWnd);
 		}
 
-		public bool HasFocus()
+		public bool IsForeground()
 		{
-			return WindowToForeground.HasFocus(HWnd);
+			return WindowToForeground.GetForegroundWindow() == HWnd;
 		}
 
 		public bool IsSameWindow(IWindowEntry other)
