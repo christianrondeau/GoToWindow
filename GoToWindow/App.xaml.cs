@@ -45,6 +45,21 @@ namespace GoToWindow
 			_context.Init();
 
 			Log.Info("Application started.");
+
+			ShowStartupTooltip();
+		}
+
+		private void ShowStartupTooltip()
+		{
+			var shortcutPressesBeforeOpen = GoToWindow.Properties.Settings.Default.ShortcutPressesBeforeOpen;
+			var openShortcutDescription = shortcutPressesBeforeOpen == 1
+				? "Alt + Tab"
+				: "Alt + Tab + Tab";
+
+			_trayIcon.ShowBalloonTip(
+				"Go To Window",
+				string.Format("Press {0} and start typing to search through your opened windows.", openShortcutDescription),
+				BalloonIcon.Info);
 		}
 
 		private ContextMenu CreateContextMenu()
