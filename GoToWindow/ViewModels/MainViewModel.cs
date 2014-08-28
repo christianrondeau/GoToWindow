@@ -16,6 +16,14 @@ namespace GoToWindow.ViewModels
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(MainViewModel).Assembly, "GoToWindow");
 
+		private string _searchText;
+		private bool _isEmpty;
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public CollectionViewSource Windows { get; private set; }
+		public ISearchResult SelectedWindowEntry { get; set; }
+
         public void Load(IEnumerable<IGoToWindowPlugin> plugins)
         {
 			Empty();
@@ -55,13 +63,6 @@ namespace GoToWindow.ViewModels
 			SearchText = "";
 			IsEmpty = true;
 		}
-
-		private string _searchText;
-		private bool _isEmpty;
-
-		public event PropertyChangedEventHandler PropertyChanged;
-        public CollectionViewSource Windows { get; private set; }
-        public ISearchResult SelectedWindowEntry { get; set; }
 
         public string SearchText
         {

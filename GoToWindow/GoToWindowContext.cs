@@ -175,7 +175,7 @@ namespace GoToWindow
 			{
 				_mainWindow.BeginInit();
 				_mainViewModel.Load(PluginsContainer.Plugins);
-				_mainWindow.ApplyFilter();
+				_mainWindow.DataReady();
 				_mainWindow.EndInit();
 				Log.Debug("View Model loaded.");
 				Application.Current.Dispatcher.InvokeAsync(EnsureWindowIsForeground, DispatcherPriority.Background);

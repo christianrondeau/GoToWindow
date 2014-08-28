@@ -110,7 +110,6 @@
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       MouseDoubleClick="WindowsListView_MouseDoubleClick"
                       PreviewKeyDown="WindowsListView_PreviewKeyDown"
-                      DataContextChanged="WindowsListView_DataContextChanged"
                       BorderBrush="Transparent"
                       MaxHeight="288"
 					  Visibility="{Binding IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InvertAndVisibilityConverter}}"

@@ -92,9 +92,14 @@ namespace GoToWindow.Windows
                 WindowsListView.SelectedIndex = 0;
         }
 
-		public void ApplyFilter()
+		public void DataReady()
 		{
 			ApplyFilter("");
+
+			if (WindowsListView.Items.Count > 1)
+				WindowsListView.SelectedIndex = 1;
+			else if (WindowsListView.Items.Count > 0)
+				WindowsListView.SelectedIndex = 0;
 		}
 
         private void ApplyFilter(string searchQuery)
@@ -192,20 +197,6 @@ namespace GoToWindow.Windows
         private void ClearSearchButton_Click(object sender, RoutedEventArgs e)
         {
 			ViewModel.AskClose();
-        }
-
-        private void WindowsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            EventHandler eventHandler = null;
-            eventHandler = delegate
-            {
-                if (WindowsListView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated) return;
-                WindowsListView.ItemContainerGenerator.StatusChanged -= eventHandler;
-
-                if (WindowsListView.Items.Count > 0)
-                    WindowsListView.SelectedIndex = 0;
-            };
-            WindowsListView.ItemContainerGenerator.StatusChanged += eventHandler;
         }
 
         private void Window_Activated(object sender, EventArgs e)
