@@ -13,12 +13,8 @@ using System.Windows;
 
 [assembly: ComVisible(false)]
 
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
-[assembly: ThemeInfo(
-	ResourceDictionaryLocation.None,
-	ResourceDictionaryLocation.SourceAssembly
-)]
-
-[assembly: AssemblyVersion("0.0.8")]
-[assembly: AssemblyFileVersion("0.0.8")]
-[assembly: AssemblyInformationalVersion("0.0.8")]
+[assembly: AssemblyVersion("0.1.0")]
+[assembly: AssemblyFileVersion("0.1.0")]
+[assembly: AssemblyInformationalVersion("0.1.0")]
