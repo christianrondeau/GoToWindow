@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Api", "GoToWindow.Api\GoToWindow.Api.csproj", "{C0E88C89-8430-43BA-A5D5-A92EAFD48A79}"
 EndProject
@@ -25,6 +25,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Plugins.Debug", "GoToWindow.Plugins.Debug\GoToWindow.Plugins.Debug.csproj", "{15144D50-5E17-48FF-867D-144B118385E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Plugins.ExpandBrowsersTabs", "GoToWindow.Plugins.ExpandBrowsersTabs\GoToWindow.Plugins.ExpandBrowsersTabs.csproj", "{D622114A-9CB3-4FBA-8381-7D028B1A3554}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Markdown", "Markdown", "{6C81112D-ACB9-4CB9-AA7A-C1D5FBB83B71}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		PLUGINS.md = PLUGINS.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
