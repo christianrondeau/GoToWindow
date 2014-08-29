@@ -94,6 +94,9 @@ namespace GoToWindow.Windows
 
 		public void DataReady()
 		{
+		    _releasedAlt = false;
+		    _closeOnAltUp = false;
+
 			ApplyFilter("");
 
 			if (WindowsListView.Items.Count > 1)
