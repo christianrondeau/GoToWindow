@@ -1,6 +1,5 @@
-﻿using System;
+﻿using GoToWindow.Plugins.ExpandBrowsersTabs.Common;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
-using GoToWindow.Plugins.ExpandBrowsersTabs.Common;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 {

@@ -57,27 +57,27 @@ namespace GoToWindow.ViewModels
 			Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
-		private bool GetStartWithWindows()
+		private static bool GetStartWithWindows()
 		{
 			var runList = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", false);
-			if (runList != null)
-			{
-				var executablePath = Assembly.GetExecutingAssembly().Location;
-				return ((string)runList.GetValue("GoToWindow") == executablePath);
-			}
-
-			return false;
+		    
+            if (runList == null) return false;
+		    
+            var executablePath = Assembly.GetExecutingAssembly().Location;
+		    return ((string)runList.GetValue("GoToWindow") == executablePath);
 		}
 
-		private bool GetHasElevatedPrivileges()
+		private static bool GetHasElevatedPrivileges()
 		{
-			if (WindowsVersion.IsWindows8())
-			{
-				var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-				return principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200);
-			}
+		    if (!WindowsVersion.IsWindows8()) return true;
 
-			return true;
+		    var identity = WindowsIdentity.GetCurrent();
+
+		    if (identity == null)
+		        return false;
+
+		    var principal = new WindowsPrincipal(identity);
+		    return principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200);
 		}
 
 		public void Apply()
@@ -101,7 +101,7 @@ namespace GoToWindow.ViewModels
 			Properties.Settings.Default.Save();
 		}
 
-		private void UpdateStartWithWindows(bool active)
+		private static void UpdateStartWithWindows(bool active)
 		{
 			if (active)
 			{

@@ -11,7 +11,7 @@ namespace GoToWindow.Api.Tests
 		public static string GetResourcePath(string filename)
 		{
 			var executablePath = Path.GetDirectoryName(typeof(WindowListFactoryTests).Assembly.Location);
-			return Path.Combine(executablePath, filename);
+            return executablePath != null ? Path.Combine(executablePath, filename) : null;
 		}
 
 		private readonly Process _process;

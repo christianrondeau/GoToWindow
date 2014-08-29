@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:GoToWindow.ViewModels"
 		xmlns:converters="clr-namespace:GoToWindow.Converters"
+        xmlns:model="clr-namespace:GoToWindow.Extensibility.ViewModel;assembly=GoToWindow.Extensibility"
         mc:Ignorable="d"
         Title="Go To Window" Height="Auto" Width="640"
         WindowStartupLocation="CenterScreen"
@@ -42,7 +43,6 @@
 			<converters:InverseBooleanConverter />
 			<BooleanToVisibilityConverter />
 		</converters:ValueConverterGroup>
-		<BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Command="{Binding GoToWindowEntryShortcut}"
@@ -135,7 +135,7 @@
                     </Style>
                 </ListView.Style>
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate DataType="model:IWindowSearchResult">
                         <ContentControl Content="{Binding View}" Height="48" />
                     </DataTemplate>
                 </ListView.ItemTemplate>

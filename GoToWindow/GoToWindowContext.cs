@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -7,8 +8,6 @@ using GoToWindow.Api;
 using GoToWindow.ViewModels;
 using GoToWindow.Windows;
 using log4net;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GoToWindow
 {
@@ -26,7 +25,8 @@ namespace GoToWindow
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
 
-		private Object _lock = new Object();
+		private readonly Object _lock = new Object();
+
 	    private bool _showInProgress;
 		private bool _hideInProgress;
 		private bool _hidePending;
@@ -83,18 +83,11 @@ namespace GoToWindow
 			}
         }
 
-		private void ForceWindowFocus()
-		{
-			if (!_mainWindowEntry.IsForeground())
-			{
-				_mainWindow.SetFocus();
-				Log.Debug("Window does not have focus when shown. Forcing focus.");
-				_mainWindowEntry.Focus();
-			}
-		}
+	    public void Hide()
+	    {
+	        if (_mainWindow == null)
+	            return;
 
-        public void Hide()
-        {
 			lock (_lock)
 			{
 				if (_hideInProgress || _hidePending)
@@ -152,7 +145,7 @@ namespace GoToWindow
 
 				_hooks = new KeyboardHook(shortcut, HandleAltTab);
 			}
-			else if (_hooks != null && !enabled)
+			else if (_hooks != null)
 			{
 				_hooks.Dispose();
 				_hooks = null;
@@ -164,9 +157,12 @@ namespace GoToWindow
 			if (Application.Current.Windows.OfType<SettingsWindow>().Any())
 				return;
 
-			var settingswindow = new SettingsWindow();
-			settingswindow.DataContext = new SettingsViewModel(this);
-			settingswindow.ShowDialog();
+			var settingswindow = new SettingsWindow
+			{
+			    DataContext = new SettingsViewModel(this)
+			};
+
+		    settingswindow.ShowDialog();
 		}
 
 		private void LoadViewModel()
@@ -218,20 +214,16 @@ namespace GoToWindow
 
 		private void RunPendingHide()
 		{
-			bool shouldRun = false;
-
-			lock(_lock)
+		    lock(_lock)
 			{
 				if (!_hidePending)
 					return;
 
 				Log.Debug("Executing pending Hide.");
 				_hidePending = false;
-				shouldRun = true;
 			}
 
-			if (shouldRun)
-				Hide();
+			Hide();
 		}
 
 		private void HideWindow()

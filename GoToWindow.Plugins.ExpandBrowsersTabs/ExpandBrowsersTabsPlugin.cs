@@ -5,11 +5,11 @@ using System.Linq;
 using GoToWindow.Extensibility;
 using GoToWindow.Extensibility.Controls;
 using GoToWindow.Extensibility.ViewModel;
-using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
-using GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Chrome;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Firefox;
 using GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer;
+using GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs
 {

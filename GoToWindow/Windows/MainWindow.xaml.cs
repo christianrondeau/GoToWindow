@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using GoToWindow.Api;
@@ -43,11 +42,6 @@ namespace GoToWindow.Windows
 			Activate();
 			SearchTextBox.Focus();
 		}
-
-        void ViewModel_Close(object sender, EventArgs e)
-        {
-			ViewModel.AskClose();
-        }
 
         private void WindowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

@@ -4,7 +4,7 @@
 	{
 		public string Title { get; set; }
 
-		public TabBase(string title)
+	    protected TabBase(string title)
 		{
 			Title = title;
 		}

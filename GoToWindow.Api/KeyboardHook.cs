@@ -1,6 +1,6 @@
 ﻿// #define DEBUG_KEYS
+
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -81,7 +81,6 @@ namespace GoToWindow.Api
 			UnhookWindowsHookEx(_hookID);
 		}
 
-
 		private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
 		{
 			/*
@@ -92,48 +91,45 @@ namespace GoToWindow.Api
 				0xA4	0x80	WM_KEYUP		Alt Up
 			*/
 
-			if (nCode == HC_ACTION)
-			{
-				var keyInfo = (Kbdllhookstruct)Marshal.PtrToStructure(lParam, typeof(Kbdllhookstruct));
+		    if (nCode != HC_ACTION)
+                return CallNextHookEx(_hookID, nCode, wParam, lParam);
+		    
+            var keyInfo = (Kbdllhookstruct)Marshal.PtrToStructure(lParam, typeof(Kbdllhookstruct));
 
-				#if(DEBUG_KEYS)
-				Console.WriteLine("Keys: 0x{0}\t0x{1}\t{2}", keyInfo.VkCode.ToString("X2"), keyInfo.Flags.ToString("X2"), WMKeyNames[(int)wParam]);
-				#endif
+            #if(DEBUG_KEYS)
+			Console.WriteLine("Keys: 0x{0}\t0x{1}\t{2}", keyInfo.VkCode.ToString("X2"), keyInfo.Flags.ToString("X2"), WMKeyNames[(int)wParam]);
+			#endif
 
-				if (_shortcut.IsDown(keyInfo.VkCode, keyInfo.Flags))
-				{
-					if (wParam == (IntPtr)WM_SYSKEYDOWN)
-					{
-						#if(DEBUG_KEYS)
-						Debug.WriteLine("Keys: Shortcut down");
-						#endif
-
-						_shortcut.DownCounter++;
-					}
-
-					if (_shortcut.DownCounter >= _shortcut.ShortcutPressesBeforeOpen)
-					{
-						if (wParam == (IntPtr)WM_SYSKEYDOWN)
-							_callback();
-
-						return (IntPtr)1;
-					}
-					else
-					{
-						return CallNextHookEx(_hookID, nCode, wParam, lParam);
-					}
-				}
-				else if(_shortcut.IsControlKeyReleased(keyInfo.VkCode, keyInfo.Flags))
-				{
-					#if(DEBUG_KEYS)
-					Debug.WriteLine("Keys: Control key up");
+		    if (_shortcut.IsDown(keyInfo.VkCode, keyInfo.Flags))
+		    {
+		        if (wParam == (IntPtr)WM_SYSKEYDOWN)
+		        {
+                    #if(DEBUG_KEYS)
+					Debug.WriteLine("Keys: Shortcut down");
 					#endif
 
-					_shortcut.DownCounter = 0;
-				}
-			}
+		            _shortcut.DownCounter++;
+		        }
 
-			return CallNextHookEx(_hookID, nCode, wParam, lParam);
+		        if (_shortcut.DownCounter < _shortcut.ShortcutPressesBeforeOpen)
+		            return CallNextHookEx(_hookID, nCode, wParam, lParam);
+				    
+		        if (wParam == (IntPtr)WM_SYSKEYDOWN)
+		            _callback();
+
+		        return (IntPtr)1;
+		    }
+			    
+		    if(_shortcut.IsControlKeyReleased(keyInfo.VkCode, keyInfo.Flags))
+		    {
+                #if(DEBUG_KEYS)
+				Debug.WriteLine("Keys: Control key up");
+				#endif
+
+		        _shortcut.DownCounter = 0;
+		    }
+
+		    return CallNextHookEx(_hookID, nCode, wParam, lParam);
 		}
 	}
 }
