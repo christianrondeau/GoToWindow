@@ -2,11 +2,11 @@
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Common;
 
-namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
+namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 {
-	public class ChromeTab : ShortcutBasedTab, ITab
+	public class FirefoxTab : ShortcutBasedTab, ITab
 	{
-		public ChromeTab(string title, int tabIndex)
+		public FirefoxTab(string title, int tabIndex)
 			: base(title, tabIndex)
 		{
 		}

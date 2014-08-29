@@ -12,9 +12,9 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
 	{
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{
-			var parent = AutomationElement.FromHandle(hWnd);
+			var chromeWindow = AutomationElement.FromHandle(hWnd);
 
-			var mainElement = parent.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
+			var mainElement = chromeWindow.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
 
 			if (mainElement == null)
 				yield break;

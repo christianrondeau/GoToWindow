@@ -44,10 +44,13 @@
   <ItemGroup>
     <Compile Include="Chrome\ChromeTab.cs" />
     <Compile Include="Chrome\ChromeTabsFinder.cs" />
+    <Compile Include="Common\ShortcutBasedTab.cs" />
     <Compile Include="Contracts\ITab.cs" />
     <Compile Include="Contracts\ITabsFinder.cs" />
     <Compile Include="Contracts\TabBase.cs" />
     <Compile Include="ExpandBrowsersTabsPlugin.cs" />
+    <Compile Include="Firefox\FirefoxTab.cs" />
+    <Compile Include="Firefox\FirefoxTabsFinder.cs" />
     <Compile Include="InternetExplorer\InternetExplorerTab.cs" />
     <Compile Include="InternetExplorer\InternetExplorerTabsFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,10 +5,11 @@ using System.Linq;
 using GoToWindow.Extensibility;
 using GoToWindow.Extensibility.Controls;
 using GoToWindow.Extensibility.ViewModel;
-using GoToWindow.Plugins.ExpandBrowsersTabs.Chrome;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
-using GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer;
 using GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Chrome;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Firefox;
+using GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs
 {
@@ -24,7 +25,8 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 		private static readonly IDictionary<string, Func<ITabsFinder>> TabsFinders = new Dictionary<string, Func<ITabsFinder>>
 		{
 			{ "chrome", () => new ChromeTabsFinder() },
-			{ "iexplore", () => new InternetExplorerTabsFinder() }
+			{ "iexplore", () => new InternetExplorerTabsFinder() },
+			{ "firefox", () => new FirefoxTabsFinder() }
 		};
 
 		public void BuildList(List<ISearchResult> list)
