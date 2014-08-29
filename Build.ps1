@@ -19,6 +19,12 @@ Function ZipFiles($Filename, $Source)
    [System.IO.Compression.ZipFile]::CreateFromDirectory($Source, $Filename, $CompressionLevel, $false)
 }
 
+$BuildPath = "$PSScriptRoot\GoToWindow\bin\Release"
+
+If(Test-Path -Path $BuildPath) {
+	Remove-Item -Confirm:$false "$BuildPath\*.*"
+}
+
 &(GetMSBuildExe) GoToWindow.sln `
 	/t:Clean`;Rebuild `
 	/p:Configuration=Release `
@@ -39,4 +45,4 @@ If(Test-Path -Path $ReleaseZip) {
 	Remove-Item -Confirm:$false .\Release\GoToWindow.zip
 }
 
-ZipFiles $ReleaseZip "$PSScriptRoot\GoToWindow\bin\Release"
+ZipFiles $ReleaseZip $BuildPath
