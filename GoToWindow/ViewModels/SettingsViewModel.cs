@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Security.Principal;
 using System.Windows;
 using GoToWindow.Api;
 using Microsoft.Win32;
@@ -16,9 +15,8 @@ namespace GoToWindow.ViewModels
 
 		private bool _originalHookAltTab;
 		private bool _originalStartWithWindows;
-		private int _originalShortcutPressesBeforeOpen;
 
-		public SettingsViewModel(IGoToWindowContext context)
+	    public SettingsViewModel(IGoToWindowContext context)
 		{
 			_context = context;
 
@@ -37,7 +35,7 @@ namespace GoToWindow.ViewModels
 		{
 			HookAltTab = _originalHookAltTab = Properties.Settings.Default.HookAltTab;
 			StartWithWindows = _originalStartWithWindows = GetStartWithWindows();
-			ShortcutPressesBeforeOpen = _originalShortcutPressesBeforeOpen = Properties.Settings.Default.ShortcutPressesBeforeOpen;
+			ShortcutPressesBeforeOpen = Properties.Settings.Default.ShortcutPressesBeforeOpen;
 		    WindowListSingleClick = Properties.Settings.Default.WindowListSingleClick;
 
 			NoElevatedPrivilegesWarning = WindowsRuntimeHelper.GetHasElevatedPrivileges()

@@ -39,7 +39,7 @@ namespace GoToWindow
 
 	    public void Init()
         {
-            WindowsListFactory.Start();
+            WmiProcessWatcher.Start();
 
 			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
 
@@ -250,7 +250,7 @@ namespace GoToWindow
 
 		public void Dispose()
 		{
-            WindowsListFactory.Stop();
+            WmiProcessWatcher.Stop();
 
 			if (_hooks != null)
 			{

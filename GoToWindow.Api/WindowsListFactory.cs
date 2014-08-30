@@ -1,122 +1,74 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using log4net;
 
 namespace GoToWindow.Api
 {
-	/// <remarks>
-	/// Thanks to Tommy Carlier for how to get the list of windows: http://blog.tcx.be/2006/05/getting-list-of-all-open-windows.html
-	/// </remarks>
-	public static class WindowsListFactory
-	{
-        private static IDictionary<UInt32, string> _map;
-        private static ManagementEventWatcher _watcher;
+    /// <remarks>
+    /// Thanks to Tommy Carlier for how to get the list of windows: http://blog.tcx.be/2006/05/getting-list-of-all-open-windows.html
+    /// </remarks>
+    public static class WindowsListFactory
+    {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(WindowsListFactory).Assembly, "GoToWindow");
+        private const int MaxLastActivePopupIterations = 50;
 
-	    public static void Start()
-	    {
-	        if (!WindowsRuntimeHelper.GetHasElevatedPrivileges())
-	            return;
+        delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
-            _map = new Dictionary<UInt32, string>();
-	        _watcher = new ManagementEventWatcher("SELECT ProcessID, ProcessName FROM Win32_ProcessStartTrace");
-	        _watcher.EventArrived += ProcessStarted;
-	        _watcher.Start();
-	    }
+        public enum GetAncestorFlags
+        {
+            GetParent = 1,
+            GetRoot = 2,
+            GetRootOwner = 3
+        }
 
-	    private static void ProcessStarted(object sender, EventArrivedEventArgs e)
-	    {
-	        var processName = (string)e.NewEvent["ProcessName"];
-	        var processId = (UInt32) e.NewEvent["ProcessId"];
+        [DllImport("user32.dll")]
+        static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
 
-	        if (String.IsNullOrEmpty(processName))
-	            return;
+        [DllImport("user32.dll")]
+        static extern bool IsWindowVisible(IntPtr hWnd);
 
-	        _map[processId] = Path.GetFileNameWithoutExtension(processName);
-	    }
+        [DllImport("user32.dll")]
+        static extern IntPtr GetShellWindow();
 
-	    public static void Stop()
-	    {
-	        if (_watcher != null)
-	        {
-	            _watcher.Stop();
-	            _watcher.Dispose();
-	        }
-	    }
+        [DllImport("user32.dll", ExactSpelling = true)]
+        static extern IntPtr GetAncestor(IntPtr hwnd, GetAncestorFlags flags);
 
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
-		private static readonly ILog Log = LogManager.GetLogger(typeof(WindowsListFactory).Assembly, "GoToWindow");
-		private const int MaxLastActivePopupIterations = 50;
+        [DllImport("user32.dll")]
+        static extern IntPtr GetLastActivePopup(IntPtr hWnd);
 
-		delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
+        public static WindowsList Load()
+        {
+            var lShellWindow = GetShellWindow();
+            var windows = new List<IWindowEntry>();
+            var currentProcessId = Process.GetCurrentProcess().Id;
 
-		public enum GetAncestorFlags
-		{
-			GetParent = 1,
-			GetRoot = 2,
-			GetRootOwner = 3
-		}
+            EnumWindows((hWnd, lParam) =>
+            {
+                if (!EligibleForAltTab(hWnd, lShellWindow))
+                    return true;
 
-		[DllImport("user32.dll")]
-		static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
+                var window = WindowEntryFactory.Create(hWnd);
 
-		[DllImport("user32.dll")]
-		static extern bool IsWindowVisible(IntPtr hWnd);
+                if (window == null || window.ProcessId == currentProcessId || window.Title == null)
+                    return true;
 
-		[DllImport("user32.dll")]
-		static extern IntPtr GetShellWindow();
+                window.ProcessName = WmiProcessWatcher.GetProcessName(window.ProcessId, () => window.ProcessName);
 
-		[DllImport("user32.dll", ExactSpelling = true)]
-		static extern IntPtr GetAncestor(IntPtr hwnd, GetAncestorFlags flags);
+                windows.Add(window);
 
-		[DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-		static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+                return true;
+            }, 0);
 
-		[DllImport("user32.dll")]
-		static extern IntPtr GetLastActivePopup(IntPtr hWnd);
+            return new WindowsList(windows);
+        }
 
-		public static WindowsList Load()
-		{
-			var lShellWindow = GetShellWindow();
-			var windows = new List<IWindowEntry>();
-		    var currentProcessId = Process.GetCurrentProcess().Id;
-
-			EnumWindows((hWnd, lParam) =>
-			{
-				if (!EligibleForAltTab(hWnd, lShellWindow))
-					return true;
-
-				var window = WindowEntryFactory.Create(hWnd);
-
-			    if (window == null || window.ProcessId == currentProcessId || window.Title == null)
-					return true;
-
-			    if (_map != null)
-			    {
-			        string processName;
-			        if (_map.TryGetValue(window.ProcessId, out processName))
-			        {
-			            window.ProcessName = processName;
-			        }
-			        else
-			        {
-			            _map[window.ProcessId] = window.ProcessName;
-			        }
-			    }
-
-			    windows.Add(window);
-
-				return true;
-			}, 0);
-
-			return new WindowsList(windows);
-		}
-
-		private static readonly string[] WindowsClassNamesToSkip =
+        private static readonly string[] WindowsClassNamesToSkip =
 		{
 			"Shell_TrayWnd",
 			"DV2ControlHost",
@@ -125,54 +77,54 @@ namespace GoToWindow.Api
 			"Button"
 		};
 
-		private static bool EligibleForAltTab(IntPtr hWnd, IntPtr lShellWindow)
-		{
-			// http://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
+        private static bool EligibleForAltTab(IntPtr hWnd, IntPtr lShellWindow)
+        {
+            // http://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
 
-			if (hWnd == lShellWindow)
-				return false;
+            if (hWnd == lShellWindow)
+                return false;
 
-			var root = GetAncestor(hWnd, GetAncestorFlags.GetRootOwner);
+            var root = GetAncestor(hWnd, GetAncestorFlags.GetRootOwner);
 
-			if (GetLastVisibleActivePopUpOfWindow(root) != hWnd)
-				return false;
+            if (GetLastVisibleActivePopUpOfWindow(root) != hWnd)
+                return false;
 
-			var classNameStringBuilder = new StringBuilder(256);
-			var length = GetClassName(hWnd, classNameStringBuilder, classNameStringBuilder.Capacity);
-			if (length == 0)
-				return false;
+            var classNameStringBuilder = new StringBuilder(256);
+            var length = GetClassName(hWnd, classNameStringBuilder, classNameStringBuilder.Capacity);
+            if (length == 0)
+                return false;
 
-			var className = classNameStringBuilder.ToString();
+            var className = classNameStringBuilder.ToString();
 
-			if (Array.IndexOf(WindowsClassNamesToSkip, className) > -1)
-				return false;
+            if (Array.IndexOf(WindowsClassNamesToSkip, className) > -1)
+                return false;
 
-			if(className.StartsWith("WMP9MediaBarFlyout")) //WMP's "now playing" taskbar-toolbar
-				return false;
+            if (className.StartsWith("WMP9MediaBarFlyout")) //WMP's "now playing" taskbar-toolbar
+                return false;
 
 
-			return true;
-		}
+            return true;
+        }
 
-		private static IntPtr GetLastVisibleActivePopUpOfWindow(IntPtr window)
-		{
-			int level = MaxLastActivePopupIterations;
-			var currentWindow = window;
-			while (level-- > 0)
-			{
-				var lastPopUp = GetLastActivePopup(currentWindow);
+        private static IntPtr GetLastVisibleActivePopUpOfWindow(IntPtr window)
+        {
+            int level = MaxLastActivePopupIterations;
+            var currentWindow = window;
+            while (level-- > 0)
+            {
+                var lastPopUp = GetLastActivePopup(currentWindow);
 
-				if (IsWindowVisible(lastPopUp))
-					return lastPopUp;
+                if (IsWindowVisible(lastPopUp))
+                    return lastPopUp;
 
-				if (lastPopUp == currentWindow)
-					return IntPtr.Zero;
+                if (lastPopUp == currentWindow)
+                    return IntPtr.Zero;
 
-				currentWindow = lastPopUp;
-			}
+                currentWindow = lastPopUp;
+            }
 
-			Log.Warn(string.Format("Could not find last active popup for window {0} after {1} iterations", window, MaxLastActivePopupIterations));
-			return IntPtr.Zero;
-		}
-	}
+            Log.Warn(string.Format("Could not find last active popup for window {0} after {1} iterations", window, MaxLastActivePopupIterations));
+            return IntPtr.Zero;
+        }
+    }
 }

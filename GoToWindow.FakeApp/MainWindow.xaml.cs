@@ -17,7 +17,7 @@ namespace GoToWindow.FakeApp
 		{
 		    var args = Environment.GetCommandLineArgs();
 
-		    Title = args.Length <= 2 ? "Go To Window - Fake Application (For Testing)" : args[1];
+		    Title = args.Length >= 2 ? args[1] : "Go To Window - Fake Application (For Testing)";
 		}
 
 	    private void Window_KeyDown(object sender, KeyEventArgs e)
