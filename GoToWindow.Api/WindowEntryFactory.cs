@@ -23,16 +23,25 @@ namespace GoToWindow.Api
 			uint processId;
 			GetWindowThreadProcessId(hWnd, out processId);
 
-			var process = Process.GetProcessById((int)processId);
+		    string processName;
+		    string executablePath;
+		    IntPtr iconHandle;
 
-			return new WindowEntry
+		    using (var process = Process.GetProcessById((int) processId))
+		    {
+		        processName = process.ProcessName;
+		        executablePath = process.GetExecutablePath();
+		        iconHandle = WindowIcon.GetAppIcon(hWnd);
+		    }
+
+		    return new WindowEntry
 			{
 				HWnd = hWnd,
 				Title = windowTitle,
 				ProcessId = processId,
-				ProcessName = process.ProcessName,
-				Executable = process.GetExecutablePath(),
-				IconHandle = WindowIcon.GetAppIcon(hWnd)
+				ProcessName = processName,
+				Executable = executablePath,
+				IconHandle = iconHandle
 			};
 		}
 

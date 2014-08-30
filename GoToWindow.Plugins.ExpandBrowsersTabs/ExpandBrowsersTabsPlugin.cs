@@ -33,7 +33,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 		{
 			var finders = new Dictionary<string, ITabsFinder>();
 
-			for(int index = list.Count - 1; index >= 0; index--)
+			for(var index = list.Count - 1; index >= 0; index--)
 			{
 				var item = list[index] as IWindowSearchResult;
 

@@ -46,6 +46,7 @@ namespace GoToWindow.Api
 		{
 			var lShellWindow = GetShellWindow();
 			var windows = new List<IWindowEntry>();
+		    var currentProcessId = Process.GetCurrentProcess().Id;
 
 			EnumWindows((hWnd, lParam) =>
 			{
@@ -54,7 +55,7 @@ namespace GoToWindow.Api
 
 				var window = WindowEntryFactory.Create(hWnd);
 
-				if (window == null || window.ProcessId == Process.GetCurrentProcess().Id || window.Title == null)
+			    if (window == null || window.ProcessId == currentProcessId || window.Title == null)
 					return true;
 
 				windows.Add(window);
