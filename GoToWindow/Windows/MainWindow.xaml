@@ -108,6 +108,7 @@
             </Border.Effect>
             <ListView Name="WindowsListView"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      MouseUp="WindowsListView_MouseClick"
                       MouseDoubleClick="WindowsListView_MouseDoubleClick"
                       PreviewKeyDown="WindowsListView_PreviewKeyDown"
                       BorderBrush="Transparent"

@@ -45,7 +45,14 @@ namespace GoToWindow.Windows
 
         private void WindowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            FocusSelectedWindowItem();
+            if (!Properties.Settings.Default.WindowListSingleClick)
+                FocusSelectedWindowItem();
+        }
+
+        private void WindowsListView_MouseClick(object sender, MouseButtonEventArgs e)
+        {
+            if (Properties.Settings.Default.WindowListSingleClick)
+                FocusSelectedWindowItem();
         }
 
         private void FocusSelectedWindowItem()

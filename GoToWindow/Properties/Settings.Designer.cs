@@ -57,5 +57,17 @@ namespace GoToWindow.Properties {
                 this["ShortcutPressesBeforeOpen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool WindowListSingleClick {
+            get {
+                return ((bool)(this["WindowListSingleClick"]));
+            }
+            set {
+                this["WindowListSingleClick"] = value;
+            }
+        }
     }
 }

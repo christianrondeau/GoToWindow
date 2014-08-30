@@ -15,64 +15,65 @@
 	MinWidth="500" MinHeight="250"
 	d:DesignWidth="600" d:DesignHeight="250"
     d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
-	<Window.Resources>
-		<converters:IncrementIntConverter x:Key="IncrementIntConverter" />
-	</Window.Resources>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Name="TabsRow" Height="*" />
-			<RowDefinition Name="ButtonsRow" Height="Auto" />
-		</Grid.RowDefinitions>
-		<TabControl Grid.Row="0" Margin="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-			<TabItem Header="_General">
-				<Grid>
-					<StackPanel Margin="10,10,0,0" Orientation="Horizontal">
-						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="GoToWindow v" />
-						<TextBlock x:Name="VersionTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="{Binding Version}" />
-					</StackPanel>
-					<CheckBox x:Name="HookAltTabCheckbox" Content="_Hook Alt+Tab" IsChecked="{Binding HookAltTab}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" />
-					<Label Content="Shortcut Handling" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,61,0,0" />
-					<ComboBox x:Name="ShortcutPressesBeforeOpenComboBox" IsEnabled="{Binding HookAltTab}" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,65,0,0">
-						<ComboBoxItem Tag="1">Single (Alt + Tab)</ComboBoxItem>
-						<ComboBoxItem Tag="2">Twice (Alt + Tab + Tab)</ComboBoxItem>
-					</ComboBox>
-					<CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,92,0,0"/>
-					<TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding NoElevatedPrivilegesWarning}" Foreground="Red" HorizontalAlignment="Left" Margin="10,112,0,0" VerticalAlignment="Top" TextWrapping="Wrap" FontWeight="Bold"><Run Text="Alt + Tab will not work in applications with elevated privileges (Run as Administrator). Restart GoToWindow as Administrator to solve."/></TextBlock>
-				</Grid>
-			</TabItem>
-			<TabItem Header="_Plugins">
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="*" />
-					</Grid.RowDefinitions>
-					<StackPanel Grid.Row="0" Orientation="Vertical" Margin="8">
-						<TextBlock FontWeight="Bold">Uncheck a plug-in to disable it.</TextBlock>
-						<TextBlock>You can uninstall a plug-in completely by removing it from the Plugins directory.</TextBlock>
-					</StackPanel>
-					<ListView Grid.Row="1" ItemsSource="{Binding Plugins}">
-						<ListView.ItemTemplate>
-							<DataTemplate>
-								<StackPanel Orientation="Horizontal" d:DataContext="{d:DesignInstance viewModels:SettingsPluginViewModel}">
-									<CheckBox IsChecked="{Binding Enabled}" Content="{Binding Name}" />
-								</StackPanel>
-							</DataTemplate>
-						</ListView.ItemTemplate>
-					</ListView>
-				</Grid>
-			</TabItem>
-		</TabControl>
-		<Grid Grid.Row="1" Margin="8,0,8,8" HorizontalAlignment="Stretch">
-			<Label Content="© Christian Rondeau 2014" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" FontStyle="Italic" />
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-				<StackPanel.Resources>
-					<Style TargetType="{x:Type Button}">
-						<Setter Property="Margin" Value="8,0,0,0"/>
-					</Style>
-				</StackPanel.Resources>
-				<Button x:Name="OkButton" IsDefault="True" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="OkButton_Click"/>
-				<Button x:Name="CancelButton" IsCancel="True"  Content="Close" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
-			</StackPanel>
-		</Grid>
-	</Grid>
+    <Window.Resources>
+        <converters:IncrementIntConverter x:Key="IncrementIntConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Name="TabsRow" Height="*" />
+            <RowDefinition Name="ButtonsRow" Height="Auto" />
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" Margin="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="_General">
+                <Grid>
+                    <StackPanel Margin="10,10,0,0" Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="GoToWindow v" />
+                        <TextBlock x:Name="VersionTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="{Binding Version}" />
+                    </StackPanel>
+                    <CheckBox x:Name="HookAltTabCheckbox" Content="_Enabled" IsChecked="{Binding HookAltTab}" HorizontalAlignment="Left" Margin="255,37,0,0" VerticalAlignment="Top" />
+                    <Label Content="Shortcut" Width="Auto" Height="Auto" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
+                    <ComboBox Width="180" x:Name="ShortcutPressesBeforeOpenComboBox" IsEnabled="{Binding HookAltTab}" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,34,0,0">
+                        <ComboBoxItem Tag="1">Single (Alt + Tab)</ComboBoxItem>
+                        <ComboBoxItem Tag="2">Twice (Alt + Tab + Tab)</ComboBoxItem>
+                    </ComboBox>
+                    <CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
+                    <CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,81,0,0"/>
+                    <TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding NoElevatedPrivilegesWarning}" Foreground="Red" HorizontalAlignment="Left" Margin="10,101,0,0" VerticalAlignment="Top" TextWrapping="Wrap" FontWeight="Bold"><Run Text="Alt + Tab will not work in applications with elevated privileges (Run as Administrator). Restart GoToWindow as Administrator to solve."/></TextBlock>
+                </Grid>
+            </TabItem>
+            <TabItem Header="_Plugins">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Vertical" Margin="8">
+                        <TextBlock FontWeight="Bold">Uncheck a plug-in to disable it.</TextBlock>
+                        <TextBlock>You can uninstall a plug-in completely by removing it from the Plugins directory.</TextBlock>
+                    </StackPanel>
+                    <ListView Grid.Row="1" ItemsSource="{Binding Plugins}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" d:DataContext="{d:DesignInstance viewModels:SettingsPluginViewModel}">
+                                    <CheckBox IsChecked="{Binding Enabled}" Content="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Grid Grid.Row="1" Margin="8,0,8,8" HorizontalAlignment="Stretch">
+            <Label Content="© Christian Rondeau 2014" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" FontStyle="Italic" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="8,0,0,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button x:Name="OkButton" IsDefault="True" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="OkButton_Click"/>
+                <Button x:Name="CancelButton" IsCancel="True"  Content="Close" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
 </Window>

@@ -27,7 +27,8 @@ namespace GoToWindow.ViewModels
 
 		public bool HookAltTab { get; set; }
 		public bool StartWithWindows { get; set; }
-		public int ShortcutPressesBeforeOpen { get; set; }
+        public int ShortcutPressesBeforeOpen { get; set; }
+        public bool WindowListSingleClick { get; set; }
 		public Visibility NoElevatedPrivilegesWarning { get; set; }
 		public string Version { get; set; }
 		public List<SettingsPluginViewModel> Plugins { get; private set; }
@@ -37,6 +38,7 @@ namespace GoToWindow.ViewModels
 			HookAltTab = _originalHookAltTab = Properties.Settings.Default.HookAltTab;
 			StartWithWindows = _originalStartWithWindows = GetStartWithWindows();
 			ShortcutPressesBeforeOpen = _originalShortcutPressesBeforeOpen = Properties.Settings.Default.ShortcutPressesBeforeOpen;
+		    WindowListSingleClick = Properties.Settings.Default.WindowListSingleClick;
 
 			NoElevatedPrivilegesWarning = GetHasElevatedPrivileges()
 				? Visibility.Hidden
@@ -85,12 +87,14 @@ namespace GoToWindow.ViewModels
 			if (_originalStartWithWindows != StartWithWindows)
 			{
 				UpdateStartWithWindows(StartWithWindows);
-			}
+            }
 
-			if(_originalHookAltTab != HookAltTab || _originalShortcutPressesBeforeOpen != ShortcutPressesBeforeOpen)
+            Properties.Settings.Default.HookAltTab = HookAltTab;
+            Properties.Settings.Default.ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen;
+            Properties.Settings.Default.WindowListSingleClick = WindowListSingleClick;
+
+			if(_originalHookAltTab != HookAltTab)
 			{
-				Properties.Settings.Default.HookAltTab = HookAltTab;
-				Properties.Settings.Default.ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen;
 				_context.EnableAltTabHook(HookAltTab, ShortcutPressesBeforeOpen);
 			}
 
