@@ -1,15 +1,22 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace GoToWindow.Api
 {
 	public class WindowEntry : IWindowEntry
 	{
-		public IntPtr HWnd { get; set; }
+	    private string _processName;
+
+	    public IntPtr HWnd { get; set; }
 		public uint ProcessId { get; set; }
-		public string ProcessName { get; set; }
-		public string Executable { get; set; }
-		public string Title { get; set; }
-		public IntPtr IconHandle { get; set; }
+	    public string Title { get; set; }
+        public IntPtr IconHandle { get; set; }
+
+        public string ProcessName
+        {
+            get { return _processName ?? (_processName = LoadProcessName(ProcessId)); }
+            set { _processName = value; }
+        }
 
 		public bool Focus()
 		{
@@ -31,7 +38,15 @@ namespace GoToWindow.Api
 
 		public override string ToString()
 		{
-			return String.Format("{0} [{1}:{2}]", Title, ProcessName, Executable);
+            return String.Format("{0} ({1}): \"{2}\"", ProcessName, ProcessId, Title);
 		}
+
+	    private static string LoadProcessName(uint processId)
+	    {
+            using (var process = Process.GetProcessById((int)processId))
+		    {
+		        return process.ProcessName;
+		    }
+	    }
 	}
 }

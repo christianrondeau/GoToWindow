@@ -41,10 +41,10 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 					continue;
 
 				ITabsFinder finder;
-				if(!finders.TryGetValue(item.Process, out finder))
+				if(!finders.TryGetValue(item.ProcessName, out finder))
 				{
 					Func<ITabsFinder> finderCtor;
-					if (TabsFinders.TryGetValue(item.Process, out finderCtor))
+					if (TabsFinders.TryGetValue(item.ProcessName, out finderCtor))
 						finder = finderCtor();
 					else
 						continue;

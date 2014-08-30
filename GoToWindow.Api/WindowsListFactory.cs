@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using log4net;
@@ -12,6 +14,41 @@ namespace GoToWindow.Api
 	/// </remarks>
 	public static class WindowsListFactory
 	{
+        private static IDictionary<UInt32, string> _map;
+        private static ManagementEventWatcher _watcher;
+
+	    public static void Start()
+	    {
+	        if (!WindowsRuntimeHelper.GetHasElevatedPrivileges())
+	            return;
+
+            _map = new Dictionary<UInt32, string>();
+	        _watcher = new ManagementEventWatcher("SELECT ProcessID, ProcessName FROM Win32_ProcessStartTrace");
+	        _watcher.EventArrived += ProcessStarted;
+	        _watcher.Start();
+	    }
+
+	    private static void ProcessStarted(object sender, EventArrivedEventArgs e)
+	    {
+	        var processName = (string)e.NewEvent["ProcessName"];
+	        var processId = (UInt32) e.NewEvent["ProcessId"];
+
+	        if (String.IsNullOrEmpty(processName))
+	            return;
+
+	        _map[processId] = Path.GetFileNameWithoutExtension(processName);
+	    }
+
+	    public static void Stop()
+	    {
+	        if (_watcher != null)
+	        {
+	            _watcher.Stop();
+	            _watcher.Dispose();
+	        }
+	    }
+
+
 		private static readonly ILog Log = LogManager.GetLogger(typeof(WindowsListFactory).Assembly, "GoToWindow");
 		private const int MaxLastActivePopupIterations = 50;
 
@@ -58,7 +95,20 @@ namespace GoToWindow.Api
 			    if (window == null || window.ProcessId == currentProcessId || window.Title == null)
 					return true;
 
-				windows.Add(window);
+			    if (_map != null)
+			    {
+			        string processName;
+			        if (_map.TryGetValue(window.ProcessId, out processName))
+			        {
+			            window.ProcessName = processName;
+			        }
+			        else
+			        {
+			            _map[window.ProcessId] = window.ProcessName;
+			        }
+			    }
+
+			    windows.Add(window);
 
 				return true;
 			}, 0);

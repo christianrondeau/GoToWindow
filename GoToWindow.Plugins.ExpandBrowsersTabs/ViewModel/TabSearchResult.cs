@@ -22,9 +22,9 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel
 			get { return _tab.Title; }
 		}
 
-		public string Process
+		public string ProcessName
 		{
-			get { return _item.Process; }
+			get { return _item.ProcessName; }
 		}
 
 		public TabSearchResult(IWindowSearchResult item, ITab tab, Func<UserControl> viewCtor)
@@ -42,7 +42,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel
 
 		public bool IsShown(string searchQuery)
 		{
-			return IsShown(searchQuery, Process, Title);
+			return IsShown(searchQuery, ProcessName, Title);
 		}
 	}
 }

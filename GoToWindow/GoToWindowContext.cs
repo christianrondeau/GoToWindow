@@ -39,6 +39,8 @@ namespace GoToWindow
 
 	    public void Init()
         {
+            WindowsListFactory.Start();
+
 			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
 
             _mainWindow = new MainWindow();
@@ -248,6 +250,8 @@ namespace GoToWindow
 
 		public void Dispose()
 		{
+            WindowsListFactory.Stop();
+
 			if (_hooks != null)
 			{
 				_hooks.Dispose();

@@ -16,31 +16,20 @@ namespace GoToWindow.Api
 		[DllImport("user32.dll", SetLastError = true)]
 		static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
-		public static IWindowEntry Create(IntPtr hWnd)
+		public static WindowEntry Create(IntPtr hWnd)
 		{
 			var windowTitle = GetWindowTitle(hWnd);
 
 			uint processId;
 			GetWindowThreadProcessId(hWnd, out processId);
 
-		    string processName;
-		    string executablePath;
-		    IntPtr iconHandle;
-
-		    using (var process = Process.GetProcessById((int) processId))
-		    {
-		        processName = process.ProcessName;
-		        executablePath = process.GetExecutablePath();
-		        iconHandle = WindowIcon.GetAppIcon(hWnd);
-		    }
+		    var iconHandle = WindowIcon.GetAppIcon(hWnd);
 
 		    return new WindowEntry
 			{
 				HWnd = hWnd,
 				Title = windowTitle,
 				ProcessId = processId,
-				ProcessName = processName,
-				Executable = executablePath,
 				IconHandle = iconHandle
 			};
 		}

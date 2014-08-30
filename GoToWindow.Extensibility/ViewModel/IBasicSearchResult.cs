@@ -6,6 +6,6 @@ namespace GoToWindow.Extensibility.ViewModel
 	{
 		BitmapFrame Icon { get; }
 		string Title { get; }
-		string Process { get; }
+		string ProcessName { get; }
 	}
 }

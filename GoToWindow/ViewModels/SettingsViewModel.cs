@@ -40,7 +40,7 @@ namespace GoToWindow.ViewModels
 			ShortcutPressesBeforeOpen = _originalShortcutPressesBeforeOpen = Properties.Settings.Default.ShortcutPressesBeforeOpen;
 		    WindowListSingleClick = Properties.Settings.Default.WindowListSingleClick;
 
-			NoElevatedPrivilegesWarning = GetHasElevatedPrivileges()
+			NoElevatedPrivilegesWarning = WindowsRuntimeHelper.GetHasElevatedPrivileges()
 				? Visibility.Hidden
 				: Visibility.Visible;
 
@@ -67,19 +67,6 @@ namespace GoToWindow.ViewModels
 		    
             var executablePath = Assembly.GetExecutingAssembly().Location;
 		    return ((string)runList.GetValue("GoToWindow") == executablePath);
-		}
-
-		private static bool GetHasElevatedPrivileges()
-		{
-		    if (!WindowsVersion.IsWindows8()) return true;
-
-		    var identity = WindowsIdentity.GetCurrent();
-
-		    if (identity == null)
-		        return false;
-
-		    var principal = new WindowsPrincipal(identity);
-		    return principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200);
 		}
 
 		public void Apply()

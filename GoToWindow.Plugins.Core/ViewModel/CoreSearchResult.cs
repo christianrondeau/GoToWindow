@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using GoToWindow.Api;
@@ -14,7 +15,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
 
 		public BitmapFrame Icon { get { return _icon ?? (_icon = LoadIcon()); } }
 		public string Title { get { return _entry.Title; } }
-		public string Process { get { return _entry.ProcessName; } }
+		public string ProcessName { get { return _entry.ProcessName; } }
 		public IntPtr HWnd { get { return _entry.HWnd; } }
 
 		public CoreSearchResult(IWindowEntry entry, Func<UserControl> viewCtor)
@@ -30,12 +31,19 @@ namespace GoToWindow.Plugins.Core.ViewModel
 
 		public bool IsShown(string searchQuery)
 		{
-			return IsShown(searchQuery, Process, Title);
+			return IsShown(searchQuery, ProcessName, Title);
 		}
 
-		private BitmapFrame LoadIcon()
-		{
-			return IconLoader.LoadIcon(_entry.IconHandle, _entry.Executable);
-		}
+	    private BitmapFrame LoadIcon()
+	    {
+	        string executable;
+
+	        using (var process = Process.GetProcessById((int) _entry.ProcessId))
+	        {
+	            executable = process.GetExecutablePath();
+	        }
+
+	        return IconLoader.LoadIcon(_entry.IconHandle, executable);
+	    }
 	}
 }

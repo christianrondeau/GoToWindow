@@ -32,7 +32,7 @@ namespace GoToWindow.Api.Tests
 		[TestMethod]
 		public void ToString_GetsTheWindowTitle()
 		{
-			Assert.AreEqual("Title [process:path]", new WindowEntry { Title = "Title", ProcessName = "process", Executable = "path" }.ToString());
+			Assert.AreEqual("process (1234): \"Title\"", new WindowEntry { Title = "Title", ProcessId = 1234, ProcessName = "process" }.ToString());
 		}
 	}
 }

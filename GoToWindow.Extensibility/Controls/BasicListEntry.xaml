@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="48" d:DesignWidth="512" d:DataContext="{d:DesignData basicViewModel:IBasicSearchResult}">
+             d:DesignHeight="48" d:DesignWidth="512"
+             d:DataContext="{d:DesignData basicViewModel:IBasicSearchResult}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="IconColumn" Width="48"/>
@@ -12,7 +13,7 @@
             <ColumnDefinition Name="TitleColumn" Width="*" />
         </Grid.ColumnDefinitions>
         <Image Grid.Column="0" Source="{Binding Path=Icon}" Margin="8,8,8,8" />
-        <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Foreground="Gray" Text="{Binding Path=Process}" />
+        <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Foreground="Gray" Text="{Binding Path=ProcessName}" />
         <TextBlock  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Title}" />
     </Grid>
 </UserControl>

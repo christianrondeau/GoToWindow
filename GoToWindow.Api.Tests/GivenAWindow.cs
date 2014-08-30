@@ -44,7 +44,6 @@ namespace GoToWindow.Api.Tests
 				Title = title,
 				ProcessId = (uint)_process.Id,
 				ProcessName = processName,
-				Executable = _executable,
 				HWnd = _process.MainWindowHandle
 			};
 		}
