@@ -23,91 +23,91 @@ namespace GoToWindow
 
 	public class GoToWindowContext : IGoToWindowContext
 	{
+		private enum GoToWindowState
+		{
+			Undefined,
+			Showing,
+			ShowingThenHide,
+			Shown,
+			Hiding,
+			Hidden
+		}
+
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
 
 		private readonly Object _lock = new Object();
 
-	    private bool _showInProgress;
-		private bool _hideInProgress;
-		private bool _hidePending;
+		private GoToWindowState _state = GoToWindowState.Hidden;
 		private MainViewModel _mainViewModel;
-        private MainWindow _mainWindow;
-        private KeyboardHook _hooks;
+		private MainWindow _mainWindow;
+		private KeyboardHook _hooks;
 		private IWindowEntry _mainWindowEntry;
 
 		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
 
-	    public void Init()
-        {
-            WmiProcessWatcher.Start();
+		public void Init()
+		{
+			WmiProcessWatcher.Start();
 
 			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
 
-            _mainWindow = new MainWindow();
+			_mainWindow = new MainWindow();
 			_mainViewModel = new MainViewModel();
 			_mainWindow.DataContext = _mainViewModel;
 			_mainViewModel.Close += _mainViewModel_Hide;
-        }
+		}
 
-        public void Show()
-        {
+		public void Show()
+		{
 			lock (_lock)
 			{
-				if (_showInProgress)
-					return;
-
-				if (_mainWindow.Visibility == Visibility.Visible && _mainWindow.IsLoaded)
+				if (_state == GoToWindowState.Shown)
 				{
 					Log.Debug("Sending Tab Again to Main Window.");
-
 					_mainWindow.TabAgain();
+					return;
 				}
-				else
-				{
-					Log.Debug("Showing Main Window.");
-					_showInProgress = true;
 
-					_mainWindow.Show();
-
-					if (_mainWindowEntry == null)
-					{
-						var interopHelper = new WindowInteropHelper(_mainWindow);
-						_mainWindowEntry = WindowEntryFactory.Create(interopHelper.Handle);
-
-						Log.DebugFormat("GoToWindow main window created with hWnd {0}", _mainWindowEntry.HWnd);
-					}
-
-					_mainWindow.SetFocus();
-					_mainWindowEntry.Focus();
-
-					Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Background);
-				}
-			}
-        }
-
-	    public void Hide()
-	    {
-	        if (_mainWindow == null)
-	            return;
-
-			lock (_lock)
-			{
-				if (_hideInProgress || _hidePending)
+				if (_state != GoToWindowState.Hidden)
 					return;
 
-				if (_showInProgress || _mainWindow == null || !_mainWindow.IsLoaded)
+				Log.Debug("Showing Main Window.");
+				_state = GoToWindowState.Showing;
+
+				_mainWindow.Show();
+
+				if (_mainWindowEntry == null)
 				{
-					if (!_hidePending)
-					{
-						Log.Debug("Cannot Hide because Show is still in progress. Pending Hide.");
-						_hidePending = true;
-						return;
-					}
+					var interopHelper = new WindowInteropHelper(_mainWindow);
+					_mainWindowEntry = WindowEntryFactory.Create(interopHelper.Handle);
+
+					Log.DebugFormat("GoToWindow main window created with hWnd {0}", _mainWindowEntry.HWnd);
 				}
 
-				_hideInProgress = true;
+				_mainWindow.SetFocus();
+				_mainWindowEntry.Focus();
+
+				Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Background);
+			}
+		}
+
+		public void Hide()
+		{
+			lock (_lock)
+			{
+				if (_state == GoToWindowState.Showing)
+				{
+					Log.Debug("Cannot Hide because Show is still in progress. Pending Hide.");
+					_state = GoToWindowState.ShowingThenHide;
+					return;
+				}
+
+				if (_state != GoToWindowState.Shown && _state != GoToWindowState.ShowingThenHide)
+					return;
 
 				Log.Debug("Hiding Main Window.");
+				_state = GoToWindowState.Hiding;
+
 				try
 				{
 					_mainWindow.BeginInit();
@@ -116,7 +116,7 @@ namespace GoToWindow
 				}
 				catch (InvalidOperationException exc)
 				{
-					Log.Warn("Failed showing window", exc);
+					Log.Error("Failed showing window", exc);
 				}
 
 				Application.Current.Dispatcher.InvokeAsync(HideWindowAsync, DispatcherPriority.ApplicationIdle);
@@ -133,7 +133,7 @@ namespace GoToWindow
 		{
 			if (enabled)
 			{
-				if(_hooks != null)
+				if (_hooks != null)
 				{
 					_hooks.Dispose();
 				}
@@ -161,35 +161,48 @@ namespace GoToWindow
 
 			var settingswindow = new SettingsWindow
 			{
-			    DataContext = new SettingsViewModel(this)
+				DataContext = new SettingsViewModel(this)
 			};
 
-		    settingswindow.ShowDialog();
+			settingswindow.ShowDialog();
 		}
 
 		private void LoadViewModel()
 		{
+			var hide = false;
+
 			lock (_lock)
 			{
-				_mainWindow.BeginInit();
-				_mainViewModel.Load(PluginsContainer.Plugins);
-				_mainWindow.DataReady();
-				_mainWindow.EndInit();
-				Log.Debug("View Model loaded.");
-				Application.Current.Dispatcher.InvokeAsync(EnsureWindowIsForeground, DispatcherPriority.Background);
-				_showInProgress = false;
+				if (_state == GoToWindowState.ShowingThenHide)
+				{
+					hide = true;
+				}
+				else
+				{
+					_mainWindow.BeginInit();
+					_mainViewModel.Load(PluginsContainer.Plugins);
+					_mainWindow.DataReady();
+					_mainWindow.EndInit();
+					Log.Debug("View Model loaded.");
+					Application.Current.Dispatcher.InvokeAsync(EnsureWindowIsForeground, DispatcherPriority.Background);
+					_state = GoToWindowState.Shown;
+				}
 			}
 
-			RunPendingHide();
+			if (hide)
+			{
+				Log.Debug("Executing pending Hide.");
+				Hide();
+			}
 		}
 
 		private async void EnsureWindowIsForeground()
 		{
-			for (int i = 0; i < 100; i++)
+			for (var i = 0; i < 100; i++)
 			{
 				await Task.Delay(10);
 
-				if (_hideInProgress || _hidePending)
+				if (_state == GoToWindowState.Hiding || _state == GoToWindowState.ShowingThenHide)
 				{
 					Log.Debug("Ensuring foreground: Hide is already in progress. Stop watching.");
 					return;
@@ -205,27 +218,13 @@ namespace GoToWindow
 			if (_mainWindowEntry.IsForeground())
 				return false;
 
-			#if(DEBUG)
+#if(DEBUG)
 			var foregroundWindow = WindowEntryFactory.Create(WindowToForeground.GetForegroundWindow());
 			Log.DebugFormat("Window does not have focus when initialization is complete. Current foreground window is {0} (Process '{1}')", foregroundWindow.HWnd, foregroundWindow.ProcessName);
-			#endif
+#endif
 
 			Hide();
 			return true;
-		}
-
-		private void RunPendingHide()
-		{
-		    lock(_lock)
-			{
-				if (!_hidePending)
-					return;
-
-				Log.Debug("Executing pending Hide.");
-				_hidePending = false;
-			}
-
-			Hide();
 		}
 
 		private void HideWindow()
@@ -234,7 +233,7 @@ namespace GoToWindow
 			{
 				_mainWindow.Hide();
 				Log.Debug("Main window hidden.");
-				_hideInProgress = false;
+				_state = GoToWindowState.Hidden;
 			}
 		}
 
@@ -250,7 +249,7 @@ namespace GoToWindow
 
 		public void Dispose()
 		{
-            WmiProcessWatcher.Stop();
+			WmiProcessWatcher.Stop();
 
 			if (_hooks != null)
 			{
