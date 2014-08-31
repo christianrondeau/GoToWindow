@@ -9,14 +9,26 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 	{
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{
-			var chromeWindow = AutomationElement.FromHandle(hWnd);
+			var firefoxWindow = AutomationElement.FromHandle(hWnd);
 
-			var mainElement = chromeWindow.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Browser tabs"));
+			var cacheRequest = new CacheRequest();
+			cacheRequest.Add(AutomationElement.NameProperty);
+			cacheRequest.Add(AutomationElement.LocalizedControlTypeProperty);
+			cacheRequest.Add(SelectionItemPattern.Pattern);
+			cacheRequest.Add(SelectionItemPattern.SelectionContainerProperty);
+			cacheRequest.TreeScope = TreeScope.Element;
 
-			if (mainElement == null)
-				yield break;
+			AutomationElement tabBarElement;
 
-			var tabBarElement = mainElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab"));
+			using (cacheRequest.Activate())
+			{
+				var mainElement = firefoxWindow.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Browser tabs"));
+
+				if (mainElement == null)
+					yield break;
+
+				tabBarElement = mainElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab"));
+			}
 
 			var tabElements = tabBarElement.FindAll(TreeScope.Children, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab item"));
 
@@ -24,37 +36,6 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 			{
 				yield return new FirefoxTab(tabElements[tabIndex].Current.Name, tabIndex + 1);
 			}
-
-			/*
-			AutomationElement rootElement = AutomationElement.FromHandle(hWnd);
-
-			Condition condCustomControl = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Custom);
-			AutomationElement firstCustomControl = GetNextCustomControl(rootElement, condCustomControl);
-			AutomationElement secondCustomControl = GetNextCustomControl(firstCustomControl, condCustomControl);
-			foreach (AutomationElement thirdElement in secondCustomControl.FindAll(TreeScope.Children, condCustomControl))
-			{
-				foreach (AutomationElement fourthElement in thirdElement.FindAll(TreeScope.Children, condCustomControl))
-				{
-					Condition condDocument = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Document);
-					AutomationElement docElement = fourthElement.FindFirst(TreeScope.Children, condDocument);
-					if (docElement != null)
-					{
-						foreach (AutomationPattern pattern in docElement.GetSupportedPatterns())
-						{
-							var valuePattern = docElement.GetCurrentPattern(pattern) as ValuePattern;
-							if (valuePattern != null)
-							{
-								yield return new FirefoxTab(valuePattern.Current.Value, 0);
-							}
-						}
-					}
-				}
-			}*/
 		}
-		/*
-		private static AutomationElement GetNextCustomControl(AutomationElement rootElement, Condition condCustomControl)
-		{
-			return rootElement.FindAll(TreeScope.Children, condCustomControl).Cast<AutomationElement>().ToList().Where(x => x.Current.BoundingRectangle != System.Windows.Rect.Empty).FirstOrDefault();
-		}*/
 	}
 }

@@ -14,12 +14,24 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
 		{
 			var chromeWindow = AutomationElement.FromHandle(hWnd);
 
-			var mainElement = chromeWindow.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
+			var cacheRequest = new CacheRequest();
+			cacheRequest.Add(AutomationElement.NameProperty);
+			cacheRequest.Add(AutomationElement.LocalizedControlTypeProperty);
+			cacheRequest.Add(SelectionItemPattern.Pattern);
+			cacheRequest.Add(SelectionItemPattern.SelectionContainerProperty);
+			cacheRequest.TreeScope = TreeScope.Element;
 
-			if (mainElement == null)
-				yield break;
-			
-			var tabBarElement = mainElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab"));
+			AutomationElement tabBarElement;
+
+			using (cacheRequest.Activate())
+			{
+				var mainElement = chromeWindow.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
+
+				if (mainElement == null)
+					yield break;
+
+				tabBarElement = mainElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab"));
+			}
 
 			var tabElements = tabBarElement.FindAll(TreeScope.Children, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab item"));
 
