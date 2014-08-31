@@ -20,7 +20,7 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * If no opened window is found for your query, press `Enter` to search directly in the Windows Search charm.
 
-* Press `Alt` + `Number (1 - 9)` to directly open the application at the selected index from the list.
+* Press `Ctrl` + `Number (1 - 9)` to directly open the application at the selected index from the list.
 
 * Press `Escape` to close the window.
 
