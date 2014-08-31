@@ -38,7 +38,7 @@
                     </ComboBox>
                     <CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
                     <CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,81,0,0"/>
-                    <TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding NoElevatedPrivilegesWarning}" Foreground="Red" HorizontalAlignment="Left" Margin="10,101,0,0" VerticalAlignment="Top" TextWrapping="Wrap" FontWeight="Bold"><Run Text="Alt + Tab will not work in applications with elevated privileges (Run as Administrator). Restart GoToWindow as Administrator to solve."/></TextBlock>
+                    <TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding NoElevatedPrivilegesWarning}" Foreground="Red" HorizontalAlignment="Left" Margin="10,101,0,0" VerticalAlignment="Top" TextWrapping="Wrap" FontWeight="Bold"><Run Text="Alt + Tab will not work in applications with elevated privileges (Run as Administrator). Performance improvements are disabled. Restart GoToWindow as Administrator to solve."/></TextBlock>
                 </Grid>
             </TabItem>
             <TabItem Header="_Plugins">

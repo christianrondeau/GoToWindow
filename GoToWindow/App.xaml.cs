@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using GoToWindow.Api;
 using GoToWindow.Commands;
 using Hardcodet.Wpf.TaskbarNotification;
 using log4net;
@@ -56,9 +57,16 @@ namespace GoToWindow
 				? "Alt + Tab"
 				: "Alt + Tab + Tab";
 
+			var tooltipMessage = string.Format("Press {0} and start typing to find a window.", openShortcutDescription);
+
+			if (!WindowsRuntimeHelper.GetHasElevatedPrivileges())
+			{
+				tooltipMessage += Environment.NewLine + Environment.NewLine + "NOTE: Not running with elevated privileges. Performance will be affected; Will not work in applications running as an administrator.";
+			}
+
 			_trayIcon.ShowBalloonTip(
 				"Go To Window",
-				string.Format("Press {0} and start typing to search through your opened windows.", openShortcutDescription),
+				tooltipMessage,
 				BalloonIcon.Info);
 		}
 
