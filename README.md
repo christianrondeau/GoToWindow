@@ -40,11 +40,21 @@ Please include:
 * Version of Windows
 * Version of Go To Window
 
-## Installing Plug-ins
+## Plugins
+
+GoToWindow is extensible. Even the core functionality is a plug-in, that can be replaced if you wish. You can also write your own!
+
+### Built-in Plugins
+
+* `GoToWindow.Plugins.Core`: Loads the core windows list, as shown by the native `Alt` + `Tab` screen. 
+* `GoToWindow.Plugins.ExpandBrowsersTabs`: Expands browser windows and shows all tabs as separate windows.
+* `GoToWindow.Plugins.ExplorerExtensions`: Show the full path of explorer windows instead of just the folder name.
+
+### Installing Additional Plug-ins
 
 Simply drop the plug-in files under `GoToWindow\Plugins` directory, and restart Go To Window.
 
-## Writing your own Plug-ins
+### Writing your own Plug-ins
 
 See the [Plugins](PLUGINS.md) document for more information on extending GoToWindow.
 

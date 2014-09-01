@@ -2,10 +2,6 @@
 
 GoToWindow is extensible. Even the core functionality is a plug-in, that can be replaced if you wish. You can also write your own!
 
-## Built-in Plugins
-
-* `GoToWindow.Plugins.Core`: Loads the core windows list, as shown by the native `Alt` + `Tab` screen. 
-
 ## Creating your own plugin
 
 **Warning! This is an alpha, and the plug-in signature is subject to change.**
