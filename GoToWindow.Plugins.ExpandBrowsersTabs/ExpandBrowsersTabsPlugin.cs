@@ -52,8 +52,12 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 
 				var tabs = finder.GetTabsOfWindow(item.HWnd);
 
+				var tabResults = tabs.Select(tab => ConvertTabToResult(item, tab)).ToArray();
+
+				if (tabResults.Length <= 0) continue;
+
 				list.RemoveAt(index);
-				list.InsertRange(index, tabs.Select(tab => ConvertTabToResult(item, tab)));
+				list.InsertRange(index, tabResults);
 			}
 		}
 
