@@ -25,7 +25,6 @@ namespace GoToWindow
 	{
 		private enum GoToWindowState
 		{
-			Undefined,
 			Showing,
 			ShowingThenHide,
 			Shown,
@@ -74,6 +73,9 @@ namespace GoToWindow
 				Log.Debug("Showing Main Window.");
 				_state = GoToWindowState.Showing;
 
+				SetAvailableWindowSize();
+				_mainWindow.Left = SystemParameters.VirtualScreenWidth/2f - _mainViewModel.AvailableWindowWidth/2f;
+				_mainWindow.Top = SystemParameters.VirtualScreenHeight / 2f - (_mainViewModel.AvailableWindowHeight + 56) / 2f;
 				_mainWindow.Show();
 
 				if (_mainWindowEntry == null)
@@ -88,6 +90,28 @@ namespace GoToWindow
 				_mainWindowEntry.Focus();
 
 				Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Background);
+			}
+		}
+
+		private void SetAvailableWindowSize()
+		{
+			var width = SystemParameters.VirtualScreenWidth;
+			var height = SystemParameters.VirtualScreenHeight;
+
+			if (width > 1280)
+			{
+				_mainViewModel.AvailableWindowWidth = (int) (width*0.5f);
+				_mainViewModel.AvailableWindowHeight = (int) (height*0.66f);
+			}
+			else if (width < 800)
+			{
+				_mainViewModel.AvailableWindowWidth = (int)(width * 0.8f);
+				_mainViewModel.AvailableWindowHeight = (int)(height * 0.8f);
+			}
+			else
+			{
+				_mainViewModel.AvailableWindowWidth = 640;
+				_mainViewModel.AvailableWindowHeight = (int)(height * 0.6f);
 			}
 		}
 

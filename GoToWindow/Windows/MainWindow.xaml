@@ -7,8 +7,10 @@
 		xmlns:converters="clr-namespace:GoToWindow.Converters"
         xmlns:model="clr-namespace:GoToWindow.Extensibility.ViewModel;assembly=GoToWindow.Extensibility"
         mc:Ignorable="d"
-        Title="Go To Window" Height="Auto" Width="640"
-        WindowStartupLocation="CenterScreen"
+        Title="Go To Window"
+		Width="{Binding Path=AvailableWindowWidth}" Height="Auto"
+		SizeToContent="Height"
+        WindowStartupLocation="Manual"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStyle="None"
@@ -21,7 +23,7 @@
         Deactivated="Window_Deactivated"
         Activated="Window_Activated"
         Loaded="Window_Loaded"
-        d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
+        d:DataContext="{d:DesignInstance viewModels:DesignTimeMainViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -112,7 +114,7 @@
                       MouseDoubleClick="WindowsListView_MouseDoubleClick"
                       PreviewKeyDown="WindowsListView_PreviewKeyDown"
                       BorderBrush="Transparent"
-                      MaxHeight="288"
+                      MaxHeight="{Binding Path=AvailableWindowHeight}"
 					  Visibility="{Binding IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InvertAndVisibilityConverter}}"
                       ItemsSource="{Binding Windows.View}"
                       SelectedItem="{Binding SelectedWindowEntry, Mode=TwoWay}">

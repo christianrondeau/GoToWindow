@@ -72,7 +72,9 @@
     <Compile Include="ExitCodes.cs" />
     <Compile Include="GoToWindowContext.cs" />
     <Compile Include="Commands\OpenMainWindowCommand.cs" />
+    <Compile Include="Components\GoToWindowTrayIcon.cs" />
     <Compile Include="GoToWindowPluginsContainer.cs" />
+    <Compile Include="ViewModels\DesignTimeMainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsPluginViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />

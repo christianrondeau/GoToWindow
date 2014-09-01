@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using GoToWindow.Api;
-using GoToWindow.Commands;
-using Hardcodet.Wpf.TaskbarNotification;
+using GoToWindow.Components;
 using log4net;
 
 namespace GoToWindow
@@ -14,8 +11,8 @@ namespace GoToWindow
 		private static readonly ILog Log = LogManager.GetLogger(typeof(App).Assembly, "GoToWindow");
 
 		private IGoToWindowContext _context;
+		private GoToWindowTrayIcon _menu;
 		private Mutex _mutex;
-		private TaskbarIcon _trayIcon;
 
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
@@ -30,13 +27,7 @@ namespace GoToWindow
 
 			_context = new GoToWindowContext();
 			
-			_trayIcon = new TaskbarIcon
-			{
-				Icon = GoToWindow.Properties.Resources.AppIcon,
-				ToolTipText = "Go To Window",
-				DoubleClickCommand = new OpenMainWindowCommand(_context),
-				ContextMenu = CreateContextMenu()
-			};
+			_menu = new GoToWindowTrayIcon(_context);
 
 			_context.EnableAltTabHook(
 				GoToWindow.Properties.Settings.Default.HookAltTab,
@@ -47,61 +38,27 @@ namespace GoToWindow
 
 			Log.Info("Application started.");
 
-			ShowStartupTooltip();
-		}
-
-		private void ShowStartupTooltip()
-		{
-			var shortcutPressesBeforeOpen = GoToWindow.Properties.Settings.Default.ShortcutPressesBeforeOpen;
-			var openShortcutDescription = shortcutPressesBeforeOpen == 1
-				? "Alt + Tab"
-				: "Alt + Tab + Tab";
-
-			var tooltipMessage = string.Format("Press {0} and start typing to find a window.", openShortcutDescription);
-
-			if (!WindowsRuntimeHelper.GetHasElevatedPrivileges())
-			{
-				tooltipMessage += Environment.NewLine + Environment.NewLine + "NOTE: Not running with elevated privileges. Performance will be affected; Will not work in applications running as an administrator.";
-			}
-
-			_trayIcon.ShowBalloonTip(
-				"Go To Window",
-				tooltipMessage,
-				BalloonIcon.Info);
-		}
-
-		private ContextMenu CreateContextMenu()
-		{
-			var contextMenu = new ContextMenu();
-			var showMenu = new MenuItem { Header = "_Show", Command = new OpenMainWindowCommand(_context) };
-			contextMenu.Items.Add(showMenu);
-
-			var settingsMenu = new MenuItem { Header = "S_ettings", Command = new ShowSettingsCommand(_context) };
-			contextMenu.Items.Add(settingsMenu);
-
-			contextMenu.Items.Add(new Separator());
-
-			var exitMenuItem = new MenuItem { Header = "E_xit", Command = new ExitCommand() };
-			contextMenu.Items.Add(exitMenuItem);
-
-			return contextMenu;
+			_menu.ShowStartupTooltip();
 		}
 
 		private void Application_Exit(object sender, ExitEventArgs e)
 		{
+			if (_menu != null)
+			{
+				_menu.Dispose();
+				_menu = null;
+			}
+
 			if (_context != null)
 			{
 				_context.Dispose();
+				_context = null;
 			}
 
 			if (_mutex != null)
 			{
 				_mutex.Dispose();
-			}
-
-			if (_trayIcon != null)
-			{
-				_trayIcon.Dispose();
+				_mutex = null;
 			}
 
 			Log.Info("Application exited.");

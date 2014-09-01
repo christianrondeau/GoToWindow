@@ -12,16 +12,18 @@ using log4net;
 
 namespace GoToWindow.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+	public class MainViewModel : INotifyPropertyChanged
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(MainViewModel).Assembly, "GoToWindow");
 
 		private string _searchText;
 		private bool _isEmpty;
+	    private int _availableWindowWidth;
+	    private int _availableWindowHeight;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public CollectionViewSource Windows { get; private set; }
+		public CollectionViewSource Windows { get; protected set; }
 		public ISearchResult SelectedWindowEntry { get; set; }
 
         public void Load(IEnumerable<IGoToWindowPlugin> plugins)
@@ -77,10 +79,30 @@ namespace GoToWindow.ViewModels
 		public bool IsEmpty
 		{
 			get { return _isEmpty; }
-			private set
+			protected set
 			{
 				_isEmpty = value;
 				OnPropertyChanged("IsEmpty");
+			}
+		}
+
+		public int AvailableWindowWidth
+		{
+			get { return _availableWindowWidth; }
+			set
+			{
+				_availableWindowWidth = value;
+				OnPropertyChanged("AvailableWindowWidth");
+			}
+		}
+
+		public int AvailableWindowHeight
+		{
+			get { return _availableWindowHeight; }
+			set
+			{
+				_availableWindowHeight = value;
+				OnPropertyChanged("AvailableWindowHeight");
 			}
 		}
 
