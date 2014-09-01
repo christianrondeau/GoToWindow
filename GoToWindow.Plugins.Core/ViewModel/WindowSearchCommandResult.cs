@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using GoToWindow.Api;
 using GoToWindow.Extensibility.Controls;
 using GoToWindow.Extensibility.ViewModel;
@@ -10,6 +11,8 @@ namespace GoToWindow.Plugins.Core.ViewModel
 	public class WindowSearchCommandResult : SearchResultBase, IBasicCommandResult, INotifyPropertyChanged
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(WindowSearchCommandResult).Assembly, "GoToWindow");
+		private static readonly Regex ValidQuery = new Regex(@"^[^:\/<>|""]+$", RegexOptions.Compiled);
+
 
 		private string _text;
 		private string _query;
@@ -51,7 +54,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
 		{
 			_query = searchQuery;
 			Text = _query;
-			return !String.IsNullOrWhiteSpace(searchQuery);
+			return !String.IsNullOrWhiteSpace(searchQuery) && ValidQuery.IsMatch(searchQuery);
 		}
 	}
 }

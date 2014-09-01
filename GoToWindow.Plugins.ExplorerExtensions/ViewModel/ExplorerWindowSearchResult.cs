@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using GoToWindow.Extensibility.ViewModel;
 
-namespace GoToWindow.Plugins.ExplorerExtensions
+namespace GoToWindow.Plugins.ExplorerExtensions.ViewModel
 {
 	public class ExplorerWindowSearchResult : IWindowSearchResult
 	{

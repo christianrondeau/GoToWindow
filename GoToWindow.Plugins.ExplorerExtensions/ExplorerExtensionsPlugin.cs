@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using GoToWindow.Extensibility;
 using GoToWindow.Extensibility.ViewModel;
+using GoToWindow.Plugins.ExplorerExtensions.ViewModel;
 using log4net;
 
 namespace GoToWindow.Plugins.ExplorerExtensions
@@ -31,6 +32,8 @@ namespace GoToWindow.Plugins.ExplorerExtensions
 					list[i] = ProcessExplorerWindow(window);
 				}
 			}
+
+			list.Add(new OpenExplorerCommandResult());
 		}
 
 		private static IWindowSearchResult ProcessExplorerWindow(IWindowSearchResult window)

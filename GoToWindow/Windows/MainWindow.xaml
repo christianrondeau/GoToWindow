@@ -118,6 +118,23 @@
 					  Visibility="{Binding IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InvertAndVisibilityConverter}}"
                       ItemsSource="{Binding Windows.View}"
                       SelectedItem="{Binding SelectedWindowEntry, Mode=TwoWay}">
+				<ListView.Style>
+					<Style TargetType="ListView">
+						<Style.Triggers>
+							<Trigger Property="HasItems" Value="False">
+								<Setter Property="Template">
+									<Setter.Value>
+										<ControlTemplate TargetType="ListView">
+											<Grid Height="48">
+												<TextBlock Margin="16" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Gray">No results</TextBlock>
+											</Grid>
+										</ControlTemplate>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</ListView.Style>
 				<ListView.ItemTemplate>
                     <DataTemplate DataType="model:IWindowSearchResult">
                         <ContentControl Content="{Binding View}" Height="48" />

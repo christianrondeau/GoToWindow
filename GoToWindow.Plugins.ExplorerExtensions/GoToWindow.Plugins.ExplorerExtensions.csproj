@@ -49,8 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExplorerExtensionsPlugin.cs" />
-    <Compile Include="ExplorerWindowSearchResult.cs" />
+    <Compile Include="ViewModel\ExplorerWindowSearchResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\OpenExplorerCommandResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoToWindow.Api\GoToWindow.Api.csproj">
