@@ -118,26 +118,7 @@
 					  Visibility="{Binding IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InvertAndVisibilityConverter}}"
                       ItemsSource="{Binding Windows.View}"
                       SelectedItem="{Binding SelectedWindowEntry, Mode=TwoWay}">
-                <ListView.Style>
-                    <Style TargetType="ListView">
-                        <Style.Triggers>
-                            <Trigger Property="HasItems" Value="False">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListView">
-                                            <StackPanel Orientation="Horizontal" Height="48">
-                                                <TextBlock Margin="16, 16, 0, 16" VerticalAlignment="Center" Foreground="Gray">Search for '</TextBlock>
-                                                <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold" Text="{Binding SearchText}" />
-                                                <TextBlock Margin="0, 16, 0, 16" VerticalAlignment="Center" Foreground="Gray">' using Windows Search</TextBlock>
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListView.Style>
-                <ListView.ItemTemplate>
+				<ListView.ItemTemplate>
                     <DataTemplate DataType="model:IWindowSearchResult">
                         <ContentControl Content="{Binding View}" Height="48" />
                     </DataTemplate>

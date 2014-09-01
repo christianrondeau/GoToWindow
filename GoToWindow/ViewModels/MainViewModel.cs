@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using GoToWindow.Commands;
@@ -25,46 +26,8 @@ namespace GoToWindow.ViewModels
 
 		public CollectionViewSource Windows { get; protected set; }
 		public ISearchResult SelectedWindowEntry { get; set; }
-
-        public void Load(IEnumerable<IGoToWindowPlugin> plugins)
-        {
-			Empty();
-
-            var list = new List<ISearchResult>();
-			var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
-
-			foreach (var plugin in plugins.Where(plugin => !disabledPlugins.Contains(plugin.Id)))
-			{
-				Stopwatch stopwatch = null;
-
-				if(Log.IsDebugEnabled)
-				{
-					stopwatch = new Stopwatch();
-					stopwatch.Start();
-				}
-
-                //TODO: Make a timeout that ignores a plug-in if it's too long, and updates the result when finally getting a response
-				plugin.BuildList(list);
-
-				if (stopwatch != null)
-				{
-					stopwatch.Stop();
-					Log.InfoFormat("Plugin '{0}' took {1} to execute, now at {2} results.", plugin.Title, stopwatch.Elapsed, list.Count);
-				}
-			}
-
-			Windows.Source = list.ToArray();
-
-			IsEmpty = false;
-        }
-
-		public void Empty()
-		{
-			SelectedWindowEntry = null;
-			Windows.Source = null;
-			SearchText = "";
-			IsEmpty = true;
-		}
+		public ISearchResult CommandResult { get; private set; }
+		public UserControl CommandView { get; private set; }
 
         public string SearchText
         {
@@ -106,12 +69,6 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-        protected void OnPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
-
         public ICommand GoToWindowEntryShortcut { get; private set; }
 
         public event EventHandler Close;
@@ -125,7 +82,59 @@ namespace GoToWindow.ViewModels
             GoToWindowEntryShortcut = goToWindowEntryShortcutCommand;
 
 			Empty();
-        }
+		}
+
+		public void Load(IEnumerable<IGoToWindowPlugin> plugins)
+		{
+			Empty();
+
+			var list = new List<ISearchResult>();
+			var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
+
+			foreach (var plugin in plugins.Where(plugin => !disabledPlugins.Contains(plugin.Id)))
+			{
+				Stopwatch stopwatch = null;
+
+				if (Log.IsDebugEnabled)
+				{
+					stopwatch = new Stopwatch();
+					stopwatch.Start();
+				}
+
+				//TODO: Make a timeout that ignores a plug-in if it's too long, and updates the result when finally getting a response
+				plugin.BuildList(list);
+
+				if (stopwatch != null)
+				{
+					stopwatch.Stop();
+					Log.InfoFormat("Plugin '{0}' took {1} to execute, now at {2} results.", plugin.Title, stopwatch.Elapsed, list.Count);
+				}
+			}
+
+			Windows.Source = list.ToArray();
+
+			IsEmpty = false;
+		}
+
+		public void Empty()
+		{
+			SelectedWindowEntry = null;
+			Windows.Source = null;
+			SearchText = "";
+			IsEmpty = true;
+		}
+
+		public void AskClose()
+		{
+			if (Close != null)
+				Close(this, new EventArgs());
+		}
+
+		protected void OnPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(name));
+		}
 
         private ISearchResult GetEntryAt(int index)
         {
@@ -140,16 +149,10 @@ namespace GoToWindow.ViewModels
             return null;
         }
 
-        void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
+        private void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
         {
             if (Close != null)
                 Close(this, new EventArgs());
         }
-
-		public void AskClose()
-		{
-			if (Close != null)
-				Close(this, new EventArgs());
-		}
 	}
 }

@@ -20,6 +20,7 @@ namespace GoToWindow.Plugins.Core
 		public void BuildList(List<ISearchResult> list)
 		{
 			list.AddRange(WindowsListFactory.Load().Windows.Select(ConvertWindowEntryToSearchResult));
+			list.Add(new WindowSearchCommandResult());
 		}
 
 		private static ISearchResult ConvertWindowEntryToSearchResult(IWindowEntry entry)

@@ -2,7 +2,7 @@
 
 namespace GoToWindow.Extensibility.ViewModel
 {
-	public interface IBasicSearchResult
+	public interface IBasicSearchResult : ISearchResult
 	{
 		BitmapFrame Icon { get; }
 		string Title { get; }

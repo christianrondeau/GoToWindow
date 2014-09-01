@@ -58,22 +58,11 @@ namespace GoToWindow.Windows
         private void FocusSelectedWindowItem()
         {
             var windowEntry = WindowsListView.SelectedItem as ISearchResult;
-            if (windowEntry != null)
-            {
-                windowEntry.Select();
+	        if (windowEntry == null) return;
 
-                ViewModel.AskClose();
+	        windowEntry.Select();
 
-                return;
-            }
-            
-            var searchQuery = SearchTextBox.Text;
-            if(!String.IsNullOrWhiteSpace(searchQuery))
-            {
-                Log.DebugFormat("Launching Windows Search with '{0}'.", searchQuery);
-
-                WindowsSearch.Launch(searchQuery);
-            }
+	        ViewModel.AskClose();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
