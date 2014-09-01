@@ -30,6 +30,16 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * By default, GoToWindow expands web browser's tabs. This slows down display a little bit. You can disable it in the Settings, under the Plugins tab.
 
+## Bugs
+
+If for some reason Go To Window crashes, create an [issue](https://github.com/christianrondeau/GoToWindow/issues) (check if one already exists before).
+
+Please include:
+
+* Log (`GoToWindow.log` in the installation directory).<br />_Only include the last ~20 lines._
+* Version of Windows
+* Version of Go To Window
+
 ## Installing Plug-ins
 
 Simply drop the plug-in files under `GoToWindow\Plugins` directory, and restart Go To Window.
