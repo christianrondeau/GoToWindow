@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Markdown", "Markdown", "{6C
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoToWindow.Plugins.ExplorerExtensions", "GoToWindow.Plugins.ExplorerExtensions\GoToWindow.Plugins.ExplorerExtensions.csproj", "{F5F01BFD-4356-417D-B2B6-2C2ACF2D1359}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{D622114A-9CB3-4FBA-8381-7D028B1A3554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D622114A-9CB3-4FBA-8381-7D028B1A3554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D622114A-9CB3-4FBA-8381-7D028B1A3554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F01BFD-4356-417D-B2B6-2C2ACF2D1359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F01BFD-4356-417D-B2B6-2C2ACF2D1359}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F01BFD-4356-417D-B2B6-2C2ACF2D1359}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F01BFD-4356-417D-B2B6-2C2ACF2D1359}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
