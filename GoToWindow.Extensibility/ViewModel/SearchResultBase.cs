@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
 using System.Windows.Controls;
 
 namespace GoToWindow.Extensibility.ViewModel
@@ -22,14 +20,7 @@ namespace GoToWindow.Extensibility.ViewModel
 
 		protected static bool IsShown(string searchQuery, params string[] fields)
 		{
-			if (string.IsNullOrEmpty(searchQuery))
-				return true;
-
-			var text = String.Join(" ", fields);
-
-			return searchQuery
-				.Split(' ')
-				.All(word => CultureInfo.CurrentUICulture.CompareInfo.IndexOf(text, word, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) > -1);
+			return SearchHelper.IsShown(searchQuery, fields);
 		}
 	}
 }

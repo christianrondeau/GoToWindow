@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\IBasicSearchResult.cs" />
     <Compile Include="ViewModel\IWindowSearchResult.cs" />
+    <Compile Include="ViewModel\SearchHelper.cs" />
     <Compile Include="ViewModel\SearchResultBase.cs" />
   </ItemGroup>
   <ItemGroup />
