@@ -49,7 +49,7 @@ namespace GoToWindow.ViewModels
 				if (stopwatch != null)
 				{
 					stopwatch.Stop();
-					Log.DebugFormat("Plugin '{0}' took {1} to execute, now at {2} results.", plugin.Title, stopwatch.Elapsed, list.Count);
+					Log.InfoFormat("Plugin '{0}' took {1} to execute, now at {2} results.", plugin.Title, stopwatch.Elapsed, list.Count);
 				}
 			}
 

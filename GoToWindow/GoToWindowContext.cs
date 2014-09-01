@@ -72,25 +72,25 @@ namespace GoToWindow
 
 				Log.Debug("Showing Main Window.");
 				_state = GoToWindowState.Showing;
-
-				SetAvailableWindowSize();
-				_mainWindow.Left = SystemParameters.VirtualScreenWidth/2f - _mainViewModel.AvailableWindowWidth/2f;
-				_mainWindow.Top = SystemParameters.VirtualScreenHeight / 2f - (_mainViewModel.AvailableWindowHeight + 56) / 2f;
-				_mainWindow.Show();
-
-				if (_mainWindowEntry == null)
-				{
-					var interopHelper = new WindowInteropHelper(_mainWindow);
-					_mainWindowEntry = WindowEntryFactory.Create(interopHelper.Handle);
-
-					Log.DebugFormat("GoToWindow main window created with hWnd {0}", _mainWindowEntry.HWnd);
-				}
-
-				_mainWindow.SetFocus();
-				_mainWindowEntry.Focus();
-
-				Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Background);
 			}
+
+			SetAvailableWindowSize();
+			_mainWindow.Left = SystemParameters.VirtualScreenWidth/2f - _mainViewModel.AvailableWindowWidth/2f;
+			_mainWindow.Top = SystemParameters.VirtualScreenHeight/2f - (_mainViewModel.AvailableWindowHeight + 56)/2f;
+			_mainWindow.Show();
+
+			if (_mainWindowEntry == null)
+			{
+				var interopHelper = new WindowInteropHelper(_mainWindow);
+				_mainWindowEntry = WindowEntryFactory.Create(interopHelper.Handle);
+
+				Log.DebugFormat("GoToWindow main window created with hWnd {0}", _mainWindowEntry.HWnd);
+			}
+
+			_mainWindow.SetFocus();
+			_mainWindowEntry.Focus();
+
+			Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Background);
 		}
 
 		private void SetAvailableWindowSize()
@@ -117,6 +117,11 @@ namespace GoToWindow
 
 		public void Hide()
 		{
+			Hide(false);
+		}
+
+		public void Hide(bool hideIfPending)
+		{
 			lock (_lock)
 			{
 				if (_state == GoToWindowState.Showing)
@@ -126,25 +131,31 @@ namespace GoToWindow
 					return;
 				}
 
+				if (!hideIfPending && _state == GoToWindowState.ShowingThenHide)
+				{
+					Log.Debug("Hide already pending.");
+					return;
+				}
+
 				if (_state != GoToWindowState.Shown && _state != GoToWindowState.ShowingThenHide)
 					return;
 
 				Log.Debug("Hiding Main Window.");
 				_state = GoToWindowState.Hiding;
-
-				try
-				{
-					_mainWindow.BeginInit();
-					_mainViewModel.Empty();
-					_mainWindow.EndInit();
-				}
-				catch (InvalidOperationException exc)
-				{
-					Log.Error("Failed showing window", exc);
-				}
-
-				Application.Current.Dispatcher.InvokeAsync(HideWindowAsync, DispatcherPriority.ApplicationIdle);
 			}
+
+			try
+			{
+				_mainWindow.BeginInit();
+				_mainViewModel.Empty();
+				_mainWindow.EndInit();
+			}
+			catch (InvalidOperationException exc)
+			{
+				Log.Error("Failed hiding window.", exc);
+			}
+
+			Application.Current.Dispatcher.InvokeAsync(HideWindowAsync, DispatcherPriority.ApplicationIdle);
 		}
 
 		private async void HideWindowAsync()
@@ -193,31 +204,29 @@ namespace GoToWindow
 
 		private void LoadViewModel()
 		{
-			var hide = false;
-
-			lock (_lock)
+			if (_state == GoToWindowState.ShowingThenHide)
 			{
-				if (_state == GoToWindowState.ShowingThenHide)
-				{
-					hide = true;
-				}
-				else
-				{
-					_mainWindow.BeginInit();
-					_mainViewModel.Load(PluginsContainer.Plugins);
-					_mainWindow.DataReady();
-					_mainWindow.EndInit();
-					Log.Debug("View Model loaded.");
-					Application.Current.Dispatcher.InvokeAsync(EnsureWindowIsForeground, DispatcherPriority.Background);
-					_state = GoToWindowState.Shown;
-				}
+				Log.Debug("Executing pending Hide (before loading windows).");
+				Hide(true);
+				return;
 			}
 
-			if (hide)
+			Log.Debug("View Model loading...");
+			_mainWindow.BeginInit();
+			_mainViewModel.Load(PluginsContainer.Plugins);
+			_mainWindow.DataReady();
+			_mainWindow.EndInit();
+			Log.Debug("View Model loaded.");
+
+			if (_state == GoToWindowState.ShowingThenHide)
 			{
-				Log.Debug("Executing pending Hide.");
-				Hide();
+				Log.Debug("Executing pending Hide (after loading windows).");
+				Hide(true);
+				return;
 			}
+
+			_state = GoToWindowState.Shown;
+			Application.Current.Dispatcher.InvokeAsync(EnsureWindowIsForeground, DispatcherPriority.Background);
 		}
 
 		private async void EnsureWindowIsForeground()
@@ -226,7 +235,7 @@ namespace GoToWindow
 			{
 				await Task.Delay(10);
 
-				if (_state == GoToWindowState.Hiding || _state == GoToWindowState.ShowingThenHide)
+				if (_state != GoToWindowState.Shown)
 				{
 					Log.Debug("Ensuring foreground: Hide is already in progress. Stop watching.");
 					return;
@@ -253,10 +262,11 @@ namespace GoToWindow
 
 		private void HideWindow()
 		{
+			_mainWindow.Hide();
+			Log.Debug("Main window hidden.");
+
 			lock (_lock)
 			{
-				_mainWindow.Hide();
-				Log.Debug("Main window hidden.");
 				_state = GoToWindowState.Hidden;
 			}
 		}
