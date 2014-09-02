@@ -14,6 +14,7 @@
         </Grid.ColumnDefinitions>
         <Image Grid.Column="0" Source="{Binding Path=Icon}" Margin="8,8,8,8" />
         <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Foreground="Gray" Text="{Binding Path=ProcessName}" />
-        <TextBlock  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Title}" />
+        <TextBlock Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8,0,8,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Title}" />
+		<TextBlock Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="16,2,2,2" TextTrimming="CharacterEllipsis" Text="{Binding Path=Error}" Foreground="Red" FontSize="8" />
     </Grid>
 </UserControl>

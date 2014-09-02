@@ -23,7 +23,7 @@ namespace GoToWindow.ViewModels
 				{
 					new DesignTimeSearchResult(icon, "process", "Window Title"),
 					new DesignTimeSearchResult(icon, "very long process name", "Very very long window title that should end up with ellipsis because it is so very long"),
-					new DesignTimeSearchResult(icon, "filler", "Some Window Title"),
+					new DesignTimeSearchResult(icon, "error", "This window has an error") { Error = "This is the error message" },
 					new DesignTimeSearchResult(icon, "filler", "Some Window Title"),
 					new DesignTimeSearchResult(icon, "filler", "Some Window Title"),
 					new DesignTimeSearchResult(icon, "filler", "Some Window Title"),

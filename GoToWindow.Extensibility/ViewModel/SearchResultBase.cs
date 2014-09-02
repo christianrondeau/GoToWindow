@@ -5,6 +5,7 @@ namespace GoToWindow.Extensibility.ViewModel
 {
 	public abstract class SearchResultBase
 	{
+		public string Error { get; set; }
 		private readonly Func<UserControl> _viewCtor;
 	    private UserControl _view;
 

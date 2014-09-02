@@ -11,6 +11,7 @@ namespace GoToWindow.Extensibility.ViewModel
 		public BitmapFrame Icon { get; private set; }
 		public string Title { get; private set; }
 		public string ProcessName { get; private set; }
+		public string Error { get; set; }
 
 		public DesignTimeSearchResult()
 			: this(null, "process", "Window Title")

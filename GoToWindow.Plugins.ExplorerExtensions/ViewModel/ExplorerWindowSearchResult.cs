@@ -14,6 +14,7 @@ namespace GoToWindow.Plugins.ExplorerExtensions.ViewModel
 		public BitmapFrame Icon { get { return _window.Icon; } }
 		public string Title { get { return _path; } }
 		public string ProcessName { get { return _window.ProcessName; } }
+		public string Error { get { return _window.Error; } set { _window.Error = value; } }
 		public IntPtr HWnd { get { return _window.HWnd; } }
 
 		public bool IsShown(string searchQuery)

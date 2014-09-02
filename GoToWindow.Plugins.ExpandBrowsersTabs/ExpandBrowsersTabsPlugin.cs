@@ -67,6 +67,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 
 				if (!task.Wait(TimeoutMilliseconds, token))
 				{
+					item.Error = "* Error: Timeout trying to get tabs";
 					Log.WarnFormat("Timeout trying to get tabs for '{0}'", browserName);
 					continue;
 				}

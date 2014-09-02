@@ -2,8 +2,9 @@
 
 namespace GoToWindow.Extensibility.ViewModel
 {
-	public interface IWindowSearchResult : ISearchResult, IBasicSearchResult
+	public interface IWindowSearchResult : IBasicSearchResult
 	{
+		new string Error { get; set; }
 		IntPtr HWnd { get; }
 	}
 }

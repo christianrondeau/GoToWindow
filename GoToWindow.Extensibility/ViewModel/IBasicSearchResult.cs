@@ -7,5 +7,6 @@ namespace GoToWindow.Extensibility.ViewModel
 		BitmapFrame Icon { get; }
 		string Title { get; }
 		string ProcessName { get; }
+		string Error { get; }
 	}
 }
