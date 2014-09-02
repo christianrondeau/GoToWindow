@@ -11,7 +11,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
 	public class WindowSearchCommandResult : SearchResultBase, IBasicCommandResult, INotifyPropertyChanged
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(WindowSearchCommandResult).Assembly, "GoToWindow");
-		private static readonly Regex ValidQuery = new Regex(@"^[^:\/<>|""]+$", RegexOptions.Compiled);
+		private static readonly Regex ValidQuery = new Regex(@"^[^:\\/<>|""]+$", RegexOptions.Compiled);
 
 
 		private string _text;
