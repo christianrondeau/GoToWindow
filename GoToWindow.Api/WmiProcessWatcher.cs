@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Management;
@@ -19,7 +20,7 @@ namespace GoToWindow.Api
             if (!WindowsRuntimeHelper.GetHasElevatedPrivileges())
                 return;
 
-            _map = new Dictionary<uint, string>();
+			_map = new ConcurrentDictionary<uint, string>();
 
             _processStartedWatcher = new ManagementEventWatcher("SELECT ProcessID, ProcessName FROM Win32_ProcessStartTrace");
             _processStartedWatcher.EventArrived += ProcessStarted;
@@ -45,8 +46,7 @@ namespace GoToWindow.Api
         {
             var processId = (UInt32)e.NewEvent["ProcessId"];
 
-            if (_map.ContainsKey(processId))
-                _map.Remove(processId);
+            _map.Remove(processId);
         }
 
         public static void Stop()
