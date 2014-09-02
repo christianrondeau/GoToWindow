@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Runtime.InteropServices;
+using System.Linq;
 using GoToWindow.Extensibility;
 using GoToWindow.Extensibility.ViewModel;
 using GoToWindow.Plugins.ExplorerExtensions.ViewModel;
 using log4net;
+using SHDocVw;
 
 namespace GoToWindow.Plugins.ExplorerExtensions
 {
@@ -13,6 +14,7 @@ namespace GoToWindow.Plugins.ExplorerExtensions
 	public class ExplorerExtensionsPlugin : IGoToWindowPlugin
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ExplorerExtensionsPlugin).Assembly, "GoToWindow");
+		private InternetExplorer[] _explorerWindows;
 
 		public string Id { get { return "GoToWindow.ExplorerExtensions"; } }
 
@@ -27,42 +29,45 @@ namespace GoToWindow.Plugins.ExplorerExtensions
 				var result = list[i];
 				var window = result as IWindowSearchResult;
 
-				if (window != null && window.ProcessName == "explorer")
-				{
-					list[i] = ProcessExplorerWindow(window);
-				}
+				if (window == null || window.ProcessName != "explorer") continue;
+
+				UpdateExplorerWindows();
+				list[i] = ProcessExplorerWindow(window);
 			}
 
 			list.Add(new OpenExplorerCommandResult());
+
+			_explorerWindows = null;
 		}
 
-		private static IWindowSearchResult ProcessExplorerWindow(IWindowSearchResult window)
+		private void UpdateExplorerWindows()
 		{
-			var t = Type.GetTypeFromProgID("Shell.Application");
-			dynamic o = null;
+			if (_explorerWindows != null)
+				return;
+
+			var shellWindows = new ShellWindows();
+
+			_explorerWindows = shellWindows.Cast<InternetExplorer>().ToArray();
+		}
+
+		private IWindowSearchResult ProcessExplorerWindow(IWindowSearchResult window)
+		{
 			try
 			{
-				o = Activator.CreateInstance(t);
-				var ws = o.Windows();
-				for (var i = 0; i < ws.Count; i++)
-				{
-					var ie = ws.Item(i);
-					if (ie == null || ie.hwnd != (long) window.HWnd) continue;
-					var path = System.IO.Path.GetFileName((string) ie.FullName);
-					if (path != null && path.ToLower() == "explorer.exe")
-					{
-						return new ExplorerWindowSearchResult(window, ie.document.focuseditem.path);
-					}
-				}
+				var explorer = _explorerWindows.FirstOrDefault(hwnd => hwnd.HWND == (int)window.HWnd);
+				if (explorer == null)
+					return window;
+
+				var locationUrl = explorer.LocationURL;
+
+				if (string.IsNullOrEmpty(locationUrl) || !Uri.IsWellFormedUriString(locationUrl, UriKind.Absolute))
+					return window;
+
+				return new ExplorerWindowSearchResult(window, new Uri(locationUrl).LocalPath);
 			}
 			catch (Exception exc)
 			{
 				Log.Error("Could not extract path from explorer window", exc);
-			}
-			finally
-			{
-				if (o != null)
-					Marshal.FinalReleaseComObject(o);
 			}
 
 			return window;
