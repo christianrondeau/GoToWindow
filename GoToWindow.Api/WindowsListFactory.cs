@@ -58,9 +58,12 @@ namespace GoToWindow.Api
                 if (window == null || window.ProcessId == currentProcessId || window.Title == null)
                     return true;
 
-                window.ProcessName = WmiProcessWatcher.GetProcessName(window.ProcessId, () => window.ProcessName);
+	            window.ProcessName = WmiProcessWatcher.GetProcessName(window.ProcessId, () => window.ProcessName);
 
-                windows.Add(window);
+	            if (IsKnownException(window))
+		            return true;
+
+	            windows.Add(window);
 
                 return true;
             }, 0);
@@ -68,7 +71,15 @@ namespace GoToWindow.Api
             return new WindowsList(windows);
         }
 
-        private static readonly string[] WindowsClassNamesToSkip =
+	    private static bool IsKnownException(IWindowEntry window)
+	    {
+		    if (window.ProcessName == "Fiddler" && window.Title == "SSFiddlerMsgWin")
+			    return true;
+
+		    return false;
+	    }
+
+	    private static readonly string[] WindowsClassNamesToSkip =
 		{
 			"Shell_TrayWnd",
 			"DV2ControlHost",
@@ -101,7 +112,6 @@ namespace GoToWindow.Api
 
             if (className.StartsWith("WMP9MediaBarFlyout")) //WMP's "now playing" taskbar-toolbar
                 return false;
-
 
             return true;
         }
