@@ -2,21 +2,17 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using GoToWindow.Commands;
 using GoToWindow.Extensibility;
-using log4net;
 
 namespace GoToWindow.ViewModels
 {
 	public class MainViewModel : INotifyPropertyChanged
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(MainViewModel).Assembly, "GoToWindow");
-
 		private string _searchText;
 		private bool _isEmpty;
 	    private int _availableWindowWidth;
@@ -93,21 +89,9 @@ namespace GoToWindow.ViewModels
 
 			foreach (var plugin in plugins.Where(plugin => !disabledPlugins.Contains(plugin.Id)))
 			{
-				Stopwatch stopwatch = null;
-
-				if (Log.IsDebugEnabled)
+				using (new PerformanceLogger(string.Format("Plugin '{0}'", plugin.Title)))
 				{
-					stopwatch = new Stopwatch();
-					stopwatch.Start();
-				}
-
-				//TODO: Make a timeout that ignores a plug-in if it's too long, and updates the result when finally getting a response
-				plugin.BuildList(list);
-
-				if (stopwatch != null)
-				{
-					stopwatch.Stop();
-					Log.InfoFormat("Plugin '{0}' took {1} to execute, now at {2} results.", plugin.Title, stopwatch.Elapsed, list.Count);
+					plugin.BuildList(list);
 				}
 			}
 
