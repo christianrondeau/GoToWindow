@@ -74,9 +74,9 @@ namespace GoToWindow
 				_state = GoToWindowState.Showing;
 			}
 
-			SetAvailableWindowSize();
-			_mainWindow.Left = SystemParameters.VirtualScreenWidth/2f - _mainViewModel.AvailableWindowWidth/2f;
-			_mainWindow.Top = SystemParameters.VirtualScreenHeight/2f - (_mainViewModel.AvailableWindowHeight + 56)/2f;
+			SetAvailableWindowSize(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
+			_mainWindow.Left = SystemParameters.PrimaryScreenWidth/2f - _mainViewModel.AvailableWindowWidth/2f;
+			_mainWindow.Top = SystemParameters.PrimaryScreenHeight/2f - (_mainViewModel.AvailableWindowHeight + 56)/2f;
 			_mainWindow.Show();
 
 			if (_mainWindowEntry == null)
@@ -93,25 +93,22 @@ namespace GoToWindow
 			Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Background);
 		}
 
-		private void SetAvailableWindowSize()
+		private void SetAvailableWindowSize(double screenWidth, double screenHeight)
 		{
-			var width = SystemParameters.VirtualScreenWidth;
-			var height = SystemParameters.VirtualScreenHeight;
-
-			if (width > 1280)
+			if (screenWidth > 1280)
 			{
-				_mainViewModel.AvailableWindowWidth = (int) (width*0.5f);
-				_mainViewModel.AvailableWindowHeight = (int) (height*0.66f);
+				_mainViewModel.AvailableWindowWidth = (int) (screenWidth*0.5f);
+				_mainViewModel.AvailableWindowHeight = (int) (screenHeight*0.66f);
 			}
-			else if (width < 800)
+			else if (screenWidth < 800)
 			{
-				_mainViewModel.AvailableWindowWidth = (int)(width * 0.8f);
-				_mainViewModel.AvailableWindowHeight = (int)(height * 0.8f);
+				_mainViewModel.AvailableWindowWidth = (int)(screenWidth * 0.8f);
+				_mainViewModel.AvailableWindowHeight = (int)(screenHeight * 0.8f);
 			}
 			else
 			{
 				_mainViewModel.AvailableWindowWidth = 640;
-				_mainViewModel.AvailableWindowHeight = (int)(height * 0.6f);
+				_mainViewModel.AvailableWindowHeight = (int)(screenHeight * 0.6f);
 			}
 		}
 
