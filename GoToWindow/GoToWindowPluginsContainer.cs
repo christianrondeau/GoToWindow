@@ -8,6 +8,7 @@ using System.Management.Instrumentation;
 using System.Windows;
 using GoToWindow.Extensibility;
 using log4net;
+using System.Reflection;
 
 namespace GoToWindow
 {
@@ -19,6 +20,8 @@ namespace GoToWindow
 	public class GoToWindowPluginsContainer : IGoToWindowPluginsContainer
 	{
 		public const string PluginsFolderName = "Plugins";
+
+		public const string PluginErrorMessage = "An error occured while loading plug-ins. Try updating or removing plugins other than GoToWindow.Plugins.Core.dll from the Plugins directory and restart GoToWindow.";
 
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowPluginsContainer).Assembly, "GoToWindow");
 
@@ -56,7 +59,7 @@ namespace GoToWindow
                 HandleError(exc, ExitCodes.NoPluginsFound, "No plug-ins found. Check that at least GoToWindow.Plugins.Core.dll can be found in the Plugins directory and restart GoToWindow.");
                 return null;
             }
-            catch (CompositionException exc)
+            catch (Exception exc)
             {
                 HandleError(exc, ExitCodes.ErrorLoadingPlugins, "An error occured while loading plug-ins. Try updating or removing plugins other than GoToWindow.Plugins.Core.dll from the Plugins directory and restart GoToWindow.");
                 return null;
@@ -65,7 +68,13 @@ namespace GoToWindow
 
         private static void HandleError(Exception exc, ExitCodes exitCode, string message)
 	    {
-	        Log.Error(exc);
+			var typeLoadExc = exc as ReflectionTypeLoadException;
+
+			if (typeLoadExc != null)
+				Log.Error(String.Join("; ", typeLoadExc.LoaderExceptions.Select(e => e.Message)), typeLoadExc);
+			else
+				Log.Error(exc);
+
 	        MessageBox.Show(message, "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
             Application.Current.Shutdown((int)exitCode);
 	    }
