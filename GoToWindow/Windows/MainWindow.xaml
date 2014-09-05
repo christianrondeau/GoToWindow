@@ -41,7 +41,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-		<converters:IndexConverter x:Key="IndexConverter" />
 		<converters:ValueConverterGroup x:Key="InvertAndVisibilityConverter">
 			<converters:InverseBooleanConverter />
 			<BooleanToVisibilityConverter />
@@ -140,10 +139,7 @@
 				</ListView.Style>
 				<ListView.ItemTemplate>
                     <DataTemplate DataType="model:IWindowSearchResult">
-						<StackPanel Orientation="Horizontal">
-							<TextBlock VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource IndexConverter}}" />
-							<ContentControl Content="{Binding View}" Height="48" HorizontalAlignment="Stretch" />
-						</StackPanel>
+						<ContentControl Content="{Binding View}" Height="48" HorizontalAlignment="Stretch" />
 					</DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

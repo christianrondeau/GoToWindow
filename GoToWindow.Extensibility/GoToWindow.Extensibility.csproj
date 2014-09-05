@@ -45,6 +45,7 @@
     <Compile Include="Controls\BasicListEntry.xaml.cs">
       <DependentUpon>BasicListEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\IndexConverter.cs" />
     <Compile Include="GoToWindowConstants.cs" />
     <Compile Include="GoToWindowPluginSequence.cs" />
     <Compile Include="IGoToWindowPlugin.cs" />
