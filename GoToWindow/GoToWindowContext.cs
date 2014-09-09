@@ -146,19 +146,14 @@ namespace GoToWindow
 				_mainWindow.BeginInit();
 				_mainViewModel.Empty();
 				_mainWindow.EndInit();
+				_mainViewModel.IsEmpty = true;
 			}
 			catch (InvalidOperationException exc)
 			{
 				Log.Error("Failed hiding window.", exc);
 			}
 
-			Application.Current.Dispatcher.InvokeAsync(HideWindowAsync, DispatcherPriority.ApplicationIdle);
-		}
-
-		private async void HideWindowAsync()
-		{
-			await Task.Delay(100); // Ugly hack to let the windows list clear, avoiding a flicker when re-opening
-			HideWindow();
+			Application.Current.Dispatcher.InvokeAsync(HideWindow, DispatcherPriority.ApplicationIdle);
 		}
 
 		public void EnableAltTabHook(bool enabled, int shortcutPressesBeforeOpen)

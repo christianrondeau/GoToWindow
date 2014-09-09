@@ -39,7 +39,7 @@ namespace GoToWindow.ViewModels
 		public bool IsEmpty
 		{
 			get { return _isEmpty; }
-			protected set
+			set
 			{
 				_isEmpty = value;
 				OnPropertyChanged("IsEmpty");
@@ -89,6 +89,7 @@ namespace GoToWindow.ViewModels
             GoToWindowEntryShortcut = goToWindowEntryShortcutCommand;
 
 			Empty();
+			IsEmpty = true;
 		}
 
 		public void Load(IEnumerable<IGoToWindowPlugin> plugins)
@@ -116,7 +117,7 @@ namespace GoToWindow.ViewModels
 			SelectedWindowEntry = null;
 			Windows.Source = null;
 			SearchText = "";
-			IsEmpty = true;
+			IsRowIndexVisible = false;
 		}
 
 		public void AskClose()
