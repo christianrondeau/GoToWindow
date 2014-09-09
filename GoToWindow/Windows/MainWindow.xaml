@@ -41,6 +41,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+		<converters:IndexConverter x:Key="IndexConverter" />
+		<converters:IndexWithinRangeConverter x:Key="IndexWithinRangeConverter" />
+		<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 		<converters:ValueConverterGroup x:Key="InvertAndVisibilityConverter">
 			<converters:InverseBooleanConverter />
 			<BooleanToVisibilityConverter />
@@ -139,7 +142,14 @@
 				</ListView.Style>
 				<ListView.ItemTemplate>
                     <DataTemplate DataType="model:IWindowSearchResult">
-						<ContentControl Content="{Binding View}" Height="48" HorizontalAlignment="Stretch" />
+						<Grid>
+							<ContentControl Content="{Binding View}" Height="48" HorizontalAlignment="Stretch" />
+							<Grid Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.IsRowIndexVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
+								<Border Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource IndexWithinRangeConverter}, ConverterParameter=9, Mode=OneWay}" Name="RowIndexLabel" Grid.Column="0" CornerRadius="8" Width="16" Height="16" Margin="4" Padding="0" Background="White" BorderBrush="Black" BorderThickness="1" VerticalAlignment="Top" HorizontalAlignment="Left">
+									<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource IndexConverter}, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="Black" />
+								</Border>
+							</Grid>
+						</Grid>
 					</DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

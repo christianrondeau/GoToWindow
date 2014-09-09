@@ -65,12 +65,6 @@ namespace GoToWindow.Windows
 	        ViewModel.AskClose();
         }
 
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-				ViewModel.AskClose();
-        }
-
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (ViewModel.Windows.View == null)
@@ -203,8 +197,20 @@ namespace GoToWindow.Windows
 			ViewModel.AskClose();
         }
 
+		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.LeftCtrl)
+				ViewModel.IsRowIndexVisible = true;
+
+			if (e.Key == Key.Escape)
+				ViewModel.AskClose();
+		}
+
         private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
-        {
+		{
+			if (e.Key == Key.LeftCtrl)
+				ViewModel.IsRowIndexVisible = false;
+
             if (e.Key == Key.LeftAlt || e.Key == Key.System && e.SystemKey == Key.LeftAlt)
             {
                 if (_closeOnAltUp)

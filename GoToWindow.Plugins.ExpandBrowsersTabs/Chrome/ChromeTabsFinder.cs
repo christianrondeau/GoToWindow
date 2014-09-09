@@ -12,8 +12,6 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
 	{
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{
-			var chromeWindow = AutomationElement.FromHandle(hWnd);
-
 			var cacheRequest = new CacheRequest();
 			cacheRequest.Add(AutomationElement.NameProperty);
 			cacheRequest.Add(AutomationElement.LocalizedControlTypeProperty);
@@ -25,6 +23,8 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
 
 			using (cacheRequest.Activate())
 			{
+				var chromeWindow = AutomationElement.FromHandle(hWnd);
+
 				var mainElement = chromeWindow.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
 
 				if (mainElement == null)

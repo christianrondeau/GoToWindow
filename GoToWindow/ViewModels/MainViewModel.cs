@@ -17,6 +17,7 @@ namespace GoToWindow.ViewModels
 		private bool _isEmpty;
 	    private int _availableWindowWidth;
 	    private int _availableWindowHeight;
+		private bool _isRowIndexVisible;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -62,6 +63,16 @@ namespace GoToWindow.ViewModels
 			{
 				_availableWindowHeight = value;
 				OnPropertyChanged("AvailableWindowHeight");
+			}
+		}
+
+		public bool IsRowIndexVisible
+		{
+			get { return _isRowIndexVisible; }
+			set
+			{
+				_isRowIndexVisible = value;
+				OnPropertyChanged("IsRowIndexVisible");
 			}
 		}
 
