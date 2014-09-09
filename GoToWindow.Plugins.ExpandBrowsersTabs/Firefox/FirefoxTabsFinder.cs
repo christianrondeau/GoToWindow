@@ -30,6 +30,9 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 				tabBarElement = mainElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab"));
 			}
 
+			if(tabBarElement == null)
+				yield break;
+
 			var tabElements = tabBarElement.FindAll(TreeScope.Children, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab item"));
 
 			for (var tabIndex = 0; tabIndex < tabElements.Count; tabIndex++)

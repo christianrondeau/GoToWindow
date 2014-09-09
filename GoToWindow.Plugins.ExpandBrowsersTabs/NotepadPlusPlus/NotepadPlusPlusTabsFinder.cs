@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Windows.Automation;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
-namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
+namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 {
-	/// <remarks>
-	/// Thanks to CoenraadS: https://github.com/CoenraadS/Chrome-Tab-Switcher
-	/// </remarks>
-	public class ChromeTabsFinder : ITabsFinder
+	public class NotepadPlusPlusTabsFinder : ITabsFinder
 	{
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{
+			var notepadPlusPlusWindow = AutomationElement.FromHandle(hWnd);
+
 			var cacheRequest = new CacheRequest();
 			cacheRequest.Add(AutomationElement.NameProperty);
 			cacheRequest.Add(AutomationElement.LocalizedControlTypeProperty);
@@ -23,14 +22,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
 
 			using (cacheRequest.Activate())
 			{
-				var chromeWindow = AutomationElement.FromHandle(hWnd);
-
-				var mainElement = chromeWindow.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
-
-				if (mainElement == null)
-					yield break;
-
-				tabBarElement = mainElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab"));
+				tabBarElement = notepadPlusPlusWindow.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.LocalizedControlTypeProperty, "tab"));
 			}
 
 			if(tabBarElement == null)
@@ -40,7 +32,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
 
 			for (var tabIndex = 0; tabIndex < tabElements.Count; tabIndex++)
 			{
-				yield return new ChromeTab(tabElements[tabIndex].Current.Name, tabIndex + 1);
+				yield return new FirefoxTab(tabElements[tabIndex].Current.Name, tabIndex + 1);
 			}
 		}
 	}

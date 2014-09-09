@@ -55,6 +55,8 @@
     <Compile Include="Contracts\ITabsFinder.cs" />
     <Compile Include="Contracts\TabBase.cs" />
     <Compile Include="ExpandBrowsersTabsPlugin.cs" />
+    <Compile Include="NotepadPlusPlus\NotepadPlusPlusTab.cs" />
+    <Compile Include="NotepadPlusPlus\NotepadPlusPlusTabsFinder.cs" />
     <Compile Include="Firefox\FirefoxTab.cs" />
     <Compile Include="Firefox\FirefoxTabsFinder.cs" />
     <Compile Include="InternetExplorer\InternetExplorerTab.cs" />

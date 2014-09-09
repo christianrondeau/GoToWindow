@@ -33,7 +33,8 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 		{
 			{ "chrome", () => new ChromeTabsFinder() },
 			{ "iexplore", () => new InternetExplorerTabsFinder() },
-			{ "firefox", () => new FirefoxTabsFinder() }
+			{ "firefox", () => new FirefoxTabsFinder() },
+			{ "notepad++", () => new NotepadPlusPlusTabsFinder() }
 		};
 
 		public void BuildList(List<ISearchResult> list)
