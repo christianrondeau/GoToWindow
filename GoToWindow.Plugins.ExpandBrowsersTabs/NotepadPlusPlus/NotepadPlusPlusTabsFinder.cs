@@ -32,7 +32,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 
 			for (var tabIndex = 0; tabIndex < tabElements.Count; tabIndex++)
 			{
-				yield return new FirefoxTab(tabElements[tabIndex].Current.Name, tabIndex + 1);
+				yield return new NotepadPlusPlusTab(tabElements[tabIndex]);
 			}
 		}
 	}
