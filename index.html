@@ -23,8 +23,8 @@
 			<h2 id="project_tagline">A keyboard-maniac alt-tab alternative</h2>
 
 			<section id="downloads">
-				<span id="version">v0.1.1</span>
-				<a class="zip_download_link" href="https://github.com/christianrondeau/GoToWindow/releases/download/v0.1.1/GoToWindow.zip">Download as a .zip file</a>
+				<span id="version">v0.1.7</span>
+				<a class="zip_download_link" href="https://github.com/christianrondeau/GoToWindow/releases/download/v0.1.7/GoToWindow.0.1.7.zip">Download as a .zip file</a>
 			</section>
 		</header>
 	</div>
@@ -61,13 +61,22 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * If no opened window is found for your query, press `Enter` to search directly in the Windows Search charm.
 
-* Press `Alt` + `Number (1 - 9)` to directly open the application at the selected index from the list.
+* Press `Ctrl` + `Number (1 - 9)` to directly open the application at the selected index from the list.
 
 * Press `Escape` to close the window.
 
 ## Tips and gotchas
 
 * To use GoToWindow within an application that runs with elevated privileges (Run as Administrator), GoToWindow must also run with elevated privileges, otherwise the native `Alt` + `Tab` will show up.
+
+* By default, GoToWindow expands web browser's tabs. This slows down display a little bit. You can disable it in the Settings, under the Plugins tab.
+
+### Built-in Plugins
+
+* `GoToWindow.Plugins.Core`: Loads the core windows list, as shown by the native `Alt` + `Tab` screen. Also allows launching the Windows Search if no window fit.
+* `GoToWindow.Plugins.ExpandBrowsersTabs`: Expands browser windows and shows all tabs as separate windows. Includes Chrome, Firefox, Internet Explorer and Notepad++
+* `GoToWindow.Plugins.ExplorerExtensions`: Show the full path of explorer windows instead of just the folder name. If a valid path is written, you can also open Windows Explorer with it.
+
 </marked>
 		</section>
 	</div>
