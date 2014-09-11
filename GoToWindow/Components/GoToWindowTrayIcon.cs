@@ -30,7 +30,7 @@ namespace GoToWindow.Components
 			var showMenu = new MenuItem { Header = "_Show", Command = new OpenMainWindowCommand(_context) };
 			contextMenu.Items.Add(showMenu);
 
-			var settingsMenu = new MenuItem { Header = "S_ettings", Command = new ShowSettingsCommand(_context) };
+			var settingsMenu = new MenuItem { Header = "S_ettings & Help", Command = new ShowSettingsCommand(_context) };
 			contextMenu.Items.Add(settingsMenu);
 
 			contextMenu.Items.Add(new Separator());

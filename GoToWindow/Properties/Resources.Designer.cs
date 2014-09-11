@@ -79,5 +79,32 @@ namespace GoToWindow.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;html&gt;
+        ///&lt;head&gt;
+        ///	&lt;style&gt;
+        ///		* {
+        ///			font-family: &apos;Segoe UI&apos;;
+        ///			font-size: 12px;
+        ///		}
+        ///	&lt;/style&gt;
+        ///&lt;/head&gt;
+        ///&lt;body&gt;
+        ///&lt;h2&gt;Usage&lt;/h2&gt;
+        ///&lt;p&gt;Launch &lt;code&gt;GoToWindow.exe&lt;/code&gt;. You can also place it in in the Windows Startup menu to launch it automatically with Windows.&lt;/p&gt;
+        ///&lt;ul&gt;
+        ///&lt;li&gt;
+        ///&lt;p&gt;Press &lt;code&gt;Alt&lt;/code&gt; + &lt;code&gt;Tab&lt;/code&gt; + &lt;code&gt;Tab&lt;/code&gt; to open the windows list. All windows are shown, with the most recently accessed first.&lt;/p&gt;
+        ///&lt;/li&gt;
+        ///&lt;li&gt;
+        ///&lt;p&gt;Press the &lt;code&gt;Up&lt;/code&gt; and &lt;code&gt;Down&lt;/code&gt; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
     }
 }

@@ -16,6 +16,11 @@ namespace GoToWindow.ViewModels
 		private bool _originalHookAltTab;
 		private bool _originalStartWithWindows;
 
+		protected SettingsViewModel()
+		{
+
+		}
+
 	    public SettingsViewModel(IGoToWindowContext context)
 		{
 			_context = context;
@@ -29,7 +34,7 @@ namespace GoToWindow.ViewModels
         public bool WindowListSingleClick { get; set; }
 		public Visibility NoElevatedPrivilegesWarning { get; set; }
 		public string Version { get; set; }
-		public List<SettingsPluginViewModel> Plugins { get; private set; }
+		public List<SettingsPluginViewModel> Plugins { get; protected set; }
 
 		public void Load()
 		{

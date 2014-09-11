@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		* {
+			font-family: 'Segoe UI';
+			font-size: 12px;
+		}
+	</style>
+</head>
+<body>
+<h2>Usage</h2>
+<p>Launch <code>GoToWindow.exe</code>. You can also place it in in the Windows Startup menu to launch it automatically with Windows.</p>
+<ul>
+<li>
+<p>Press <code>Alt</code> + <code>Tab</code> + <code>Tab</code> to open the windows list. All windows are shown, with the most recently accessed first.</p>
+</li>
+<li>
+<p>Press the <code>Up</code> and <code>Down</code> arrows to navigate in the list, and press <code>Enter</code> to switch to the application.</p>
+</li>
+<li>
+<p>Start typing keywords to filter the list. Note that only windows that contain all words in either the window title <em>or</em> the process name will be shown.</p>
+</li>
+<li>
+<p>If no opened window is found for your query, press <code>Enter</code> to search directly in the Windows Search charm.</p>
+</li>
+<li>
+<p>Press <code>Ctrl</code> + <code>Number (1 - 9)</code> to directly open the application at the selected index from the list.</p>
+</li>
+<li>
+<p>Press <code>Escape</code> to close the window.</p>
+</li>
+</ul>
+<h2>Tips and gotchas</h2>
+<ul>
+<li>
+<p>To use GoToWindow within an application that runs with elevated privileges (Run as Administrator), GoToWindow must also run with elevated privileges, otherwise the native <code>Alt</code> + <code>Tab</code> will show up.</p>
+</li>
+<li>
+<p>By default, GoToWindow expands web browser's tabs. This slows down display a little bit. You can disable it in the Settings, under the Plugins tab.</p>
+</li>
+</ul>
+<h2>Bugs</h2>
+<p>If for some reason Go To Window crashes, create an <a href='https://github.com/christianrondeau/GoToWindow/issues' target='_blank'>issue</a> (check if one already exists before).</p>
+<p>Please include:</p>
+<ul>
+<li>Log (<code>GoToWindow.log</code> in the installation directory).<br/><em>Only include the last ~20 lines.</em></li>
+<li>Version of Windows</li>
+<li>Version of Go To Window</li>
+</ul>
+<h2>Plugins</h2>
+<p>GoToWindow is extensible. Even the core functionality is a plug-in, that can be replaced if you wish. You can also write your own!</p>
+<h3>Built-in Plugins</h3>
+<ul>
+<li><code>GoToWindow.Plugins.Core</code>: Loads the core windows list, as shown by the native <code>Alt</code> + <code>Tab</code> screen. Also allows launching the Windows Search if no window fit.</li>
+<li><code>GoToWindow.Plugins.ExpandBrowsersTabs</code>: Expands browser windows and shows all tabs as separate windows.</li>
+<li><code>GoToWindow.Plugins.ExplorerExtensions</code>: Show the full path of explorer windows instead of just the folder name. If a valid path is written, you can also open Windows Explorer with it.</li>
+</ul>
+<h3>Installing Additional Plug-ins</h3>
+<p>Simply drop the plug-in files under <code>GoToWindow\Plugins</code> directory, and restart Go To Window.</p>
+</body>
+</html>
