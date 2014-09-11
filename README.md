@@ -47,7 +47,7 @@ GoToWindow is extensible. Even the core functionality is a plug-in, that can be 
 ### Built-in Plugins
 
 * `GoToWindow.Plugins.Core`: Loads the core windows list, as shown by the native `Alt` + `Tab` screen. Also allows launching the Windows Search if no window fit.
-* `GoToWindow.Plugins.ExpandBrowsersTabs`: Expands browser windows and shows all tabs as separate windows.
+* `GoToWindow.Plugins.ExpandBrowsersTabs`: Expands browser windows and shows all tabs as separate windows. Includes Chrome, Firefox, Internet Explorer and Notepad++
 * `GoToWindow.Plugins.ExplorerExtensions`: Show the full path of explorer windows instead of just the folder name. If a valid path is written, you can also open Windows Explorer with it.
 
 ### Installing Additional Plug-ins
