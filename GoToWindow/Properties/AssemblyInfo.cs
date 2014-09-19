@@ -21,6 +21,8 @@ using log4net.Config;
 
 [assembly: XmlConfigurator(ConfigFile = "log4net.config")]
 
+[assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]
+
 [assembly: AssemblyVersion("0.1.7")]
 [assembly: AssemblyFileVersion("0.1.7")]
 [assembly: AssemblyInformationalVersion("0.1.7")]

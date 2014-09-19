@@ -3,6 +3,8 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "Building Go To Window..." -ForegroundColor Green
 
+# ==================================== Functions
+
 Function GetMSBuildExe {
 	[CmdletBinding()]
 	$DotNetVersion = "4.0"
@@ -19,7 +21,21 @@ Function ZipFiles($Filename, $Source)
    [System.IO.Compression.ZipFile]::CreateFromDirectory($Source, $Filename, $CompressionLevel, $false)
 }
 
+# ==================================== Variables
+
+$NuGet = "$PSScriptRoot\.nuget\NuGet.exe"
+$Squirrel = "$PSScriptRoot\packages\squirrel.windows.0.4.94\tools\Squirrel.com"
+
 $BuildPath = "$PSScriptRoot\GoToWindow\bin\Release"
+$NuSpecPath = "$PSScriptRoot\GoToWindow.nuspec"
+$ReleasesFolder = "$PSScriptRoot\Releases"
+
+# ==================================== NuSpec Metadata
+
+$NuSpecXml = [xml](Get-Content $NuSpecPath)
+$Version = $NuSpecXml.package.metadata.version
+
+# ==================================== Build
 
 If(Test-Path -Path $BuildPath) {
 	Remove-Item -Confirm:$false "$BuildPath\*.*"
@@ -34,15 +50,33 @@ If(Test-Path -Path $BuildPath) {
 	/clp:ErrorsOnly `
 	/v:m
 
-$ReleaseFolder = "$PSScriptRoot\Release"
-$ReleaseZip = "$ReleaseFolder\GoToWindow.zip"
+# ==================================== Zip
+
+$ReleaseZip = "$ReleasesFolder\GoToWindow.$Version.zip"
 	
-If(!(Test-Path -Path $ReleaseFolder )){
-    New-Item -ItemType directory -Path $ReleaseFolder
+If(!(Test-Path -Path $ReleasesFolder )){
+    New-Item -ItemType directory -Path $ReleasesFolder
 }
 
 If(Test-Path -Path $ReleaseZip) {
-	Remove-Item -Confirm:$false .\Release\GoToWindow.zip
+	Remove-Item -Confirm:$false $ReleaseZip
 }
 
 ZipFiles $ReleaseZip $BuildPath
+
+# ==================================== Squirrel
+
+$NuPkgPath = "$PSScriptRoot\GoToWindow.$Version.nupkg"
+
+&($NuGet) pack $NuSpecPath
+&($Squirrel) --releasify $NuPkgPath
+
+# ==================================== Cleanup
+
+If(Test-Path -Path $NuPkgPath) {
+	Remove-Item -Confirm:$false $NuPkgPath
+}
+
+# ==================================== Complete
+
+Write-Host "Build complete!" -ForegroundColor Green

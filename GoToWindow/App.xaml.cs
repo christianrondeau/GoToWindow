@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using GoToWindow.Components;
@@ -16,6 +17,16 @@ namespace GoToWindow
 
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
+			if(e.Args.Any() && e.Args[0].StartsWith("--squirrel"))
+			{
+				if(HandleSquirrelArguments(e.Args))
+				{
+					Log.Info("Handled Squirrel arguments. Shutting down.");
+					Current.Shutdown(1);
+					return;
+				}
+			}
+		
 			bool mutexCreated;
 			_mutex = new Mutex(true, "GoToWindow", out mutexCreated);
 			if (!mutexCreated)
@@ -39,6 +50,48 @@ namespace GoToWindow
 			Log.Info("Application started.");
 
 			_menu.ShowStartupTooltip();
+		}
+
+		private bool HandleSquirrelArguments(string[] args)
+		{
+			switch(args.FirstOrDefault())
+			{
+				case "--squirrel-install":
+					// `--squirrel-install x.y.z.m` - called when your app is installed. Exit as soon as you're finished setting up the app
+					HandleSquirrelInstall(args.ElementAtOrDefault(1));
+					return true;
+				case "--squirrel-firstrun":
+					// `--squirrel-firstrun` - called after everything is set up. You should treat this like a normal app run (maybe show the "Welcome" screen)
+					HandleSquirrelFirstRun();
+					return false;
+				case "--squirrel-updated":
+					// `--squirrel-updated x.y.z.m` - called when your app is updated to the given version. Exit as soon as you're finished.
+					HandleSquirrelUpdated(args.ElementAtOrDefault(1));
+					return true;
+				case "--squirrel-uninstall":
+					// `--squirrel-uninstall` - called when your app is uninstalled. Exit as soon as you're finished.
+					HandleSquirrelUninstall();
+					return true;
+				default:
+					return false;
+			}
+		}
+
+
+		private void HandleSquirrelInstall(string version)
+		{
+		}
+
+		private void HandleSquirrelFirstRun()
+		{
+		}
+
+		private void HandleSquirrelUpdated(string p)
+		{
+		}
+
+		private void HandleSquirrelUninstall()
+		{
 		}
 
 		private void Application_Exit(object sender, ExitEventArgs e)
