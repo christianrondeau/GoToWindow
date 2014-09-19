@@ -50,6 +50,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
     <Compile Include="ViewModel\CoreSearchResult.cs" />
     <Compile Include="CorePlugin.cs" />
     <Compile Include="Utils\IconLoader.cs" />

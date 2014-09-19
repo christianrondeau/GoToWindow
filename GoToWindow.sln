@@ -40,6 +40,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{42C5E102
 		GoToWindow.nuspec = GoToWindow.nuspec
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GoToWindow.Shared", "GoToWindow.Shared", "{461DEE33-9C52-4DF6-875D-EAD945D6C45E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{A3B47148-578B-400B-AEA3-EEC2B973D8AF}"
+	ProjectSection(SolutionItems) = preProject
+		GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs = GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,5 +89,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A3B47148-578B-400B-AEA3-EEC2B973D8AF} = {461DEE33-9C52-4DF6-875D-EAD945D6C45E}
 	EndGlobalSection
 EndGlobal

@@ -48,6 +48,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
     <Compile Include="Chrome\ChromeTab.cs" />
     <Compile Include="Chrome\ChromeTabsFinder.cs" />
     <Compile Include="Common\ShortcutBasedTab.cs" />

@@ -87,6 +87,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Properties\AssemblyInfo.Shared.cs" />
     <Compile Include="BindingExtensions\SettingsBindingExtension.cs" />
     <Compile Include="Commands\GoToWindowEntryShortcutCommand.cs" />
     <Compile Include="Commands\ShowSettingsCommand.cs" />

@@ -39,6 +39,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
     <Compile Include="Controls\BasicCommandEntry.xaml.cs">
       <DependentUpon>BasicCommandEntry.xaml</DependentUpon>
     </Compile>
