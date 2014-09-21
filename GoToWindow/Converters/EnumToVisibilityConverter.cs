@@ -6,12 +6,12 @@ using System.Windows.Data;
 
 namespace GoToWindow.Converters
 {
-	public class BooleanToVisibilityConverter : IValueConverter
+	public class EnumToVisibilityConverter : IValueConverter
 	{
 		public object Convert(object value, Type TargetType, object parameter, CultureInfo culture)
 		{
-			//return System.Convert.ToBoolean(value) ? Visibility.Visible : Visibility.Hidden;
-			return true;
+			var desiredValue = (Enum)Enum.Parse(value.GetType(), parameter.ToString());
+			return desiredValue.Equals(value) ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

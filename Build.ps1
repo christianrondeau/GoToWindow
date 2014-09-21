@@ -67,8 +67,14 @@ ZipFiles $ReleaseZip $BuildPath
 # ==================================== Squirrel
 
 $NuPkgPath = "$PSScriptRoot\GoToWindow.$Version.nupkg"
+$SquirrelNuPkgOutputPath = "$PSScriptRoot\Releases\GoToWindow.$Version.nupkg"
 
 &($NuGet) pack $NuSpecPath
+
+If(Test-Path -Path $SquirrelNuPkgOutputPath) {
+	Remove-Item -Confirm:$false $SquirrelNuPkgOutputPath
+}
+
 &($Squirrel) --releasify $NuPkgPath
 
 # ==================================== Cleanup

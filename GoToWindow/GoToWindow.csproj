@@ -42,6 +42,9 @@
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\Squirrel.Core.0.7.5\lib\net40\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -87,7 +90,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Properties\AssemblyInfo.Shared.cs" />
+    <Compile Include="..\GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
+    <Compile Include="Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="BindingExtensions\SettingsBindingExtension.cs" />
     <Compile Include="Commands\GoToWindowEntryShortcutCommand.cs" />
     <Compile Include="Commands\ShowSettingsCommand.cs" />
@@ -103,8 +109,10 @@
     <Compile Include="Commands\OpenMainWindowCommand.cs" />
     <Compile Include="Components\GoToWindowTrayIcon.cs" />
     <Compile Include="GoToWindowPluginsContainer.cs" />
+    <Compile Include="Squirrel\CommandLineArgumentsHandler.cs" />
     <Compile Include="ViewModels\DesignTimeMainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NotifyPropertyChangedViewModelBase.cs" />
     <Compile Include="ViewModels\PerformanceLogger.cs" />
     <Compile Include="ViewModels\SettingsPluginViewModel.cs" />
     <Compile Include="ViewModels\DesignTimeSettingsViewModel.cs" />

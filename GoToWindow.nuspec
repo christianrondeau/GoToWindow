@@ -1,47 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-    <metadata>
-        <id>GoToWindow</id>
-        <version>0.1.8</version>
-        <title>GoToWindow</title>
-        <authors>Christian Rondeau</authors>
-        <owners>Christian Rondeau</owners>
-        <licenseUrl>https://github.com/christianrondeau/GoToWindow/blob/master/LICENSE.md</licenseUrl>
-        <projectUrl>http://christianrondeau.github.io/GoToWindow</projectUrl>
-        <iconUrl>http://christianrondeau.github.io/GoToWindow/favicon.ico</iconUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press Alt + Tab + Tab, type a few characters from the window title or process name you want to switch to and press enter.
+	<metadata>
+		<id>GoToWindow</id>
+		<version>0.1.8</version>
+		<title>GoToWindow</title>
+		<authors>Christian Rondeau</authors>
+		<owners>Christian Rondeau</owners>
+		<licenseUrl>https://github.com/christianrondeau/GoToWindow/blob/master/LICENSE.md</licenseUrl>
+		<projectUrl>http://christianrondeau.github.io/GoToWindow</projectUrl>
+		<iconUrl>http://christianrondeau.github.io/GoToWindow/favicon.ico</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>
+			No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press Alt + Tab + Tab, type a few characters from the window title or process name you want to switch to and press enter.
 
-For the keyboard maniacs.</description>
-        <summary>A keyboard-maniac alt-tab alternative</summary>
-        <copyright>Christian Rondeau 2014</copyright>
-        <language>en-US</language>
-        <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System" targetFramework="net45" />
-            <frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework="net45" />
-            <frameworkAssembly assemblyName="System.Drawing" targetFramework="net45" />
-            <frameworkAssembly assemblyName="System.Xml" targetFramework="net45" />
-            <frameworkAssembly assemblyName="System.Core" targetFramework="net45" />
-            <frameworkAssembly assemblyName="System.Xaml" targetFramework="net45" />
-            <frameworkAssembly assemblyName="WindowsBase" targetFramework="net45" />
-            <frameworkAssembly assemblyName="PresentationCore" targetFramework="net45" />
-            <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net45" />
-            <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="net45" />
-            <frameworkAssembly assemblyName="UIAutomationClient" targetFramework="net45" />
-            <frameworkAssembly assemblyName="UIAutomationTypes" targetFramework="net45" />
-        </frameworkAssemblies>
-    </metadata>
-    <files>
-        <file src="GoToWindow\bin\Release\GoToWindow.exe.config" target="lib\net45\GoToWindow.exe.config" />
-        <file src="GoToWindow\bin\Release\log4net.config" target="lib\net45\log4net.config" />
-        <file src="GoToWindow\bin\Release\Plugins\GoToWindow.Plugins.Core.dll" target="lib\net45\Plugins\GoToWindow.Plugins.Core.dll" />
-        <file src="GoToWindow\bin\Release\Plugins\GoToWindow.Plugins.ExpandBrowsersTabs.dll" target="lib\net45\Plugins\GoToWindow.Plugins.ExpandBrowsersTabs.dll" />
-        <file src="GoToWindow\bin\Release\Plugins\GoToWindow.Plugins.ExplorerExtensions.dll" target="lib\net45\Plugins\GoToWindow.Plugins.ExplorerExtensions.dll" />
-        <file src="GoToWindow\bin\Release\GoToWindow.Api.dll" target="lib\net45\GoToWindow.Api.dll" />
-        <file src="GoToWindow\bin\Release\GoToWindow.exe" target="lib\net45\GoToWindow.exe" />
-        <file src="GoToWindow\bin\Release\log4net.dll" target="lib\net45\log4net.dll" />
-        <file src="GoToWindow\bin\Release\GoToWindow.Extensibility.dll" target="lib\net45\GoToWindow.Extensibility.dll" />
-        <file src="GoToWindow\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll" target="lib\net45\Hardcodet.Wpf.TaskbarNotification.dll" />
-        <file src="GoToWindow\bin\Release\log4net.dll" target="lib\net45\log4net.dll" />
-    </files>
+			For the keyboard maniacs.
+		</description>
+		<summary>A keyboard-maniac alt-tab alternative</summary>
+		<copyright>Christian Rondeau 2014</copyright>
+		<language>en-US</language>
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="System" targetFramework="net45" />
+			<frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework="net45" />
+			<frameworkAssembly assemblyName="System.Drawing" targetFramework="net45" />
+			<frameworkAssembly assemblyName="System.Xml" targetFramework="net45" />
+			<frameworkAssembly assemblyName="System.Core" targetFramework="net45" />
+			<frameworkAssembly assemblyName="System.Xaml" targetFramework="net45" />
+			<frameworkAssembly assemblyName="WindowsBase" targetFramework="net45" />
+			<frameworkAssembly assemblyName="PresentationCore" targetFramework="net45" />
+			<frameworkAssembly assemblyName="PresentationFramework" targetFramework="net45" />
+			<frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="net45" />
+			<frameworkAssembly assemblyName="UIAutomationClient" targetFramework="net45" />
+			<frameworkAssembly assemblyName="UIAutomationTypes" targetFramework="net45" />
+		</frameworkAssemblies>
+	</metadata>
+	<files>
+		<!-- Core Files -->
+		<file src="GoToWindow\bin\Release\GoToWindow.exe" target="lib\net45\GoToWindow.exe" />
+		<file src="GoToWindow\bin\Release\GoToWindow.Api.dll" target="lib\net45\GoToWindow.Api.dll" />
+		<file src="GoToWindow\bin\Release\GoToWindow.Extensibility.dll" target="lib\net45\GoToWindow.Extensibility.dll" />
+
+		<!-- Dependencies -->
+		<file src="GoToWindow\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll" target="lib\net45\Hardcodet.Wpf.TaskbarNotification.dll" />
+		<file src="GoToWindow\bin\Release\log4net.dll" target="lib\net45\log4net.dll" />
+		<file src="GoToWindow\bin\Release\Microsoft.Web.XmlTransform.dll" target="lib\net45\Microsoft.Web.XmlTransform.dll" />
+		<file src="GoToWindow\bin\Release\Mono.Cecil.dll" target="lib\net45\Mono.Cecil.dll" />
+		<file src="GoToWindow\bin\Release\Mono.Cecil.Mdb.dll" target="lib\net45\Mono.Cecil.Mdb.dll" />
+		<file src="GoToWindow\bin\Release\Mono.Cecil.Pdb.dll" target="lib\net45\Mono.Cecil.Pdb.dll" />
+		<file src="GoToWindow\bin\Release\Mono.Cecil.Rocks.dll" target="lib\net45\Mono.Cecil.Rocks.dll" />
+		<file src="GoToWindow\bin\Release\NuGet.Core.dll" target="lib\net45\NuGet.Core.dll" />
+		<file src="GoToWindow\bin\Release\Splat.dll" target="lib\net45\Splat.dll" />
+		<file src="GoToWindow\bin\Release\Squirrel.dll" target="lib\net45\Squirrel.dll" />
+		<file src="GoToWindow\bin\Release\Ionic.Zip.dll" target="lib\net45\Ionic.Zip.dll" />
+
+		<!-- Config Files -->
+		<file src="GoToWindow\bin\Release\GoToWindow.exe.config" target="lib\net45\GoToWindow.exe.config" />
+		<file src="GoToWindow\bin\Release\log4net.config" target="lib\net45\log4net.config" />
+
+		<!-- Plugin Files -->
+		<file src="GoToWindow\bin\Release\Plugins\GoToWindow.Plugins.Core.dll" target="lib\net45\Plugins\GoToWindow.Plugins.Core.dll" />
+		<file src="GoToWindow\bin\Release\Plugins\GoToWindow.Plugins.ExpandBrowsersTabs.dll" target="lib\net45\Plugins\GoToWindow.Plugins.ExpandBrowsersTabs.dll" />
+		<file src="GoToWindow\bin\Release\Plugins\GoToWindow.Plugins.ExplorerExtensions.dll" target="lib\net45\Plugins\GoToWindow.Plugins.ExplorerExtensions.dll" />
+	</files>
 </package>

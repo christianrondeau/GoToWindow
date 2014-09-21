@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,15 +10,13 @@ using GoToWindow.Extensibility;
 
 namespace GoToWindow.ViewModels
 {
-	public class MainViewModel : INotifyPropertyChanged
+	public class MainViewModel : NotifyPropertyChangedViewModelBase
 	{
 		private string _searchText;
 		private bool _isEmpty;
 	    private int _availableWindowWidth;
 	    private int _availableWindowHeight;
 		private bool _isRowIndexVisible;
-
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		public CollectionViewSource Windows { get; protected set; }
 		public ISearchResult SelectedWindowEntry { get; set; }
@@ -124,12 +121,6 @@ namespace GoToWindow.ViewModels
 		{
 			if (Close != null)
 				Close(this, new EventArgs());
-		}
-
-		protected void OnPropertyChanged(string name)
-		{
-			if (PropertyChanged != null)
-				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
 
         private ISearchResult GetEntryAt(int index)

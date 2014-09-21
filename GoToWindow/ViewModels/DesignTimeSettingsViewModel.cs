@@ -23,6 +23,9 @@ namespace GoToWindow.ViewModels
 			ShortcutPressesBeforeOpen = 2;
 			WindowListSingleClick = true;
 			HookAltTab = true;
+			NoElevatedPrivilegesWarning = true;
+			LatestAvailableRelease = "9.9.9";
+			UpdateAvailable = UpdateStatus.UpdateAvailable;
 		}
 	}
 }

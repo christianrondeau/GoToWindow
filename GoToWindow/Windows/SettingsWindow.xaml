@@ -14,9 +14,12 @@
 	Width="720" Height="350"
 	MinWidth="500" MinHeight="250"
 	Initialized="Window_Initialized"
+	Closing="Window_Closing"
     d:DataContext="{d:DesignInstance viewModels:DesignTimeSettingsViewModel, IsDesignTimeCreatable=True}">
 	<Window.Resources>
 		<converters:IncrementIntConverter x:Key="IncrementIntConverter" />
+		<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
 	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -33,16 +36,44 @@
 								<Setter Property="Margin" Value="0,0,0,6"/>
 							</Style>
 						</StackPanel.Resources>
+
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Undefined, UpdateSourceTrigger=PropertyChanged}">
+							<Span>No update available</Span>
+						</TextBlock>
+
 						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top">
 							<Span>GoToWindow v</Span>
 							<Run Text="{Binding Version}" FontWeight="Bold" />
 						</TextBlock>
-						<TextBlock>           
-							<Span>For more information and to download the latest version, go to </Span>
-							<Hyperlink NavigateUri="http://www.google.com" RequestNavigate="Hyperlink_RequestNavigate">http://christianrondeau.github.io/GoToWindow</Hyperlink>
+
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Checking, UpdateSourceTrigger=PropertyChanged}">
+							<Span>* Checking if an update is available...</Span>
 						</TextBlock>
-						<TextBlock Text="© Christian Rondeau 2014" FontStyle="Italic" />
-						<TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding NoElevatedPrivilegesWarning}" Foreground="Red" TextWrapping="Wrap">
+
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=AlreadyUpToDate, UpdateSourceTrigger=PropertyChanged}">
+							<Span>* You currently run the latest version.</Span>
+						</TextBlock>
+
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Updating, UpdateSourceTrigger=PropertyChanged}">
+							<Span>* Updating...</Span>
+						</TextBlock>
+
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=UpdateComplete, UpdateSourceTrigger=PropertyChanged}">
+							<Span>* Update Complete! Shutting down...</Span>
+						</TextBlock>
+
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Foreground="Red" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Error, UpdateSourceTrigger=PropertyChanged}">
+							<Span>* There was an error trying to get available updates.</Span>
+						</TextBlock>
+
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=UpdateAvailable, UpdateSourceTrigger=PropertyChanged}">
+							<Span>* New version available:</Span>
+							<Run Text="{Binding LatestAvailableRelease}" FontWeight="Bold" />
+							<Span>.</Span>
+							<Hyperlink NavigateUri="squirrel://Update" RequestNavigate="UpdateNow_RequestNavigate">Update Now</Hyperlink>
+						</TextBlock>
+						
+						<TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding Path=NoElevatedPrivilegesWarning, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="Red" TextWrapping="Wrap">
 							<Span FontWeight="Bold">Go To Window is currently not running with administrative privileges (Run as Administrator).</Span>
 							<LineBreak />
 							<Span>Alt + Tab will not work when the current window runs with elevated privileges.</Span>
@@ -51,6 +82,14 @@
 							<LineBreak />
 							<Span>Restart GoToWindow as an Administrator to remove this notice.</Span>
 						</TextBlock>
+						
+						<TextBlock>           
+							<Span>Official Website </Span>
+							<Hyperlink NavigateUri="http://christianrondeau.github.io/GoToWindow" RequestNavigate="OfficialWebsite_RequestNavigate">http://christianrondeau.github.io/GoToWindow</Hyperlink>
+						</TextBlock>
+						
+						<TextBlock Text="© Christian Rondeau 2014" FontStyle="Italic" />
+						
 					</StackPanel>
 				</Grid>
 			</TabItem>
@@ -102,8 +141,8 @@
 						<Setter Property="Margin" Value="8,0,0,0"/>
 					</Style>
 				</StackPanel.Resources>
-				<Button x:Name="OkButton" IsDefault="True" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="OkButton_Click"/>
-				<Button x:Name="CancelButton" IsCancel="True"  Content="Close" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
+				<Button x:Name="OkButton" IsEnabled="{Binding Enabled}" IsDefault="True" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="OkButton_Click"/>
+				<Button x:Name="CancelButton" IsEnabled="{Binding Enabled}" IsCancel="True"  Content="Close" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
 			</StackPanel>
 		</Grid>
 	</Grid>
