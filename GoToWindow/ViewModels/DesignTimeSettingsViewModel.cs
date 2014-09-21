@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows;
 using GoToWindow.Api;
 using Microsoft.Win32;
+using GoToWindow.Squirrel;
 
 namespace GoToWindow.ViewModels
 {

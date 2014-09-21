@@ -54,11 +54,15 @@
 							<Span>* You currently run the latest version.</Span>
 						</TextBlock>
 
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=UpdateDownloading, UpdateSourceTrigger=PropertyChanged}">
+							<Span>* Downloading...</Span>
+						</TextBlock>
+
 						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Updating, UpdateSourceTrigger=PropertyChanged}">
 							<Span>* Updating...</Span>
 						</TextBlock>
 
-						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=UpdateComplete, UpdateSourceTrigger=PropertyChanged}">
+						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding Path=UpdateAvailable, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Restarting, UpdateSourceTrigger=PropertyChanged}">
 							<Span>* Update Complete! Shutting down...</Span>
 						</TextBlock>
 

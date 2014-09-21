@@ -11,27 +11,16 @@ using Squirrel;
 using log4net;
 using System.Threading.Tasks;
 using System.IO;
+using GoToWindow.Squirrel;
 
 namespace GoToWindow.ViewModels
 {
-	public enum UpdateStatus
-	{
-		Undefined,
-		Checking,
-		UpdateAvailable,
-		AlreadyUpToDate,
-		Updating,
-		UpdateComplete,
-		Error
-	}
-
 	public class SettingsViewModel : NotifyPropertyChangedViewModelBase, IDisposable
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SettingsViewModel).Assembly, "GoToWindow");
 
 		private readonly IGoToWindowContext _context;
-		private IUpdateManager _updateManager;
-		private UpdateInfo _updateInfo;
+		private SquirrelUpdater _updater;
 
 		private bool _originalHookAltTab;
 		private bool _originalStartWithWindows;
@@ -45,6 +34,7 @@ namespace GoToWindow.ViewModels
 		{
 			_context = context;
 			_enabled = true;
+			_updater = new SquirrelUpdater();
 
 			Load();
 		}
@@ -113,86 +103,25 @@ namespace GoToWindow.ViewModels
 			var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			Version = String.Format("{0}.{1}.{2}", currentVersion.Major, currentVersion.Minor, currentVersion.Build);
 
-			_updateManager = new UpdateManager(@"D:\Dev\GoToWindow\Releases", "GoToWindow", FrameworkVersion.Net45);
 			UpdateAvailable = UpdateStatus.Checking;
-			var checkForUpdateTask = _updateManager.CheckForUpdate();
-			checkForUpdateTask.ContinueWith(t => CheckForUpdateCallback(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
-			checkForUpdateTask.ContinueWith(t => HandleAsyncError(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
-		}
-
-		private void CheckForUpdateCallback(UpdateInfo updateInfo)
-		{
-			if (updateInfo == null)
-			{
-				UpdateAvailable = UpdateStatus.Undefined;
-				DisposeUpdateManager();
-			}
-			else if (!updateInfo.ReleasesToApply.Any())
-			{
-				UpdateAvailable = UpdateStatus.AlreadyUpToDate;
-				DisposeUpdateManager();
-			}
-			else
-			{
-				_updateInfo = updateInfo;
-				var latest = _updateInfo.ReleasesToApply.OrderBy(x => x.Version).Last();
-				LatestAvailableRelease = latest.Version.ToString();
-				UpdateAvailable = UpdateStatus.UpdateAvailable;
-			}
-		}
-
-		private void HandleAsyncError(Exception exc)
-		{
-			Log.Error("Error while trying to check for updates", exc);
-			UpdateAvailable = UpdateStatus.Error;
-			DisposeUpdateManager();
-			Enabled = true;
+			_updater.CheckForUpdates(UpdaterCallback);
 		}
 
 		public void Update()
 		{
-			if (_updateInfo == null)
-			{
-				Log.Warn("The update available link was shown while update info is not available to SettingsViewModel.Update.");
-				MessageBox.Show("No update available to install. You can try downloading and re-installing the latest version manually.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				UpdateAvailable = UpdateStatus.Error;
-				return;
-			}
-
+			// TODO: Make an update dialog
 			Enabled = false;
 			UpdateAvailable = UpdateStatus.Updating;
-			// TODO: Make an update dialog
-			Log.Info("Squirrel: Downloading releases...");
-			var downloadReleasesTask = _updateManager.DownloadReleases(_updateInfo.ReleasesToApply);
-			downloadReleasesTask.ContinueWith(t => DownloadReleasesCallback(), TaskContinuationOptions.OnlyOnRanToCompletion);
-			downloadReleasesTask.ContinueWith(t => HandleAsyncError(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+			_updater.Update(UpdaterCallback);
 		}
 
-		private void DownloadReleasesCallback()
+		private void UpdaterCallback(UpdateStatus updateStatus, string latestVersion)
 		{
-			Log.Info("Squirrel: Applying releases...");
-			var applyReleasesTask = _updateManager.ApplyReleases(_updateInfo);
-			applyReleasesTask.ContinueWith(t => ApplyReleasesCallback(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
-			applyReleasesTask.ContinueWith(t => HandleAsyncError(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
-		}
+			UpdateAvailable = updateStatus;
+			LatestAvailableRelease = latestVersion;
 
-		private void ApplyReleasesCallback(string installPath)
-		{
-			// TODO: Since we now have two instances of GoToWindow running, we should exit this one and the new one should wait?
-			Log.Info("Squirrel: Update complete.");
-			DisposeUpdateManager();
-			UpdateAvailable = UpdateStatus.UpdateComplete;
-
-			Log.Info("Squirrel: Launching new version.");
-
-			var executablePath = Path.Combine(installPath, "GoToWindow.exe");
-			if (File.Exists(executablePath))
-			{
-				Process.Start(executablePath, "--squirrel-firstrunafterupdate");
-			}
-
-			Log.Info("Squirrel: Shutting down.");
-			Application.Current.Dispatcher.InvokeAsync(() => Application.Current.Shutdown(1));
+			if (updateStatus == UpdateStatus.Error)
+				Enabled = true;
 		}
 
 		private static bool GetStartWithWindows()
@@ -269,16 +198,11 @@ namespace GoToWindow.ViewModels
 
 		public void Dispose()
 		{
-			DisposeUpdateManager();
-		}
-
-		private void DisposeUpdateManager()
-		{
-			if (_updateManager == null)
+			if (_updater == null)
 				return;
 
-			_updateManager.Dispose();
-			_updateManager = null;
+			_updater.Dispose();
+			_updater = null;
 		}
 	}
 }
