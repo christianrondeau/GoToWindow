@@ -11,6 +11,7 @@ namespace GoToWindow.Api
 		public uint ProcessId { get; set; }
 	    public string Title { get; set; }
         public IntPtr IconHandle { get; set; }
+        public bool IsVisible { get; set; }
 
         public string ProcessName
         {
@@ -18,7 +19,7 @@ namespace GoToWindow.Api
             set { _processName = value; }
         }
 
-		public bool Focus()
+	    public bool Focus()
 		{
 			return WindowToForeground.ForceWindowToForeground(HWnd);
 		}

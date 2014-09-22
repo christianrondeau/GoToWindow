@@ -9,6 +9,7 @@ namespace GoToWindow.Api
 		string ProcessName { get; set; }
 		string Title { get; set; }
 		IntPtr IconHandle { get; set; }
+        bool IsVisible { get; set; }
 
 		bool Focus();
 		bool IsForeground();

@@ -51,6 +51,7 @@
     <Compile Include="Chrome\ChromeTab.cs" />
     <Compile Include="Chrome\ChromeTabsFinder.cs" />
     <Compile Include="Common\ShortcutBasedTab.cs" />
+    <Compile Include="Common\UIAutomationTabsFinderBase.cs" />
     <Compile Include="Contracts\ITab.cs" />
     <Compile Include="Contracts\ITabsFinder.cs" />
     <Compile Include="Contracts\TabBase.cs" />

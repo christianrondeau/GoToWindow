@@ -11,6 +11,7 @@ using GoToWindow.Plugins.ExpandBrowsersTabs.Chrome;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Firefox;
 using GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer;
+using GoToWindow.Plugins.ExpandBrowsersTabs.NotepadPlusPlus;
 using GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel;
 using log4net;
 
@@ -59,6 +60,13 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 						continue;
 				}
 
+			    string errorMessage;
+			    if (!finder.CanGetTabsOfWindow(item, out errorMessage))
+			    {
+			        item.SetError(errorMessage);
+			        continue;
+			    }
+
 				IEnumerable<ITab> tabs = null;
 
 				var tokenSource = new CancellationTokenSource();
@@ -68,7 +76,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 
 				if (!task.Wait(TimeoutMilliseconds, token))
 				{
-					item.Error = "* Error: Timeout trying to get tabs";
+                    item.SetError("* Error: Timeout trying to get tabs");
 					Log.WarnFormat("Timeout trying to get tabs for '{0}'", browserName);
 					continue;
 				}

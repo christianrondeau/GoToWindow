@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Common;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
-namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
+namespace GoToWindow.Plugins.ExpandBrowsersTabs.NotepadPlusPlus
 {
-	public class NotepadPlusPlusTabsFinder : ITabsFinder
+    public class NotepadPlusPlusTabsFinder : UIAutomationTabsFinderBase, ITabsFinder
 	{
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{

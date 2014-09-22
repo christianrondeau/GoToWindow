@@ -1,15 +1,13 @@
-﻿using System.Windows.Automation;
-using GoToWindow.Plugins.ExpandBrowsersTabs.Common;
-using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
-using System.Runtime.InteropServices;
-using System;
+﻿using System;
+using System.Windows.Automation;
 using GoToWindow.Api;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
-namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
+namespace GoToWindow.Plugins.ExpandBrowsersTabs.NotepadPlusPlus
 {
 	public class NotepadPlusPlusTab : TabBase, ITab
 	{
-		private AutomationElement _tabElement;
+		private readonly AutomationElement _tabElement;
 
 		public NotepadPlusPlusTab(AutomationElement tabElement)
 			: base(tabElement.Current.Name)

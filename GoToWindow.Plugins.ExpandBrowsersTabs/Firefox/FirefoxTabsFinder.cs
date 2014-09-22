@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
+using GoToWindow.Plugins.ExpandBrowsersTabs.Common;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 {
-	public class FirefoxTabsFinder : ITabsFinder
-	{
+    public class FirefoxTabsFinder : UIAutomationTabsFinderBase, ITabsFinder
+    {
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{
 			var firefoxWindow = AutomationElement.FromHandle(hWnd);
