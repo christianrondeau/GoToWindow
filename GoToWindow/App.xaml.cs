@@ -5,6 +5,7 @@ using System.Windows;
 using GoToWindow.Components;
 using log4net;
 using GoToWindow.Squirrel;
+using System.IO;
 
 namespace GoToWindow
 {
