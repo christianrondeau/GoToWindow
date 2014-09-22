@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Net.Mime;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;

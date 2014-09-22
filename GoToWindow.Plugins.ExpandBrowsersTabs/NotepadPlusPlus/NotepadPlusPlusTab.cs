@@ -20,8 +20,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.NotepadPlusPlus
 			Object o;
 			if(_tabElement.TryGetCurrentPattern(SelectionItemPattern.Pattern, out o))
 			{
-				var pattern = o as SelectionItemPattern;
-				pattern.Select();
+				((SelectionItemPattern)o).Select();
 			}
 			else
 			{

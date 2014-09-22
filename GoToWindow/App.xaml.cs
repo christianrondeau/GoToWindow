@@ -81,7 +81,7 @@ namespace GoToWindow
 			Log.Fatal(e.Exception);
 			MessageBox.Show("An error occured. Go To Window will shut down. Error details are available in GoToWindow.log.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			e.Handled = true;
-			Application.Current.Shutdown((int)ExitCodes.UnhandledError);
+			Current.Shutdown((int)ExitCodes.UnhandledError);
 		}
 	}
 }

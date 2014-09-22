@@ -23,8 +23,6 @@ namespace GoToWindow.ViewModels
 
 		public CollectionViewSource Windows { get; protected set; }
 		public ISearchResult SelectedWindowEntry { get; set; }
-		public ISearchResult CommandResult { get; private set; }
-		public UserControl CommandView { get; private set; }
 
         public string SearchText
         {
