@@ -31,7 +31,12 @@ namespace GoToWindow.Windows
 
 		private void UpdateNow_RequestNavigate(object sender, RequestNavigateEventArgs e)
 		{
-			((SettingsViewModel)DataContext).Update();
+			var updateWindow = new UpdateWindow();
+			var updateViewModel = new UpdateViewModel();
+			updateWindow.DataContext = updateViewModel;
+			updateViewModel.Update();
+			updateWindow.ShowDialog();
+			Close();
 			e.Handled = true;
 		}
 

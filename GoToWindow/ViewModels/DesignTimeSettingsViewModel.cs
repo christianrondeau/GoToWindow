@@ -26,7 +26,7 @@ namespace GoToWindow.ViewModels
 			HookAltTab = true;
 			NoElevatedPrivilegesWarning = true;
 			LatestAvailableRelease = "9.9.9";
-			UpdateAvailable = UpdateStatus.UpdateAvailable;
+			UpdateAvailable = CheckForUpdatesStatus.UpdateAvailable;
 		}
 	}
 }

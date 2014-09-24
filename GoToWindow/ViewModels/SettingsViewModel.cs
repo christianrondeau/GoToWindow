@@ -15,7 +15,16 @@ using GoToWindow.Squirrel;
 
 namespace GoToWindow.ViewModels
 {
-	public class SettingsViewModel : NotifyPropertyChangedViewModelBase, IDisposable
+	public enum CheckForUpdatesStatus
+	{
+		Undefined,
+		Checking,
+		UpdateAvailable,
+		AlreadyUpToDate,
+		Error
+	}
+
+	public class SettingsViewModel : NotifyPropertyChangedViewModelBase
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SettingsViewModel).Assembly, "GoToWindow");
 
@@ -34,7 +43,7 @@ namespace GoToWindow.ViewModels
 		{
 			_context = context;
 			_enabled = true;
-			_updater = new SquirrelUpdater();
+			_updater = SquirrelContext.AcquireUpdater();
 
 			Load();
 		}
@@ -58,8 +67,8 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-		private UpdateStatus _updateAvailable;
-		public UpdateStatus UpdateAvailable
+		private CheckForUpdatesStatus _updateAvailable;
+		public CheckForUpdatesStatus UpdateAvailable
 		{
 			get { return _updateAvailable; }
 			set
@@ -103,25 +112,20 @@ namespace GoToWindow.ViewModels
 			var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			Version = String.Format("{0}.{1}.{2}", currentVersion.Major, currentVersion.Minor, currentVersion.Build);
 
-			UpdateAvailable = UpdateStatus.Checking;
-			_updater.CheckForUpdates(UpdaterCallback);
+			UpdateAvailable = CheckForUpdatesStatus.Checking;
+			_updater.CheckForUpdates(CheckForUpdatesCallback, CheckForUpdatesError);
 		}
 
-		public void Update()
+		private void CheckForUpdatesCallback(string latestVersion)
 		{
-			// TODO: Make an update dialog
-			Enabled = false;
-			UpdateAvailable = UpdateStatus.Updating;
-			_updater.Update(UpdaterCallback);
-		}
-
-		private void UpdaterCallback(UpdateStatus updateStatus, string latestVersion)
-		{
-			UpdateAvailable = updateStatus;
+			UpdateAvailable = latestVersion != null ? CheckForUpdatesStatus.UpdateAvailable : CheckForUpdatesStatus.AlreadyUpToDate;
 			LatestAvailableRelease = latestVersion;
+		}
 
-			if (updateStatus == UpdateStatus.Error)
-				Enabled = true;
+		private void CheckForUpdatesError(Exception exc)
+		{
+			UpdateAvailable = CheckForUpdatesStatus.Error;
+			Enabled = true;
 		}
 
 		private static bool GetStartWithWindows()
@@ -194,15 +198,6 @@ namespace GoToWindow.ViewModels
 				process.Start();
 				process.WaitForExit();
 			}
-		}
-
-		public void Dispose()
-		{
-			if (_updater == null)
-				return;
-
-			_updater.Dispose();
-			_updater = null;
 		}
 	}
 }
