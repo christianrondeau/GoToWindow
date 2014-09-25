@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GoToWindow.Extensibility.ViewModel;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
@@ -8,7 +9,13 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 	{
 		private bool _searchedOnce;
 
-		public IEnumerable<ITab> GetTabsOfWindow(IntPtr chromeWindowHandle)
+	    public bool CanGetTabsOfWindow(IWindowSearchResult item, out string errorMessage)
+	    {
+	        errorMessage = null;
+	        return true;
+	    }
+
+	    public IEnumerable<ITab> GetTabsOfWindow(IntPtr chromeWindowHandle)
 		{
 			if (_searchedOnce)
 				yield break;

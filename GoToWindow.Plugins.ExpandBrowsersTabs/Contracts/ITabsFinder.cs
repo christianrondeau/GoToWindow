@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using GoToWindow.Extensibility.ViewModel;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.Contracts
 {
 	public interface ITabsFinder
 	{
-		IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd);
+	    bool CanGetTabsOfWindow(IWindowSearchResult item, out string errorMessage);
+	    IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd);
 	}
 }

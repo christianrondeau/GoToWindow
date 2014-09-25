@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GoToWindow.Extensibility.Controls
 {
@@ -9,6 +9,9 @@ namespace GoToWindow.Extensibility.Controls
 		public BasicListEntry()
 		{
 			InitializeComponent();
+
+		    if (!DesignerProperties.GetIsInDesignMode(this))
+		        Background = Brushes.Transparent;
 		}
 	}
 }

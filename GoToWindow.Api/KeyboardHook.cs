@@ -35,14 +35,16 @@ namespace GoToWindow.Api
 		private static extern IntPtr GetModuleHandle(string lpModuleName);
 
 		// ReSharper disable InconsistentNaming
-		private const int HC_ACTION = 0;
+        // ReSharper disable UnusedMember.Local
+        private const int HC_ACTION = 0;
 		private const int WH_KEYBOARD_LL = 13;
 		private const int WM_KEYDOWN = 0x0100;
 		private const int WM_KEYUP = 0x0101;
 		private const int WM_SYSKEYDOWN = 0x0104;
 		private const int WM_SYSKEYUP = 0x0105;
 		private static IntPtr _hookID = IntPtr.Zero;
-		// ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Local
+        // ReSharper restore InconsistentNaming
 
 		#if(DEBUG_KEYS)
 		private static Dictionary<int, string> WMKeyNames = new Dictionary<int, string>

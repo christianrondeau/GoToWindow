@@ -13,12 +13,15 @@ namespace GoToWindow.Plugins.Core.ViewModel
 		private readonly IWindowEntry _entry;
 		private BitmapFrame _icon;
 
-		public BitmapFrame Icon { get { return _icon ?? (_icon = LoadIcon()); } }
+	    public BitmapFrame Icon { get { return _icon ?? (_icon = LoadIcon()); } }
 		public string Title { get { return _entry.Title; } }
 		public string ProcessName { get { return _entry.ProcessName; } }
 		public IntPtr HWnd { get { return _entry.HWnd; } }
 
-		public CoreSearchResult(IWindowEntry entry, Func<UserControl> viewCtor)
+	    public bool IsVisible { get { return _entry.IsVisible; } }
+	    public string Error { get; private set; }
+
+	    public CoreSearchResult(IWindowEntry entry, Func<UserControl> viewCtor)
 			: base(viewCtor)
 		{
 			_entry = entry;
@@ -33,6 +36,11 @@ namespace GoToWindow.Plugins.Core.ViewModel
 		{
 			return IsShown(searchQuery, ProcessName, Title);
 		}
+
+        public void SetError(string message)
+        {
+            Error = message;
+        }
 
 	    private BitmapFrame LoadIcon()
 	    {

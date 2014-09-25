@@ -118,7 +118,7 @@ namespace GoToWindow.Api
 
         private static IntPtr GetLastVisibleActivePopUpOfWindow(IntPtr window)
         {
-            int level = MaxLastActivePopupIterations;
+            var level = MaxLastActivePopupIterations;
             var currentWindow = window;
             while (level-- > 0)
             {

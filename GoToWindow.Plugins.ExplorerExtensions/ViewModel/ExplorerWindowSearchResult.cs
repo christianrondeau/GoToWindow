@@ -14,8 +14,10 @@ namespace GoToWindow.Plugins.ExplorerExtensions.ViewModel
 		public BitmapFrame Icon { get { return _window.Icon; } }
 		public string Title { get { return _path; } }
 		public string ProcessName { get { return _window.ProcessName; } }
-		public string Error { get { return _window.Error; } set { _window.Error = value; } }
+		public string Error { get { return _window.Error; } }
 		public IntPtr HWnd { get { return _window.HWnd; } }
+
+	    public bool IsVisible { get { return _window.IsVisible; } }
 
 		public bool IsShown(string searchQuery)
 		{
@@ -32,5 +34,10 @@ namespace GoToWindow.Plugins.ExplorerExtensions.ViewModel
 		{
 			_window.Select();
 		}
+
+        public void SetError(string message)
+        {
+            _window.SetError(message);
+        }
 	}
 }

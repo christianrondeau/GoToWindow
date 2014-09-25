@@ -1,11 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using GoToWindow.Api;
-using Microsoft.Win32;
 using GoToWindow.Squirrel;
 
 namespace GoToWindow.ViewModels
@@ -13,7 +6,6 @@ namespace GoToWindow.ViewModels
 	public class DesignTimeSettingsViewModel : SettingsViewModel
 	{
 		public DesignTimeSettingsViewModel()
-			: base()
 		{
 			Version = "0.0.0";
 			Plugins = new List<SettingsPluginViewModel>
