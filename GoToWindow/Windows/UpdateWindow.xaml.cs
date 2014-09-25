@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace GoToWindow.Windows
 {
-	/// <summary>
-	/// Interaction logic for UpdateWindow.xaml
-	/// </summary>
 	public partial class UpdateWindow : Window
 	{
 		public UpdateWindow()

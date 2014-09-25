@@ -10,8 +10,7 @@ namespace GoToWindow.Converters
 	{
 		public object Convert(object value, Type TargetType, object parameter, CultureInfo culture)
 		{
-			//return System.Convert.ToBoolean(value) ? Visibility.Visible : Visibility.Hidden;
-			return true;
+			return System.Convert.ToBoolean(value) ? Visibility.Visible : Visibility.Hidden;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
