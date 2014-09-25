@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using GoToWindow.Components;
 using log4net;
 using GoToWindow.Squirrel;
-using System.IO;
 
 namespace GoToWindow
 {
@@ -19,7 +20,10 @@ namespace GoToWindow
 
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
-			if(e.Args != null && e.Args.Any() && e.Args[0].StartsWith("--squirrel"))
+			// http://stackoverflow.com/questions/14635862/exception-occurs-while-pressing-a-button-on-touchscreen-using-a-stylus-or-a-fing
+			DisableWpfTabletSupport();
+
+			if(e.Args.Any() && e.Args[0].StartsWith("--squirrel"))
 			{
 				var cliHandler = new CommandLineArgumentsHandler();
 				if (cliHandler.HandleSquirrelArguments(e.Args))
@@ -87,7 +91,8 @@ namespace GoToWindow
 		{
 			Log.Debug("Application deactivated.");
 
-			_context.Hide();
+			if (_context != null)
+				_context.Hide();
 		}
 
 		private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -95,7 +100,32 @@ namespace GoToWindow
 			Log.Fatal(e.Exception);
 			MessageBox.Show("An error occured. Go To Window will shut down. Error details are available in GoToWindow.log.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			e.Handled = true;
-			Application.Current.Shutdown((int)ExitCodes.UnhandledError);
+			Current.Shutdown((int)ExitCodes.UnhandledError);
+		}
+
+		public static void DisableWpfTabletSupport()
+		{
+			var devices = Tablet.TabletDevices;
+
+			if (devices.Count <= 0) return;
+			
+			var inputManagerType = typeof(InputManager);
+
+			// Call the StylusLogic method on the InputManager.Current instance.
+			var stylusLogic = inputManagerType.InvokeMember("StylusLogic",
+				BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+				null, InputManager.Current, null);
+
+			if (stylusLogic == null) return;
+
+			var stylusLogicType = stylusLogic.GetType();
+
+			while (devices.Count > 0)
+			{
+				stylusLogicType.InvokeMember("OnTabletRemoved",
+					BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.NonPublic,
+					null, stylusLogic, new object[] {(uint) 0});
+			}
 		}
 	}
 }

@@ -24,7 +24,7 @@ Function ZipFiles($Filename, $Source)
 # ==================================== Variables
 
 $NuGet = "$PSScriptRoot\.nuget\NuGet.exe"
-$Squirrel = "$PSScriptRoot\packages\squirrel.windows.0.4.94\tools\Squirrel.com"
+$Squirrel = Join-Path  (ls .\packages\squirrel.windows.*)[0] "tools\Squirrel.com"
 
 $BuildPath = "$PSScriptRoot\GoToWindow\bin\Release"
 $NuSpecPath = "$PSScriptRoot\GoToWindow.nuspec"
