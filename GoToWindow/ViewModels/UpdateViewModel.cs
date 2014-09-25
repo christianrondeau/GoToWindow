@@ -5,7 +5,7 @@ namespace GoToWindow.ViewModels
 {
 	public class UpdateViewModel : NotifyPropertyChangedViewModelBase
 	{
-		private SquirrelUpdater _updater;
+		private readonly SquirrelUpdater _updater;
 
 		private UpdateStatus _updateStatus;
 		public UpdateStatus UpdateStatus

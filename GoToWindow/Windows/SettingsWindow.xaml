@@ -62,7 +62,7 @@
 							<Span>* New version available:</Span>
 							<Run Text="{Binding LatestAvailableRelease}" FontWeight="Bold" />
 							<Span>.</Span>
-							<Hyperlink NavigateUri="squirrel://Update" RequestNavigate="UpdateNow_RequestNavigate">Update Now</Hyperlink>
+							<Hyperlink NavigateUri="http://christianrondeau.github.io/GoToWindow" RequestNavigate="UpdateNow_RequestNavigate">Update Now</Hyperlink>
 						</TextBlock>
 						
 						<TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding Path=NoElevatedPrivilegesWarning, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="Red" TextWrapping="Wrap">

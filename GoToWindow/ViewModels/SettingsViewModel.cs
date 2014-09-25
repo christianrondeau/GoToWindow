@@ -4,13 +4,9 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 using GoToWindow.Api;
 using Microsoft.Win32;
-using Squirrel;
 using log4net;
-using System.Threading.Tasks;
-using System.IO;
 using GoToWindow.Squirrel;
 
 namespace GoToWindow.ViewModels
@@ -29,7 +25,7 @@ namespace GoToWindow.ViewModels
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SettingsViewModel).Assembly, "GoToWindow");
 
 		private readonly IGoToWindowContext _context;
-		private SquirrelUpdater _updater;
+		private readonly SquirrelUpdater _updater;
 
 		private bool _originalHookAltTab;
 		private bool _originalStartWithWindows;
@@ -159,6 +155,8 @@ namespace GoToWindow.ViewModels
 			Properties.Settings.Default.DisabledPlugins = disabledPlugins;
 
 			Properties.Settings.Default.Save();
+
+			Log.Info("Settings updated");
 		}
 
 		private static void UpdateStartWithWindows(bool active)

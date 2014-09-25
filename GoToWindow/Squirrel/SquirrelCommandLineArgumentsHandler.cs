@@ -1,13 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using log4net;
 using System.Windows;
 
 namespace GoToWindow.Squirrel
 {
-	public class CommandLineArgumentsHandler
+	public class SquirrelCommandLineArgumentsHandler
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(CommandLineArgumentsHandler).Assembly, "GoToWindow");
+		private static readonly ILog Log = LogManager.GetLogger(typeof(SquirrelCommandLineArgumentsHandler).Assembly, "GoToWindow");
 
 		public bool HandleSquirrelArguments(string[] args)
 		{
@@ -37,7 +36,6 @@ namespace GoToWindow.Squirrel
 					return false;
 			}
 		}
-
 
 		private void HandleSquirrelInstall(string version)
 		{

@@ -20,11 +20,11 @@ namespace GoToWindow.Squirrel
 
 	public static class SquirrelContext
 	{
-		private static readonly SquirrelUpdater _updater = new SquirrelUpdater();
+		private static readonly SquirrelUpdater Updater = new SquirrelUpdater();
 
 		public static SquirrelUpdater AcquireUpdater()
 		{
-			return _updater;
+			return Updater;
 		}
 	}
 

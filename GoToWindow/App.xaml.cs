@@ -25,7 +25,7 @@ namespace GoToWindow
 
 			if(e.Args.Any() && e.Args[0].StartsWith("--squirrel"))
 			{
-				var cliHandler = new CommandLineArgumentsHandler();
+				var cliHandler = new SquirrelCommandLineArgumentsHandler();
 				if (cliHandler.HandleSquirrelArguments(e.Args))
 				{
 					Log.Info("Handled Squirrel arguments. Shutting down.");

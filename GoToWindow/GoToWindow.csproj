@@ -112,7 +112,7 @@
     <Compile Include="Commands\OpenMainWindowCommand.cs" />
     <Compile Include="Components\GoToWindowTrayIcon.cs" />
     <Compile Include="GoToWindowPluginsContainer.cs" />
-    <Compile Include="Squirrel\CommandLineArgumentsHandler.cs" />
+    <Compile Include="Squirrel\SquirrelCommandLineArgumentsHandler.cs" />
     <Compile Include="Squirrel\SquirrelUpdater.cs" />
     <Compile Include="ViewModels\DesignTimeMainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
