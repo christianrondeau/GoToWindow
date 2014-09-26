@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using GoToWindow.Api;
 using GoToWindow.Extensibility;
+using GoToWindow.Squirrel;
 using GoToWindow.ViewModels;
 using log4net;
 
@@ -226,5 +227,10 @@ namespace GoToWindow.Windows
                 new WindowInteropHelper(this).Handle
                 );
         }
+
+	    private void UpdateButton_OnClick(object sender, RoutedEventArgs e)
+	    {
+		    SquirrelUpdater.ShowUpdateWindow();
+	    }
     }
 }

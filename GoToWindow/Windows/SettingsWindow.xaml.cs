@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using GoToWindow.Squirrel;
 using GoToWindow.ViewModels;
 using System.Diagnostics;
 using System.Windows.Navigation;
@@ -32,11 +33,7 @@ namespace GoToWindow.Windows
 
 		private void UpdateNow_RequestNavigate(object sender, RequestNavigateEventArgs e)
 		{
-			var updateWindow = new UpdateWindow();
-			var updateViewModel = new UpdateViewModel();
-			updateWindow.DataContext = updateViewModel;
-			updateViewModel.Update();
-			updateWindow.ShowDialog();
+			SquirrelUpdater.ShowUpdateWindow();
 			Close();
 			e.Handled = true;
 		}

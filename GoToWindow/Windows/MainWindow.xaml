@@ -40,7 +40,23 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+		</Style>
+		<Style x:Key="TabButton" TargetType="{x:Type Button}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Border x:Name="RoundButtonBorder" CornerRadius="14,14,0,0" Margin="0" BorderThickness="0" Background="LightGreen" Padding="8" >
+							<ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="12" />
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="RoundButtonBorder" Property="Background" Value="Green"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 		<converters:IndexConverter x:Key="IndexConverter" />
 		<converters:IndexWithinRangeConverter x:Key="IndexWithinRangeConverter" />
 		<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -78,12 +94,16 @@
                 CommandParameter="9"
                 Gesture="CTRL+9"/>
     </Window.InputBindings>
-    <Grid Margin="32">
+    <Grid Margin="32,0,32,32">
         <Grid.RowDefinitions>
+			<RowDefinition Name="UpdateRow" Height="32"/>
             <RowDefinition Name="SearchRow" Height="48"/>
             <RowDefinition Name="WindowsListRow" Height="Auto"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" BorderThickness="0" CornerRadius="24" Background="White" Cursor="IBeam" MouseDown="SearchBox_MouseDown">
+		<Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,38,0" Visibility="{Binding UpdateAvailable, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+			<Button Name="UpdateButton" Style="{StaticResource TabButton}" Cursor="Hand" Click="UpdateButton_OnClick">An update is available!</Button>
+		</Grid>
+        <Border Grid.Row="1" BorderThickness="0" CornerRadius="24" Background="White" Cursor="IBeam" MouseDown="SearchBox_MouseDown">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="16" Direction="-75" Opacity="0.8" />
             </Border.Effect>
@@ -109,7 +129,7 @@
 				</Button>
             </Grid>
         </Border>
-        <Border Grid.Row="1" BorderThickness="0" Background="White" Margin="0, 14, 0, 0">
+        <Border Grid.Row="2" BorderThickness="0" Background="White" Margin="0, 14, 0, 0">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="16" Direction="-75" Opacity="0.8" />
             </Border.Effect>

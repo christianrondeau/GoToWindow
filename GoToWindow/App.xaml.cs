@@ -57,6 +57,8 @@ namespace GoToWindow
 			Log.Info("Application started.");
 
 			_menu.ShowStartupTooltip();
+
+			SquirrelContext.AcquireUpdater().CheckForUpdates(_context.UpdateAvailable, null);
 		}
 
 		private void Application_Exit(object sender, ExitEventArgs e)

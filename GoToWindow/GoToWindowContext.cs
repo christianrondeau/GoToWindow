@@ -19,6 +19,7 @@ namespace GoToWindow
 		void Hide();
 		void EnableAltTabHook(bool enabled, int shortcutPressesBeforeOpen);
 		void ShowSettings();
+		void UpdateAvailable(string version);
 	}
 
 	public class GoToWindowContext : IGoToWindowContext
@@ -35,23 +36,32 @@ namespace GoToWindow
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
 
 		private readonly Object _lock = new Object();
+		private readonly MainViewModel _mainViewModel;
+		private readonly MainWindow _mainWindow;
 
 		private GoToWindowState _state = GoToWindowState.Hidden;
-		private MainViewModel _mainViewModel;
-		private MainWindow _mainWindow;
 		private KeyboardHook _hooks;
 		private IWindowEntry _mainWindowEntry;
 
 		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
 
+		public void UpdateAvailable(string version)
+		{
+			_mainViewModel.UpdateAvailable = !String.IsNullOrEmpty(version);
+		}
+
+		public GoToWindowContext()
+		{
+			_mainWindow = new MainWindow();
+			_mainViewModel = new MainViewModel();
+		}
+		
 		public void Init()
 		{
 			WmiProcessWatcher.Start();
 
 			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
 
-			_mainWindow = new MainWindow();
-			_mainViewModel = new MainViewModel();
 			_mainWindow.DataContext = _mainViewModel;
 			_mainViewModel.Close += _mainViewModel_Hide;
 		}

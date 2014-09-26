@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using GoToWindow.ViewModels;
+using GoToWindow.Windows;
 using log4net;
 using Squirrel;
 using System.Diagnostics;
@@ -30,6 +32,8 @@ namespace GoToWindow.Squirrel
 
 	public class SquirrelUpdater : IDisposable
 	{
+		private const string ReleasesServer = @"C:\Dev\GoToWindow\Releases";
+
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SquirrelUpdater).Assembly, "GoToWindow");
 		private IUpdateManager _updateManager;
 		private UpdateInfo _updateInfo;
@@ -39,7 +43,7 @@ namespace GoToWindow.Squirrel
 			if (_updateManager != null)
 				return;
 
-			_updateManager = new UpdateManager(@"D:\Dev\GoToWindow\Releases", "GoToWindow", FrameworkVersion.Net45);
+			_updateManager = new UpdateManager(ReleasesServer, "GoToWindow", FrameworkVersion.Net45);
 			var checkForUpdateTask = _updateManager.CheckForUpdate();
 			checkForUpdateTask.ContinueWith(t => CheckForUpdateCallback(callback, t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
 			checkForUpdateTask.ContinueWith(t => HandleAsyncError(errCallback, t.Exception), TaskContinuationOptions.OnlyOnFaulted);
@@ -116,7 +120,8 @@ namespace GoToWindow.Squirrel
 		{
 			Log.Error("Error while trying to check for updates", exc);
 			DisposeUpdateManager();
-			errCallback(exc);
+			if (errCallback != null)
+				errCallback(exc);
 		}
 
 		public void Dispose()
@@ -131,6 +136,15 @@ namespace GoToWindow.Squirrel
 
 			_updateManager.Dispose();
 			_updateManager = null;
+		}
+
+		public static void ShowUpdateWindow()
+		{
+			var updateWindow = new UpdateWindow();
+			var updateViewModel = new UpdateViewModel();
+			updateWindow.DataContext = updateViewModel;
+			updateViewModel.Update();
+			updateWindow.ShowDialog();
 		}
 	}
 }

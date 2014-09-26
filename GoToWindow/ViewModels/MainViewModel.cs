@@ -11,15 +11,10 @@ namespace GoToWindow.ViewModels
 {
 	public class MainViewModel : NotifyPropertyChangedViewModelBase
 	{
-		private string _searchText;
-		private bool _isEmpty;
-	    private int _availableWindowWidth;
-	    private int _availableWindowHeight;
-		private bool _isRowIndexVisible;
-
 		public CollectionViewSource Windows { get; protected set; }
 		public ISearchResult SelectedWindowEntry { get; set; }
 
+		private string _searchText;
         public string SearchText
         {
             get { return _searchText; }
@@ -30,6 +25,7 @@ namespace GoToWindow.ViewModels
             }
         }
 
+		private bool _isEmpty;
 		public bool IsEmpty
 		{
 			get { return _isEmpty; }
@@ -40,6 +36,7 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
+		private int _availableWindowWidth;
 		public int AvailableWindowWidth
 		{
 			get { return _availableWindowWidth; }
@@ -50,6 +47,7 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
+		private int _availableWindowHeight;
 		public int AvailableWindowHeight
 		{
 			get { return _availableWindowHeight; }
@@ -60,6 +58,7 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
+		private bool _isRowIndexVisible;
 		public bool IsRowIndexVisible
 		{
 			get { return _isRowIndexVisible; }
@@ -70,9 +69,20 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
+		private bool _updateAvailable;
+		public bool UpdateAvailable
+		{
+			get { return _updateAvailable; }
+			set
+			{
+				_updateAvailable = value;
+				OnPropertyChanged("UpdateAvailable");
+			}
+		}
+
         public ICommand GoToWindowEntryShortcut { get; private set; }
 
-        public event EventHandler Close;
+		public event EventHandler Close;
 
         public MainViewModel()
         {
