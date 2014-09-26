@@ -122,12 +122,19 @@
     <Compile Include="ViewModels\DesignTimeSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
+    <Compile Include="Windows\FirstRunWindow.xaml.cs">
+      <DependentUpon>FirstRunWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UpdateWindow.xaml.cs">
       <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Windows\FirstRunWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

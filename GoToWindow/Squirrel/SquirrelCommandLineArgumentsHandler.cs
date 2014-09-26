@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using log4net;
 using System.Windows;
+using GoToWindow.Windows;
 
 namespace GoToWindow.Squirrel
 {
@@ -46,13 +47,13 @@ namespace GoToWindow.Squirrel
 		private void HandleSquirrelFirstRun()
 		{
 			Log.Info("Squirrel: First run");
-			MessageBox.Show("Go To Window successfully installed!", "Go To Window Installed!", MessageBoxButton.OK, MessageBoxImage.Information);
+			new FirstRunWindow().Show();
 		}
 
 		private void HandleSquirrelFirstRunAfterUpdate()
 		{
 			Log.Info("Squirrel: First run after update");
-			MessageBox.Show("Go To Window successfully updated!", "Go To Window Updated!", MessageBoxButton.OK, MessageBoxImage.Information);
+			new FirstRunWindow().Show();
 		}
 
 		private void HandleSquirrelUpdated(string version)
