@@ -30,6 +30,8 @@ $BuildPath = "$PSScriptRoot\GoToWindow\bin\Release"
 $NuSpecPath = "$PSScriptRoot\GoToWindow.nuspec"
 $ReleasesFolder = "$PSScriptRoot\Releases"
 
+$SetupLoadingGif = "$PSScriptRoot\GoToWindow.Setup\Loading.gif"
+
 # ==================================== NuSpec Metadata
 
 $NuSpecXml = [xml](Get-Content $NuSpecPath)
@@ -79,7 +81,7 @@ If(Test-Path -Path $SquirrelDeltaNuPkgOutputPath) {
 	Remove-Item -Confirm:$false $SquirrelDeltaNuPkgOutputPath
 }
 
-&($Squirrel) --releasify $NuPkgPath
+&($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath
 
 # ==================================== Cleanup
 
