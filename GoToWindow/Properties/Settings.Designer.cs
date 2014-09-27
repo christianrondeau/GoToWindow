@@ -69,17 +69,5 @@ namespace GoToWindow.Properties {
                 this["WindowListSingleClick"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://christianrondeau.github.io/GoToWindow/Releases")]
-        public string ReleasesUrl {
-            get {
-                return ((string)(this["ReleasesUrl"]));
-            }
-            set {
-                this["ReleasesUrl"] = value;
-            }
-        }
     }
 }

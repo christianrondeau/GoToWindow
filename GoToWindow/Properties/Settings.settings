@@ -14,8 +14,5 @@
     <Setting Name="WindowListSingleClick" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ReleasesUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://christianrondeau.github.io/GoToWindow/Releases</Value>
-    </Setting>
   </Settings>
 </SettingsFile>
