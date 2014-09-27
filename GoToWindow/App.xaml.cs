@@ -21,9 +21,6 @@ namespace GoToWindow
 
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
-			// http://stackoverflow.com/questions/14635862/exception-occurs-while-pressing-a-button-on-touchscreen-using-a-stylus-or-a-fing
-			DisableWpfTabletSupport();
-
 			var isFirstRun = false;
 			if(e.Args.Any() && e.Args[0].StartsWith("--squirrel"))
 			{
@@ -37,15 +34,24 @@ namespace GoToWindow
 
 				isFirstRun = cliHandler.IsFirstRun;
 			}
-		
-			bool mutexCreated;
-			_mutex = new Mutex(true, "GoToWindow", out mutexCreated);
-			if (!mutexCreated)
+
+			if (!WaitForOtherInstancesToShutDown())
 			{
+				MessageBox.Show(
+					"Another Go To Window instance is already running." + Environment.NewLine +
+					"Exit by right-clicking the icon in the tray, and selecting 'Exit'." + Environment.NewLine +
+					String.Join(" ", e.Args),
+					"Go To Window",
+					MessageBoxButton.OK,
+					MessageBoxImage.Information
+					);
 				Log.Warn("Application already running. Shutting down.");
 				Current.Shutdown(1);
 				return;
 			}
+
+			// http://stackoverflow.com/questions/14635862/exception-occurs-while-pressing-a-button-on-touchscreen-using-a-stylus-or-a-fing
+			DisableWpfTabletSupport();
 
 			_context = new GoToWindowContext();
 			
@@ -72,6 +78,24 @@ namespace GoToWindow
 			}
 
 			SquirrelContext.AcquireUpdater().CheckForUpdates(_context.UpdateAvailable, null);
+		}
+
+		private bool WaitForOtherInstancesToShutDown()
+		{
+			const int msBetweenAttempts = 500;
+			bool isOnlyRunningProcessInstance;
+			for(int attempt = 0; attempt < 10; attempt++)
+			{
+				_mutex = new Mutex(true, "GoToWindow", out isOnlyRunningProcessInstance);
+
+				if (isOnlyRunningProcessInstance)
+					return true;
+
+				Log.DebugFormat("Another instance is running. Waiting for {0}ms (attempt {1})...", msBetweenAttempts, attempt + 1);
+				Thread.Sleep(msBetweenAttempts);
+			}
+
+			return false;
 		}
 
 		private void Application_Exit(object sender, ExitEventArgs e)

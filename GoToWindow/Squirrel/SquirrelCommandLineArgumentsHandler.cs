@@ -2,17 +2,29 @@
 using log4net;
 using System.Windows;
 using GoToWindow.Windows;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace GoToWindow.Squirrel
 {
 	public class SquirrelCommandLineArgumentsHandler
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SquirrelCommandLineArgumentsHandler).Assembly, "GoToWindow");
+
+		public SquirrelCommandLineArgumentsHandler()
+		{
+		}
+
 		public bool IsFirstRun { get; private set; }
 
 		public bool HandleSquirrelArguments(string[] args)
 		{
-			switch (args.FirstOrDefault())
+			var firstArg = args.FirstOrDefault();
+
+			if (string.IsNullOrEmpty(firstArg))
+				return false;
+
+			switch (firstArg)
 			{
 				case "--squirrel-install":
 					// `--squirrel-install x.y.z.m` - called when your app is installed. Exit as soon as you're finished setting up the app
@@ -35,27 +47,24 @@ namespace GoToWindow.Squirrel
 					IsFirstRun = true;
 					return false;
 				default:
-					return false;
+					return firstArg.StartsWith("--squirrel");
 			}
 		}
 
 		private void HandleSquirrelInstall(string version)
 		{
-			//TODO: Close other instances
 			SquirrelContext.AcquireUpdater().InstallShortcuts(false);
 			Log.InfoFormat("Squirrel: Installed GoToWindow: {0}", version);
 		}
 
 		private void HandleSquirrelUpdated(string version)
 		{
-			//TODO: Close other instances
 			SquirrelContext.AcquireUpdater().InstallShortcuts(true);
 			Log.InfoFormat("Squirrel: Update GoToWindow: {0}", version);
 		}
 
 		private void HandleSquirrelUninstall()
 		{
-			//TODO: Close other instances
 			SquirrelContext.AcquireUpdater().RemoveShortcuts();
 			Log.Info("Squirrel: Uninstalling GoToWindow");
 		}
