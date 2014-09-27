@@ -57,19 +57,14 @@ namespace GoToWindow.Squirrel
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SquirrelUpdater).Assembly, "GoToWindow");
 		private IUpdateManager _updateManager;
 		private UpdateInfo _updateInfo;
-		private string _updateUrl;
 
 		public SquirrelUpdater(string updateUrl)
 		{
-			_updateUrl = updateUrl;
+			_updateManager = new UpdateManager(updateUrl, "GoToWindow", FrameworkVersion.Net45);
 		}
 
 		public void CheckForUpdates(Action<string> callback, Action<Exception> errCallback)
 		{
-			if (_updateManager != null)
-				_updateManager.Dispose();
-
-			_updateManager = new UpdateManager(_updateUrl, "GoToWindow", FrameworkVersion.Net45);
 			var checkForUpdateTask = _updateManager.CheckForUpdate();
 			checkForUpdateTask.ContinueWith(t => CheckForUpdateCallback(callback, t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
 			checkForUpdateTask.ContinueWith(t => HandleAsyncError(errCallback, t.Exception), TaskContinuationOptions.OnlyOnFaulted);
@@ -79,12 +74,10 @@ namespace GoToWindow.Squirrel
 		{
 			if (updateInfo == null)
 			{
-				DisposeUpdateManager();
 				callback(null);
 			}
 			else if (!updateInfo.ReleasesToApply.Any())
 			{
-				DisposeUpdateManager();
 				callback(null);
 			}
 			else
@@ -120,7 +113,6 @@ namespace GoToWindow.Squirrel
 		private void ApplyReleasesCallback(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback, string installPath)
 		{
 			Log.Info("Squirrel: Update complete.");
-			DisposeUpdateManager();
 
 			Log.Info("Squirrel: Launching new version.");
 			progressCallback(UpdateStatus.Restarting, 100);
@@ -145,17 +137,12 @@ namespace GoToWindow.Squirrel
 		private void HandleAsyncError(Action<Exception> errCallback, Exception exc)
 		{
 			Log.Error("Error while trying to check for updates", exc);
-			DisposeUpdateManager();
+			
 			if (errCallback != null)
 				errCallback(exc);
 		}
 
 		public void Dispose()
-		{
-			DisposeUpdateManager();
-		}
-
-		private void DisposeUpdateManager()
 		{
 			if (_updateManager == null)
 				return;

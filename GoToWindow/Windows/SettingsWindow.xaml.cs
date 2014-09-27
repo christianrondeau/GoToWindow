@@ -46,7 +46,7 @@ namespace GoToWindow.Windows
 
 		private void Window_Closing(object sender, CancelEventArgs e)
 		{
-			if (!((SettingsViewModel)DataContext).Enabled)
+			if (DataContext != null && !((SettingsViewModel)DataContext).Enabled)
 				e.Cancel = true;
 		}
 	}
