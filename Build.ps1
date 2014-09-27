@@ -69,6 +69,7 @@ ZipFiles $ReleaseZip $BuildPath
 # ==================================== Squirrel
 
 $NuPkgPath = "$PSScriptRoot\GoToWindow.$Version.nupkg"
+
 &($NuGet) pack $NuSpecPath
 
 $SquirrelFullNuPkgOutputPath = "$PSScriptRoot\Releases\GoToWindow-$Version-full.nupkg"
@@ -81,7 +82,13 @@ If(Test-Path -Path $SquirrelDeltaNuPkgOutputPath) {
 	Remove-Item -Confirm:$false $SquirrelDeltaNuPkgOutputPath
 }
 
+$OutputSetupExe = "$ReleasesFolder\GoToWindow.Setup.$Version.exe"
+If(Test-Path -Path $OutputSetupExe) {
+	Remove-Item -Confirm:$false $OutputSetupExe
+}
+
 &($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath
+Rename-Item "$ReleasesFolder\Setup.exe" $OutputSetupExe
 
 # ==================================== Cleanup
 
@@ -91,4 +98,4 @@ If(Test-Path -Path $NuPkgPath) {
 
 # ==================================== Complete
 
-Write-Host "Build complete!" -ForegroundColor Green
+Write-Host "Build $Version complete: $ReleasesFolder" -ForegroundColor Green
