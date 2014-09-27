@@ -30,6 +30,11 @@ namespace GoToWindow.Squirrel
 			return Updater;
 		}
 
+        public static void Dispose()
+        {
+            Updater.Dispose();
+        }
+
 		static string GetUpdateUrl()
 		{
 			var args = Environment.GetCommandLineArgs();
@@ -112,27 +117,35 @@ namespace GoToWindow.Squirrel
 
 		private void ApplyReleasesCallback(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback, string installPath)
 		{
-			Log.Info("Squirrel: Update complete.");
-
-			Log.Info("Squirrel: Launching new version.");
-			progressCallback(UpdateStatus.Restarting, 100);
-
-			try
-			{
-				var executablePath = Path.Combine(installPath, "GoToWindow.exe");
-				if (File.Exists(executablePath))
-				{
-					Process.Start(executablePath, "--squirrel-firstrunafterupdate");
-				}
-
-				Log.Info("Squirrel: Shutting down.");
-				Application.Current.Dispatcher.InvokeAsync(() => Application.Current.Shutdown(1));
-			}
-			catch(Exception exc)
-			{
-				HandleAsyncError(errCallback, exc);
-			}
+            progressCallback(UpdateStatus.Installing, 100);
+            Log.Info("Squirrel: Creating uninstall info...");
+            var createUninstallerRegistryEntryTask = _updateManager.CreateUninstallerRegistryEntry();
+            createUninstallerRegistryEntryTask.ContinueWith(t => CreateUninstallerRegistryEntryCallback(progressCallback, errCallback, installPath), TaskContinuationOptions.OnlyOnRanToCompletion);
+            createUninstallerRegistryEntryTask.ContinueWith(t => HandleAsyncError(errCallback, t.Exception), TaskContinuationOptions.OnlyOnFaulted);
 		}
+
+        private void CreateUninstallerRegistryEntryCallback(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback, string installPath)
+        {
+            _updateManager.Dispose();
+            Log.Info("Squirrel: Launching new version.");
+            progressCallback(UpdateStatus.Restarting, 100);
+
+            try
+            {
+                var executablePath = Path.Combine(installPath, "GoToWindow.exe");
+                if (File.Exists(executablePath))
+                {
+                    Process.Start(executablePath, "--squirrel-firstrunafterupdate");
+                }
+
+                Log.Info("Squirrel: Shutting down.");
+                Application.Current.Dispatcher.InvokeAsync(() => Application.Current.Shutdown(1));
+            }
+            catch (Exception exc)
+            {
+                HandleAsyncError(errCallback, exc);
+            }
+        }
 
 		private void HandleAsyncError(Action<Exception> errCallback, Exception exc)
 		{

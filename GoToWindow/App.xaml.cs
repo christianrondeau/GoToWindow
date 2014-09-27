@@ -39,8 +39,7 @@ namespace GoToWindow
 			{
 				MessageBox.Show(
 					"Another Go To Window instance is already running." + Environment.NewLine +
-					"Exit by right-clicking the icon in the tray, and selecting 'Exit'." + Environment.NewLine +
-					String.Join(" ", e.Args),
+					"Exit by right-clicking the icon in the tray, and selecting 'Exit'.",
 					"Go To Window",
 					MessageBoxButton.OK,
 					MessageBoxImage.Information
@@ -100,6 +99,8 @@ namespace GoToWindow
 
 		private void Application_Exit(object sender, ExitEventArgs e)
 		{
+            SquirrelContext.Dispose();
+
 			if (_menu != null)
 			{
 				_menu.Dispose();
