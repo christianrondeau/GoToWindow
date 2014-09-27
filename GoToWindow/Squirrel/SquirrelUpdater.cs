@@ -8,6 +8,7 @@ using Squirrel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Reflection;
 
 namespace GoToWindow.Squirrel
 {
@@ -145,6 +146,22 @@ namespace GoToWindow.Squirrel
 			updateWindow.DataContext = updateViewModel;
 			updateViewModel.Update();
 			updateWindow.ShowDialog();
+		}
+
+		internal void InstallShortcuts(bool updateOnly)
+		{
+			_updateManager.CreateShortcutsForExecutable(
+				Path.GetFileName(Assembly.GetEntryAssembly().Location),
+				ShortcutLocation.Desktop | ShortcutLocation.StartMenu,
+				updateOnly
+				);
+		}
+
+		internal void RemoveShortcuts()
+		{
+			_updateManager.RemoveShortcutsForExecutable(
+				Path.GetFileName(Assembly.GetEntryAssembly().Location),
+				ShortcutLocation.Desktop | ShortcutLocation.StartMenu);
 		}
 	}
 }
