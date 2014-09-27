@@ -8,6 +8,7 @@ namespace GoToWindow.Squirrel
 	public class SquirrelCommandLineArgumentsHandler
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SquirrelCommandLineArgumentsHandler).Assembly, "GoToWindow");
+		public bool IsFirstRun { get; private set; }
 
 		public bool HandleSquirrelArguments(string[] args)
 		{
@@ -27,11 +28,11 @@ namespace GoToWindow.Squirrel
 					return true;
 				case "--squirrel-firstrun":
 					// `--squirrel-firstrun` - called after everything is set up. You should treat this like a normal app run (maybe show the "Welcome" screen)
-					HandleSquirrelFirstRun();
+					IsFirstRun = true;
 					return false;
 				case "--squirrel-firstrunafterupdate":
 					// `--squirrel-firstrunsinceupdate` - called after an update was completed. You should treat this like a normal app run (maybe show the "This is new the version" screen)
-					HandleSquirrelFirstRunAfterUpdate();
+					IsFirstRun = true;
 					return false;
 				default:
 					return false;
@@ -57,18 +58,6 @@ namespace GoToWindow.Squirrel
 			//TODO: Close other instances
 			SquirrelContext.AcquireUpdater().RemoveShortcuts();
 			Log.Info("Squirrel: Uninstalling GoToWindow");
-		}
-
-		private void HandleSquirrelFirstRun()
-		{
-			Log.Info("Squirrel: First run");
-			new FirstRunWindow().Show();
-		}
-
-		private void HandleSquirrelFirstRunAfterUpdate()
-		{
-			Log.Info("Squirrel: First run after update");
-			new FirstRunWindow().Show();
 		}
 	}
 }

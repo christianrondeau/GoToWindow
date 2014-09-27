@@ -13,6 +13,8 @@ namespace GoToWindow
 {
 	public interface IGoToWindowContext : IDisposable
 	{
+		event EventHandler Showing;
+
 		IGoToWindowPluginsContainer PluginsContainer { get; }
 		void Init();
 		void Show();
@@ -44,6 +46,8 @@ namespace GoToWindow
 		private IWindowEntry _mainWindowEntry;
 
 		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
+
+		public event EventHandler Showing;
 
 		public void UpdateAvailable(string version)
 		{
@@ -83,6 +87,9 @@ namespace GoToWindow
 				Log.Debug("Showing Main Window.");
 				_state = GoToWindowState.Showing;
 			}
+
+			if (Showing != null)
+				Showing(this, new EventArgs());
 
 			SetAvailableWindowSize(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
 			_mainWindow.Left = SystemParameters.PrimaryScreenWidth/2f - _mainViewModel.AvailableWindowWidth/2f;

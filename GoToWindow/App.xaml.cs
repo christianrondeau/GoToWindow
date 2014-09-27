@@ -7,6 +7,7 @@ using System.Windows.Input;
 using GoToWindow.Components;
 using log4net;
 using GoToWindow.Squirrel;
+using GoToWindow.Windows;
 
 namespace GoToWindow
 {
@@ -23,6 +24,7 @@ namespace GoToWindow
 			// http://stackoverflow.com/questions/14635862/exception-occurs-while-pressing-a-button-on-touchscreen-using-a-stylus-or-a-fing
 			DisableWpfTabletSupport();
 
+			var isFirstRun = false;
 			if(e.Args.Any() && e.Args[0].StartsWith("--squirrel"))
 			{
 				var cliHandler = new SquirrelCommandLineArgumentsHandler();
@@ -32,6 +34,8 @@ namespace GoToWindow
 					Current.Shutdown(1);
 					return;
 				}
+
+				isFirstRun = cliHandler.IsFirstRun;
 			}
 		
 			bool mutexCreated;
@@ -57,6 +61,15 @@ namespace GoToWindow
 			Log.Info("Application started.");
 
 			_menu.ShowStartupTooltip();
+
+			if(isFirstRun)
+			{
+				Log.Info("Squirrel: First run");
+				Dispatcher.InvokeAsync(() =>
+				{
+					new FirstRunWindow(_context).Show();
+				});
+			}
 
 			SquirrelContext.AcquireUpdater().CheckForUpdates(_context.UpdateAvailable, null);
 		}

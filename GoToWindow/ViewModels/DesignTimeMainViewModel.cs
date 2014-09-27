@@ -16,6 +16,7 @@ namespace GoToWindow.ViewModels
 			AvailableWindowWidth = 640;
 			AvailableWindowHeight = 240;
 			SearchText = "User Query...";
+			UpdateAvailable = true;
 			var icon = ConvertFromIcon(Properties.Resources.AppIcon);
 			Windows = new CollectionViewSource
 			{

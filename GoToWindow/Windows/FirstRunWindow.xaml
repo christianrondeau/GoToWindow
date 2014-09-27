@@ -42,7 +42,7 @@
 					<TextBlock TextAlignment="Center" FontStyle="Italic" Foreground="Gray" Margin="0,4,0,16">Installation complete!</TextBlock>
 					<TextBlock TextAlignment="Center">Press Alt + Tab + Tab to start browsing through your windows.</TextBlock>
 					<TextBlock TextAlignment="Center" TextWrapping="Wrap">Right click on the <Image Source="/GoToWindow;component/Resources/AppIcon.ico" Width="16" Height="16" Margin="2,0,2,0" /> icon in the system tray to access help, updates and settings.</TextBlock>
-					<Button Style="{StaticResource RoundedButton}" HorizontalAlignment="Center" Width="78" Margin="16" IsDefault="True" IsCancel="True" Click="Button_Click">Got it!</Button>
+					<Button Style="{StaticResource RoundedButton}" Cursor="Hand" HorizontalAlignment="Center" Width="78" Margin="16" IsDefault="True" IsCancel="True" Click="Button_Click">Got it!</Button>
 				</StackPanel>
 			</Grid>
 		</Border>
