@@ -88,7 +88,11 @@ If(Test-Path -Path $OutputSetupExe) {
 }
 
 &($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath
-Rename-Item "$ReleasesFolder\Setup.exe" $OutputSetupExe
+
+$SquirrelSetupExe = "$ReleasesFolder\Setup.exe"
+If(Test-Path -Path $SquirrelSetupExe) {
+	Rename-Item $SquirrelSetupExe $OutputSetupExe
+}
 
 # ==================================== Cleanup
 

@@ -42,7 +42,7 @@
 			<ProgressBar Height="24" Maximum="100" Value="20" Margin="0,8,0,8"></ProgressBar>
 			
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-				<Button Content="_Close" IsEnabled="{Binding Enabled}" Click="Button_Click" />
+				<Button Content="_Close" IsEnabled="{Binding Enabled}" Click="Button_Click" Padding="4" />
 			</StackPanel>
 		</StackPanel>
 	</Grid>
