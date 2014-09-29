@@ -1,12 +1,14 @@
 # Go To Window
 
-**Warning! This is an alpha, and is known to sometimes not get the focus, which makes it not yet usable for day-to-day use** Contibutions are welcome!
+> No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press `Alt` + `Tab` + `Tab`, type a few characters from the window title or process name you want to switch to and press enter. 
 
-[Download](https://github.com/christianrondeau/GoToWindow/releases)
+> For the keyboard maniacs.
 
-No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press `Alt` + `Tab` + `Tab`, type a few characters from the window title or process name you want to switch to and press enter. 
+**Warning! This is an alpha, and is stil being continuously improved.** Contributions are welcome!
 
-For the keyboard maniacs.
+[Official website](http://christianrondeau.github.io/GoToWindow/)
+
+[Download latest release](https://github.com/christianrondeau/GoToWindow/releases)
 
 ## Usage
 
