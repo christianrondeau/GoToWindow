@@ -3,9 +3,13 @@
 namespace GoToWindow.ViewModels
 {
 	public class DesignTimeSettingsViewModel : SettingsViewModel
-	{
+	{	
 		public DesignTimeSettingsViewModel()
 		{
+			ShortcutPreset = ShortcutPresets.Custom;
+			ShortcutControlKey1 = "Ctrl";
+			ShortcutKey = "Tab";
+
 			Version = "0.0.0";
 			Plugins = new List<SettingsPluginViewModel>
 			{

@@ -106,6 +106,7 @@
     <Compile Include="Converters\IndexWithinRangeConverter.cs" />
     <Compile Include="Converters\IndexConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\InverseVisibilityConverter.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="ExitCodes.cs" />
     <Compile Include="GoToWindowContext.cs" />

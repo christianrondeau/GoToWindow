@@ -20,6 +20,16 @@ namespace GoToWindow.ViewModels
 		Error
 	}
 
+	public enum ShortcutPresets
+	{
+		Undefined,
+		Disabled,
+		AltTab,
+		AltTabTab,
+		WinTab,
+		Custom
+	}
+
 	public class SettingsViewModel : NotifyPropertyChangedViewModelBase
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SettingsViewModel).Assembly, "GoToWindow");
@@ -82,6 +92,39 @@ namespace GoToWindow.ViewModels
 			{
 				_enabled = value;
 				OnPropertyChanged("Enabled");
+			}
+		}
+
+		private ShortcutPresets _shortcutPreset;
+		public ShortcutPresets ShortcutPreset
+		{
+			get { return _shortcutPreset; }
+			set
+			{
+				_shortcutPreset = value;
+				OnPropertyChanged("ShortcutPreset");
+			}
+		}
+
+		private string _shortcutControlKey1;
+		public string ShortcutControlKey1
+		{
+			get { return _shortcutControlKey1; }
+			set
+			{
+				_shortcutControlKey1 = value;
+				OnPropertyChanged("ShortcutControlKey1");
+			}
+		}
+
+		private string _shortcutKey;
+		public string ShortcutKey
+		{
+			get { return _shortcutKey; }
+			set
+			{
+				_shortcutKey = value;
+				OnPropertyChanged("ShortcutKey");
 			}
 		}
 

@@ -20,6 +20,11 @@
 		<converters:IncrementIntConverter x:Key="IncrementIntConverter" />
 		<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 		<converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+		<converters:ValueConverterGroup x:Key="InvertEnumToVisibilityConverter">
+			<converters:EnumToVisibilityConverter/>
+			<converters:InverseVisibilityConverter  />
+		</converters:ValueConverterGroup>
+
 	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -88,14 +93,46 @@
 
 			<TabItem Header="_Settings">
 				<Grid>
-					<CheckBox x:Name="HookAltTabCheckbox" Content="_Enabled" IsChecked="{Binding HookAltTab}" HorizontalAlignment="Left" Margin="255,19,0,0" VerticalAlignment="Top" />
-					<Label Content="Shortcut" Width="Auto" Height="Auto" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top"/>
-					<ComboBox Width="180" x:Name="ShortcutPressesBeforeOpenComboBox" IsEnabled="{Binding HookAltTab}" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,16,0,0">
-						<ComboBoxItem Tag="1">Single (Alt + Tab)</ComboBoxItem>
-						<ComboBoxItem Tag="2">Twice (Alt + Tab + Tab)</ComboBoxItem>
-					</ComboBox>
-					<CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,43,0,0"/>
-					<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,63,0,0"/>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="32" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					
+					<TextBlock Grid.Row="0" Margin="8" FontWeight="Bold">General Go To Window settings</TextBlock>
+					
+					<StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top">
+						<StackPanel Orientation="Horizontal" Height="28">
+							<Label Content="Shortcut" Width="Auto" Height="Auto"/>
+
+							<ComboBox Margin="2" Width="80" x:Name="Preset" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutPreset, UpdateSourceTrigger=PropertyChanged}">
+								<ComboBoxItem Tag="Disabled">Disabled (No Shortcut)</ComboBoxItem>
+								<ComboBoxItem Tag="AltTab">Alt + Tab</ComboBoxItem>
+								<ComboBoxItem Tag="AltTabTab">Alt + Tab + Tab</ComboBoxItem>
+								<ComboBoxItem Tag="WinTab">Win + Tab</ComboBoxItem>
+								<ComboBoxItem Tag="Custom">Custom</ComboBoxItem>
+							</ComboBox>
+
+							<StackPanel Orientation="Horizontal" Visibility="{Binding ShortcutPreset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Custom}">
+								<Label>- Key -</Label>
+								<ComboBox Margin="2" Width="80" x:Name="ShortcutControlKey1" SelectedValuePath="Tag"  SelectedValue="{Binding ShortcutControlKey1, UpdateSourceTrigger=PropertyChanged}">
+									<ComboBoxItem Tag="Ctrl">Ctrl</ComboBoxItem>
+								</ComboBox>
+
+								<ComboBox Margin="2" Width="80" x:Name="ShortcutKey" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutKey, UpdateSourceTrigger=PropertyChanged}">
+									<ComboBoxItem Tag="Tab">Tab</ComboBoxItem>
+								</ComboBox>
+
+								<ComboBox Margin="2" Width="200" x:Name="ShortcutPressesBeforeOpenComboBox" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}">
+									<ComboBoxItem Tag="1">Single (e.g. Alt + Tab)</ComboBoxItem>
+									<ComboBoxItem Tag="2">Double (e.g. Alt + Tab + Tab)</ComboBoxItem>
+								</ComboBox>
+							</StackPanel>
+						</StackPanel>
+						<!--<CheckBox x:Name="HookAltTabCheckbox" Content="_Enabled" IsChecked="{Binding HookAltTab}" HorizontalAlignment="Left" Margin="255,19,0,0" VerticalAlignment="Top" />-->
+
+						<CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" Margin="2" />
+						<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" Margin="2" />
+					</StackPanel>
 				</Grid>
 			</TabItem>
 
