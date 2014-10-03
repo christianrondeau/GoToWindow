@@ -19,7 +19,7 @@ namespace GoToWindow
 		void Init();
 		void Show();
 		void Hide();
-		void EnableAltTabHook(bool enabled, int shortcutPressesBeforeOpen);
+		void EnableAltTabHook(KeyboardShortcut shortcut);
 		void ShowSettings();
 		void UpdateAvailable(string version);
 	}
@@ -173,23 +173,22 @@ namespace GoToWindow
 			Application.Current.Dispatcher.InvokeAsync(HideWindow, DispatcherPriority.ApplicationIdle);
 		}
 
-		public void EnableAltTabHook(bool enabled, int shortcutPressesBeforeOpen)
+		public void EnableAltTabHook(KeyboardShortcut shortcut)
 		{
-			if (enabled)
+			if (shortcut.Enabled)
 			{
 				if (_hooks != null)
-				{
 					_hooks.Dispose();
-				}
-
+				/*
 				var shortcut = new KeyboardShortcut
 				{
 					VirtualKeyCode = KeyboardVirtualCodes.Tab,
 					Modifier = KeyboardVirtualCodes.Modifiers.Alt,
 					ShortcutPressesBeforeOpen = shortcutPressesBeforeOpen
 				};
+				 * */
 
-				_hooks = new KeyboardHook(shortcut, HandleAltTab);
+				_hooks = KeyboardHook.Hook(shortcut, HandleAltTab);
 			}
 			else if (_hooks != null)
 			{

@@ -43,7 +43,7 @@ namespace GoToWindow.Components
 
 		public void ShowStartupTooltip()
 		{
-			var shortcutPressesBeforeOpen = Properties.Settings.Default.ShortcutPressesBeforeOpen;
+			var shortcutPressesBeforeOpen = KeyboardShortcut.FromString(Properties.Settings.Default.OpenShortcut).ShortcutPressesBeforeOpen;
 			var openShortcutDescription = shortcutPressesBeforeOpen == 1
 				? "Alt + Tab"
 				: "Alt + Tab + Tab";

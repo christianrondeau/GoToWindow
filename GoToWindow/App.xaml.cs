@@ -8,6 +8,7 @@ using GoToWindow.Components;
 using log4net;
 using GoToWindow.Squirrel;
 using GoToWindow.Windows;
+using GoToWindow.Api;
 
 namespace GoToWindow
 {
@@ -56,14 +57,12 @@ namespace GoToWindow
 			
 			_menu = new GoToWindowTrayIcon(_context);
 
-			_context.EnableAltTabHook(
-				GoToWindow.Properties.Settings.Default.HookAltTab,
-				GoToWindow.Properties.Settings.Default.ShortcutPressesBeforeOpen
-				);
+			var shortcut = KeyboardShortcut.FromString(GoToWindow.Properties.Settings.Default.OpenShortcut);
+			_context.EnableAltTabHook(shortcut);
 
 			_context.Init();
 
-			Log.Info("Application started.");
+			Log.InfoFormat("Application started. Shortcut is '{0}'", shortcut.ToString());
 
 			_menu.ShowStartupTooltip();
 

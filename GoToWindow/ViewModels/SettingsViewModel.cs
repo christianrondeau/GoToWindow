@@ -30,6 +30,22 @@ namespace GoToWindow.ViewModels
 		Custom
 	}
 
+	public enum ShortcutControlKeys
+	{
+		Undefined = 0,
+		Ctrl = 0xA2, //VK_LCONTROL
+		Alt = 0xA4, //VK_LMENU,
+		Win = 0x5B//VK_LWIN
+	}
+
+	public enum ShortcutKeys
+	{
+		Undefined = 0,
+		Tab = 0x09, //VK_TAB
+		Console, //VK_OEM_3
+		Escape = 0x1B //VK_ESCAPE
+	}
+
 	public class SettingsViewModel : NotifyPropertyChangedViewModelBase
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SettingsViewModel).Assembly, "GoToWindow");
@@ -37,7 +53,6 @@ namespace GoToWindow.ViewModels
 		private readonly IGoToWindowContext _context;
 		private readonly SquirrelUpdater _updater;
 
-		private bool _originalHookAltTab;
 		private bool _originalStartWithWindows;
 
 		protected SettingsViewModel()
@@ -54,7 +69,6 @@ namespace GoToWindow.ViewModels
 			Load();
 		}
 
-		public bool HookAltTab { get; set; }
 		public bool StartWithWindows { get; set; }
         public int ShortcutPressesBeforeOpen { get; set; }
         public bool WindowListSingleClick { get; set; }
@@ -103,40 +117,62 @@ namespace GoToWindow.ViewModels
 			{
 				_shortcutPreset = value;
 				OnPropertyChanged("ShortcutPreset");
+				UpdateShortcutValidity();
 			}
 		}
 
-		private string _shortcutControlKey1;
-		public string ShortcutControlKey1
+		private ShortcutControlKeys _shortcutControlKey1;
+		public ShortcutControlKeys ShortcutControlKey1
 		{
 			get { return _shortcutControlKey1; }
 			set
 			{
 				_shortcutControlKey1 = value;
 				OnPropertyChanged("ShortcutControlKey1");
+				UpdateShortcutValidity();
 			}
 		}
 
-		private string _shortcutKey;
-		public string ShortcutKey
+		private ShortcutKeys _shortcutKey;
+		public ShortcutKeys ShortcutKey
 		{
 			get { return _shortcutKey; }
 			set
 			{
 				_shortcutKey = value;
 				OnPropertyChanged("ShortcutKey");
+				UpdateShortcutValidity();
+			}
+		}
+
+		private bool _isShortcutInvalid;
+		public bool IsShortcutInvalid
+		{
+			get { return _isShortcutInvalid; }
+			set
+			{
+				_isShortcutInvalid = value;
+				OnPropertyChanged("IsShortcutInvalid");
 			}
 		}
 
 		public void Load()
 		{
-			HookAltTab = _originalHookAltTab = Properties.Settings.Default.HookAltTab;
+			// Settings
 			StartWithWindows = _originalStartWithWindows = GetStartWithWindows();
-			ShortcutPressesBeforeOpen = Properties.Settings.Default.ShortcutPressesBeforeOpen;
 		    WindowListSingleClick = Properties.Settings.Default.WindowListSingleClick;
 
+			// Shortcut
+			var shortcut = KeyboardShortcut.FromString(GoToWindow.Properties.Settings.Default.OpenShortcut);
+			ShortcutPreset = ShortcutPresets.AltTabTab; //TODO
+			ShortcutControlKey1 = ShortcutControlKeys.Alt;  //TODO
+			ShortcutKey = ShortcutKeys.Tab; //TODO
+			ShortcutPressesBeforeOpen = shortcut.ShortcutPressesBeforeOpen;
+
+			// Warnings
 			NoElevatedPrivilegesWarning = !WindowsRuntimeHelper.GetHasElevatedPrivileges();
 
+			// Plugins
 			var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
 
 			Plugins = _context.PluginsContainer.Plugins
@@ -151,8 +187,40 @@ namespace GoToWindow.ViewModels
 			var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			Version = String.Format("{0}.{1}.{2}", currentVersion.Major, currentVersion.Minor, currentVersion.Build);
 
+			// Updates
 			UpdateAvailable = CheckForUpdatesStatus.Checking;
 			_updater.CheckForUpdates(CheckForUpdatesCallback, CheckForUpdatesError);
+		}
+
+		public void Apply()
+		{
+			// Update Registry
+			if (_originalStartWithWindows != StartWithWindows)
+			{
+				UpdateStartWithWindows(StartWithWindows);
+			}
+
+			// Update Shortcut
+			var shortcut = new KeyboardShortcut
+			{
+				Modifier = (int)ShortcutControlKey1,
+				VirtualKeyCode = (int)ShortcutKey,
+				ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen
+			};
+			Properties.Settings.Default.OpenShortcut = shortcut.ToString();
+			_context.EnableAltTabHook(shortcut);
+
+			// Settings
+			Properties.Settings.Default.WindowListSingleClick = WindowListSingleClick;
+
+			// Plugins
+			var disabledPlugins = new StringCollection();
+			disabledPlugins.AddRange(Plugins.Where(plugin => !plugin.Enabled).Select(plugin => plugin.Id).ToArray());
+			Properties.Settings.Default.DisabledPlugins = disabledPlugins;
+
+			// Save
+			Properties.Settings.Default.Save();
+			Log.InfoFormat("Settings updated. Shortcut is '{0}'", shortcut.ToString());
 		}
 
 		private void CheckForUpdatesCallback(string latestVersion)
@@ -167,6 +235,28 @@ namespace GoToWindow.ViewModels
 			Enabled = true;
 		}
 
+		private void UpdateShortcutValidity()
+		{
+			IsShortcutInvalid = !CheckShortcutValidity();
+		}
+
+		private bool CheckShortcutValidity()
+		{
+			if (ShortcutPreset == ShortcutPresets.Undefined)
+				return false;
+
+			if (ShortcutPreset != ShortcutPresets.Custom)
+				return true;
+
+			if (ShortcutControlKey1 == ShortcutControlKeys.Undefined)
+				return false;
+
+			if (ShortcutKey == ShortcutKeys.Undefined)
+				return false;
+
+			return true;
+		}
+
 		private static bool GetStartWithWindows()
 		{
 			var runList = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", false);
@@ -175,31 +265,6 @@ namespace GoToWindow.ViewModels
 		    
             var executablePath = Assembly.GetExecutingAssembly().Location;
 		    return ((string)runList.GetValue("GoToWindow") == executablePath);
-		}
-
-		public void Apply()
-		{
-			if (_originalStartWithWindows != StartWithWindows)
-			{
-				UpdateStartWithWindows(StartWithWindows);
-            }
-
-            Properties.Settings.Default.HookAltTab = HookAltTab;
-            Properties.Settings.Default.ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen;
-            Properties.Settings.Default.WindowListSingleClick = WindowListSingleClick;
-
-			if(_originalHookAltTab != HookAltTab)
-			{
-				_context.EnableAltTabHook(HookAltTab, ShortcutPressesBeforeOpen);
-			}
-
-			var disabledPlugins = new StringCollection();
-			disabledPlugins.AddRange(Plugins.Where(plugin => !plugin.Enabled).Select(plugin => plugin.Id).ToArray());
-			Properties.Settings.Default.DisabledPlugins = disabledPlugins;
-
-			Properties.Settings.Default.Save();
-
-			Log.Info("Settings updated");
 		}
 
 		private static void UpdateStartWithWindows(bool active)

@@ -5,7 +5,6 @@ using System.Threading;
 
 namespace GoToWindow.Api.Tests
 {
-
 	public class GivenAnApp : IDisposable
 	{
 		public static string GetResourcePath(string filename)

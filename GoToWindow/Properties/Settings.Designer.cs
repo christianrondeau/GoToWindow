@@ -25,36 +25,12 @@ namespace GoToWindow.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool HookAltTab {
-            get {
-                return ((bool)(this["HookAltTab"]));
-            }
-            set {
-                this["HookAltTab"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::System.Collections.Specialized.StringCollection DisabledPlugins {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["DisabledPlugins"]));
             }
             set {
                 this["DisabledPlugins"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public int ShortcutPressesBeforeOpen {
-            get {
-                return ((int)(this["ShortcutPressesBeforeOpen"]));
-            }
-            set {
-                this["ShortcutPressesBeforeOpen"] = value;
             }
         }
         
@@ -67,6 +43,18 @@ namespace GoToWindow.Properties {
             }
             set {
                 this["WindowListSingleClick"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("A4+09:2")]
+        public string OpenShortcut {
+            get {
+                return ((string)(this["OpenShortcut"]));
+            }
+            set {
+                this["OpenShortcut"] = value;
             }
         }
     }

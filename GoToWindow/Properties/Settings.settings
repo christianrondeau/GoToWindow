@@ -2,17 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GoToWindow.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="HookAltTab" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="DisabledPlugins" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ShortcutPressesBeforeOpen" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
-    </Setting>
     <Setting Name="WindowListSingleClick" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="OpenShortcut" Type="System.String" Scope="User">
+      <Value Profile="(Default)">A4+09:2</Value>
     </Setting>
   </Settings>
 </SettingsFile>

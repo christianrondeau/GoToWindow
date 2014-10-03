@@ -15,7 +15,7 @@ namespace GoToWindow.Api.Tests
 				Modifier = KeyboardVirtualCodes.Modifiers.Alt
 			};
 
-			using (new KeyboardHook(shortcut, () => intercepted = true))
+			using (KeyboardHook.Hook(shortcut, () => intercepted = true))
 			{
 				KeyboardSend.KeyDown(KeyboardSend.LAlt);
 				KeyboardSend.KeyPress(KeyboardSend.Tab);

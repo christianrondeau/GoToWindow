@@ -7,8 +7,9 @@ namespace GoToWindow.ViewModels
 		public DesignTimeSettingsViewModel()
 		{
 			ShortcutPreset = ShortcutPresets.Custom;
-			ShortcutControlKey1 = "Ctrl";
-			ShortcutKey = "Tab";
+			ShortcutControlKey1 = ShortcutControlKeys.Win;
+			ShortcutKey = ShortcutKeys.Console;
+			ShortcutPressesBeforeOpen = 1;
 
 			Version = "0.0.0";
 			Plugins = new List<SettingsPluginViewModel>
@@ -16,9 +17,7 @@ namespace GoToWindow.ViewModels
 				new SettingsPluginViewModel{Id = "plugin-1", Name="Plugin 1", Enabled=true},
 				new SettingsPluginViewModel{Id = "plugin-2", Name="Plugin 2", Enabled=false}
 			};
-			ShortcutPressesBeforeOpen = 2;
 			WindowListSingleClick = true;
-			HookAltTab = true;
 			NoElevatedPrivilegesWarning = true;
 			LatestAvailableRelease = "9.9.9";
 			UpdateAvailable = CheckForUpdatesStatus.UpdateAvailable;

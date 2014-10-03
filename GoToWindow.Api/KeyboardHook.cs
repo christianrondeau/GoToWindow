@@ -4,6 +4,10 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
+#if(DEBUG_KEYS)
+using System.Collections.Generic;
+#endif
+
 namespace GoToWindow.Api
 {
 	public class KeyboardHook : IDisposable
@@ -58,10 +62,15 @@ namespace GoToWindow.Api
 
 		private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
+		public static KeyboardHook Hook(KeyboardShortcut shortcut, Action callback)
+		{
+			return new KeyboardHook(shortcut, callback);
+		}
+
 		// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
 		private readonly LowLevelKeyboardProc _proc;
 
-		public KeyboardHook(KeyboardShortcut shortcut, Action callback)
+		private KeyboardHook(KeyboardShortcut shortcut, Action callback)
 		{
 			_shortcut = shortcut;
 			_callback = callback;
@@ -99,7 +108,7 @@ namespace GoToWindow.Api
             var keyInfo = (Kbdllhookstruct)Marshal.PtrToStructure(lParam, typeof(Kbdllhookstruct));
 
             #if(DEBUG_KEYS)
-			Console.WriteLine("Keys: 0x{0}\t0x{1}\t{2}", keyInfo.VkCode.ToString("X2"), keyInfo.Flags.ToString("X2"), WMKeyNames[(int)wParam]);
+			Console.WriteLine("Keys: 0x{0:X2}\t0x{1:X2}\t{2}", keyInfo.VkCode, keyInfo.Flags, WMKeyNames[(int)wParam]);
 			#endif
 
 		    if (_shortcut.IsDown(keyInfo.VkCode, keyInfo.Flags))
