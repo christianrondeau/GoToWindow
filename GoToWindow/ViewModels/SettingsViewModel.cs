@@ -35,14 +35,14 @@ namespace GoToWindow.ViewModels
 		Undefined = 0,
 		Ctrl = 0xA2, //VK_LCONTROL
 		Alt = 0xA4, //VK_LMENU,
-		Win = 0x5B//VK_LWIN
+		Win = 0x5B //VK_LWIN
 	}
 
 	public enum ShortcutKeys
 	{
 		Undefined = 0,
 		Tab = 0x09, //VK_TAB
-		Console, //VK_OEM_3
+		Console = 0xC0, //~
 		Escape = 0x1B //VK_ESCAPE
 	}
 
@@ -164,9 +164,9 @@ namespace GoToWindow.ViewModels
 
 			// Shortcut
 			var shortcut = KeyboardShortcut.FromString(GoToWindow.Properties.Settings.Default.OpenShortcut);
-			ShortcutPreset = ShortcutPresets.AltTabTab; //TODO
-			ShortcutControlKey1 = ShortcutControlKeys.Alt;  //TODO
-			ShortcutKey = ShortcutKeys.Tab; //TODO
+			ShortcutPreset = ShortcutPresets.Custom; //TODO
+			ShortcutControlKey1 = Enum.IsDefined(typeof(ShortcutControlKeys), shortcut.ControlVirtualKeyCode) ? (ShortcutControlKeys)shortcut.ControlVirtualKeyCode : ShortcutControlKeys.Undefined;
+			ShortcutKey = Enum.IsDefined(typeof(ShortcutKeys), shortcut.VirtualKeyCode) ? (ShortcutKeys)shortcut.VirtualKeyCode : ShortcutKeys.Undefined;
 			ShortcutPressesBeforeOpen = shortcut.ShortcutPressesBeforeOpen;
 
 			// Warnings
@@ -203,7 +203,7 @@ namespace GoToWindow.ViewModels
 			// Update Shortcut
 			var shortcut = new KeyboardShortcut
 			{
-				Modifier = (int)ShortcutControlKey1,
+				ControlVirtualKeyCode = (int)ShortcutControlKey1,
 				VirtualKeyCode = (int)ShortcutKey,
 				ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen
 			};

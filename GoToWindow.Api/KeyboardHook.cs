@@ -1,4 +1,4 @@
-﻿// #define DEBUG_KEYS
+﻿#define DEBUG_KEYS
 
 using System;
 using System.Diagnostics;
@@ -116,7 +116,7 @@ namespace GoToWindow.Api
 		        if (wParam == (IntPtr)WM_SYSKEYDOWN)
 		        {
                     #if(DEBUG_KEYS)
-					Debug.WriteLine("Keys: Shortcut down");
+					Debug.WriteLine("Keys: Shortcut down - Incrementing counter.");
 					#endif
 
 		            _shortcut.DownCounter++;
@@ -124,9 +124,15 @@ namespace GoToWindow.Api
 
 		        if (_shortcut.DownCounter < _shortcut.ShortcutPressesBeforeOpen)
 		            return CallNextHookEx(_hookID, nCode, wParam, lParam);
-				    
-		        if (wParam == (IntPtr)WM_SYSKEYDOWN)
-		            _callback();
+
+				if (wParam == (IntPtr)WM_SYSKEYDOWN)
+				{
+					#if(DEBUG_KEYS)
+					Debug.WriteLine("Keys: Shortcut down - Executing");
+					#endif
+
+					_callback();
+				}
 
 		        return (IntPtr)1;
 		    }

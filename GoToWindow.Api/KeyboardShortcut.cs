@@ -17,28 +17,30 @@ namespace GoToWindow.Api
 				throw new ApplicationException(string.Format("Invalid keyboard shortcut: '{0}'", value));
 			
 			return new KeyboardShortcut{
-				Modifier = Convert.ToInt32(matches.Groups[1].Value, 16),
+				ControlVirtualKeyCode = Convert.ToInt32(matches.Groups[1].Value, 16),
 				VirtualKeyCode = Convert.ToInt32(matches.Groups[2].Value, 16),
 				ShortcutPressesBeforeOpen = Convert.ToInt32(matches.Groups[3].Value)
 			};
 		}
 
+		public int ControlVirtualKeyCode;
 		public int VirtualKeyCode;
-		public int Modifier;
 		public int ShortcutPressesBeforeOpen;
+
+		public int Modifier { get { return KeyboardVirtualCodes.GetModifier(ControlVirtualKeyCode); } }
 
 		public int DownCounter;
 
-		public bool Enabled { get { return VirtualKeyCode > 0 && ShortcutPressesBeforeOpen > 0 && Modifier > 0; } }
+		public bool Enabled { get { return ControlVirtualKeyCode > 0 && VirtualKeyCode > 0 && ShortcutPressesBeforeOpen > 0; } }
 
 		public bool IsDown(int vkCode, int flags)
 		{
-			return vkCode == KeyboardVirtualCodes.Tab && HasModifier(flags);
+			return vkCode == VirtualKeyCode && HasModifier(flags);
 		}
 
 		public bool IsControlKeyReleased(int vkCode, int flags)
 		{
-			return vkCode == KeyboardVirtualCodes.LAlt && (flags & KeyboardVirtualCodes.Modifiers.Released) == KeyboardVirtualCodes.Modifiers.Released;
+			return vkCode == ControlVirtualKeyCode && (flags & KeyboardVirtualCodes.Modifiers.Released) == KeyboardVirtualCodes.Modifiers.Released;
 		}
 
 		private bool HasModifier(int flags)

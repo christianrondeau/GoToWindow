@@ -1,3 +1,4 @@
+using System;
 namespace GoToWindow.Api
 {
 	public static class KeyboardVirtualCodes
@@ -9,6 +10,14 @@ namespace GoToWindow.Api
 		{
 			public const int Alt = 0x20;
 			public const int Released = 0x80; // LLKHF_UP (KF_UP >> 8)
+		}
+
+		public static int GetModifier(int vKey)
+		{
+			if(vKey == LAlt)
+				return Modifiers.Alt;
+
+			return Modifiers.Alt;
 		}
 	}
 }

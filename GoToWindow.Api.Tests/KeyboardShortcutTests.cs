@@ -10,7 +10,7 @@ namespace GoToWindow.Api.Tests
 		{
 			var shortcut = new KeyboardShortcut
 			{
-				Modifier = 0xA4,
+				ControlVirtualKeyCode = 0xA4,
 				VirtualKeyCode = 0x09,
 				ShortcutPressesBeforeOpen = 2
 			};

@@ -179,14 +179,6 @@ namespace GoToWindow
 			{
 				if (_hooks != null)
 					_hooks.Dispose();
-				/*
-				var shortcut = new KeyboardShortcut
-				{
-					VirtualKeyCode = KeyboardVirtualCodes.Tab,
-					Modifier = KeyboardVirtualCodes.Modifiers.Alt,
-					ShortcutPressesBeforeOpen = shortcutPressesBeforeOpen
-				};
-				 * */
 
 				_hooks = KeyboardHook.Hook(shortcut, HandleAltTab);
 			}
