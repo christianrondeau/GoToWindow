@@ -39,12 +39,16 @@ $Version = $NuSpecXml.package.metadata.version
 
 # ==================================== Synchronize RELEASES
 
+git checkout Releases\RELEASES
+
 $ReleasesToDownload = (Get-Content "$ReleasesFolder\RELEASES") | % { ($_ -split ' ')[1] }
+$ReleaseFilenames = @()
 
 $WebClient = New-Object System.Net.WebClient
 
 $ReleasesToDownload | % {
 	$ReleaseFilename = $_.Split("/")[-1]
+	$ReleaseFilenames += $ReleaseFilename
 	$ReleasePath = "$ReleasesFolder\$ReleaseFilename"
 
 	If(Test-Path -Path $ReleasePath) {
@@ -55,6 +59,9 @@ $ReleasesToDownload | % {
 		Write-Host "$ReleaseFilename downloaded"
 	}
 }
+
+Write-Host "Deleting unreferenced nupkg files"
+dir "$ReleasesFolder\*.nupkg" | ? { $ReleaseFilenames -NotContains $_.Name } | Remove-Item
 
 # ==================================== Build
 
