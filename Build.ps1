@@ -37,6 +37,25 @@ $SetupLoadingGif = "$PSScriptRoot\GoToWindow.Setup\Loading.gif"
 $NuSpecXml = [xml](Get-Content $NuSpecPath)
 $Version = $NuSpecXml.package.metadata.version
 
+# ==================================== Synchronize RELEASES
+
+$ReleasesToDownload = (Get-Content "$ReleasesFolder\RELEASES") | % { ($_ -split ' ')[1] }
+
+$WebClient = New-Object System.Net.WebClient
+
+$ReleasesToDownload | % {
+	$ReleaseFilename = $_.Split("/")[-1]
+	$ReleasePath = "$ReleasesFolder\$ReleaseFilename"
+
+	If(Test-Path -Path $ReleasePath) {
+		Write-Host "$ReleaseFilename already present" -ForegroundColor Gray
+	} Else {
+		Write-Host "Downloading $ReleaseFilename..."
+		$WebClient.DownloadFile($_, $ReleasePath)
+		Write-Host "$ReleaseFilename downloaded"
+	}
+}
+
 # ==================================== Build
 
 If(Test-Path -Path $BuildPath) {
@@ -87,7 +106,7 @@ If(Test-Path -Path $OutputSetupExe) {
 	Remove-Item -Confirm:$false $OutputSetupExe
 }
 
-&($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath
+&($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath -baseUrl https://github.com/christianrondeau/GoToWindow/releases/download/v$Version/
 
 $SquirrelSetupExe = "$ReleasesFolder\Setup.exe"
 If(Test-Path -Path $SquirrelSetupExe) {
