@@ -43,11 +43,11 @@
     <Compile Include="..\GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs">
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
+    <Compile Include="KeyboardVirtualKeys.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="IWindowEntry.cs" />
     <Compile Include="KeyboardSend.cs" />
     <Compile Include="KeyboardShortcut.cs" />
-    <Compile Include="KeyboardVirtualCodes.cs" />
     <Compile Include="MouseSend.cs" />
     <Compile Include="ProcessExtensions.cs" />
     <Compile Include="WindowControlMenuDisabler.cs" />

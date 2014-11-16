@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GoToWindow.Api;
+using System.Collections.Generic;
 
 namespace GoToWindow.ViewModels
 {
@@ -7,8 +8,8 @@ namespace GoToWindow.ViewModels
 		public DesignTimeSettingsViewModel()
 		{
 			ShortcutPreset = ShortcutPresets.Custom;
-			ShortcutControlKey1 = ShortcutControlKeys.Win;
-			ShortcutKey = ShortcutKeys.Console;
+			ShortcutControlKey1 = KeyboardControlKeys.Win;
+			ShortcutKey = KeyboardVirtualKeys.Console;
 			ShortcutPressesBeforeOpen = 1;
 
 			Version = "0.0.0";

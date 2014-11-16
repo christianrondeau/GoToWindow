@@ -27,30 +27,55 @@ namespace GoToWindow.Api
 		public int VirtualKeyCode;
 		public int ShortcutPressesBeforeOpen;
 
-		public int Modifier { get { return KeyboardVirtualCodes.GetModifier(ControlVirtualKeyCode); } }
-
-		public int DownCounter;
-
 		public bool Enabled { get { return ControlVirtualKeyCode > 0 && VirtualKeyCode > 0 && ShortcutPressesBeforeOpen > 0; } }
-
-		public bool IsDown(int vkCode, int flags)
-		{
-			return vkCode == VirtualKeyCode && HasModifier(flags);
-		}
-
-		public bool IsControlKeyReleased(int vkCode, int flags)
-		{
-			return vkCode == ControlVirtualKeyCode && (flags & KeyboardVirtualCodes.Modifiers.Released) == KeyboardVirtualCodes.Modifiers.Released;
-		}
-
-		private bool HasModifier(int flags)
-		{
-			return (flags & Modifier) == Modifier;
-		}
 
 		public override string ToString()
 		{
-			return string.Format("{0:X2}+{1:X2}:{2}", Modifier, VirtualKeyCode, ShortcutPressesBeforeOpen);
+			return string.Format("{0:X2}+{1:X2}:{2}", ControlVirtualKeyCode, VirtualKeyCode, ShortcutPressesBeforeOpen);
 		}
+
+		#region Stateful
+
+		private int _downCounter;
+		private bool _isControlKeyDown;
+		private bool _isActive;
+
+		public void ControlKeyDown()
+		{
+			_isControlKeyDown = true;
+			_downCounter = 0;
+		}
+
+		public bool ControlKeyUp()
+		{
+			_isControlKeyDown = false;
+
+			if (_isActive)
+			{
+				_isActive = false;
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool ShortcutKeyDown()
+		{
+			if (!_isControlKeyDown)
+				return false;
+
+			if (_isActive)
+				return true;
+
+			return _isActive = ++_downCounter >= ShortcutPressesBeforeOpen;
+		}
+
+		public bool ShortcutKeyUp()
+		{
+			return _isControlKeyDown && _isActive;
+		}
+
+		#endregion
+
 	}
 }

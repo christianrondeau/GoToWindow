@@ -30,22 +30,6 @@ namespace GoToWindow.ViewModels
 		Custom
 	}
 
-	public enum ShortcutControlKeys
-	{
-		Undefined = 0,
-		Ctrl = 0xA2, //VK_LCONTROL
-		Alt = 0xA4, //VK_LMENU,
-		Win = 0x5B //VK_LWIN
-	}
-
-	public enum ShortcutKeys
-	{
-		Undefined = 0,
-		Tab = 0x09, //VK_TAB
-		Console = 0xC0, //~
-		Escape = 0x1B //VK_ESCAPE
-	}
-
 	public class SettingsViewModel : NotifyPropertyChangedViewModelBase
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SettingsViewModel).Assembly, "GoToWindow");
@@ -121,8 +105,8 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-		private ShortcutControlKeys _shortcutControlKey1;
-		public ShortcutControlKeys ShortcutControlKey1
+		private KeyboardControlKeys _shortcutControlKey1;
+		public KeyboardControlKeys ShortcutControlKey1
 		{
 			get { return _shortcutControlKey1; }
 			set
@@ -133,8 +117,8 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-		private ShortcutKeys _shortcutKey;
-		public ShortcutKeys ShortcutKey
+		private KeyboardVirtualKeys _shortcutKey;
+		public KeyboardVirtualKeys ShortcutKey
 		{
 			get { return _shortcutKey; }
 			set
@@ -165,8 +149,8 @@ namespace GoToWindow.ViewModels
 			// Shortcut
 			var shortcut = KeyboardShortcut.FromString(GoToWindow.Properties.Settings.Default.OpenShortcut);
 			ShortcutPreset = ShortcutPresets.Custom; //TODO
-			ShortcutControlKey1 = Enum.IsDefined(typeof(ShortcutControlKeys), shortcut.ControlVirtualKeyCode) ? (ShortcutControlKeys)shortcut.ControlVirtualKeyCode : ShortcutControlKeys.Undefined;
-			ShortcutKey = Enum.IsDefined(typeof(ShortcutKeys), shortcut.VirtualKeyCode) ? (ShortcutKeys)shortcut.VirtualKeyCode : ShortcutKeys.Undefined;
+			ShortcutControlKey1 = Enum.IsDefined(typeof(KeyboardControlKeys), shortcut.ControlVirtualKeyCode) ? (KeyboardControlKeys)shortcut.ControlVirtualKeyCode : KeyboardControlKeys.Undefined;
+			ShortcutKey = Enum.IsDefined(typeof(KeyboardVirtualKeys), shortcut.VirtualKeyCode) ? (KeyboardVirtualKeys)shortcut.VirtualKeyCode : KeyboardVirtualKeys.Undefined;
 			ShortcutPressesBeforeOpen = shortcut.ShortcutPressesBeforeOpen;
 
 			// Warnings
@@ -248,10 +232,10 @@ namespace GoToWindow.ViewModels
 			if (ShortcutPreset != ShortcutPresets.Custom)
 				return true;
 
-			if (ShortcutControlKey1 == ShortcutControlKeys.Undefined)
+			if (ShortcutControlKey1 == KeyboardControlKeys.Undefined)
 				return false;
 
-			if (ShortcutKey == ShortcutKeys.Undefined)
+			if (ShortcutKey == KeyboardVirtualKeys.Undefined)
 				return false;
 
 			return true;

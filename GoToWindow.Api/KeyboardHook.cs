@@ -39,16 +39,16 @@ namespace GoToWindow.Api
 		private static extern IntPtr GetModuleHandle(string lpModuleName);
 
 		// ReSharper disable InconsistentNaming
-        // ReSharper disable UnusedMember.Local
-        private const int HC_ACTION = 0;
+		// ReSharper disable UnusedMember.Local
+		private const int HC_ACTION = 0;
 		private const int WH_KEYBOARD_LL = 13;
 		private const int WM_KEYDOWN = 0x0100;
 		private const int WM_KEYUP = 0x0101;
 		private const int WM_SYSKEYDOWN = 0x0104;
 		private const int WM_SYSKEYUP = 0x0105;
 		private static IntPtr _hookID = IntPtr.Zero;
-        // ReSharper restore UnusedMember.Local
-        // ReSharper restore InconsistentNaming
+		// ReSharper restore UnusedMember.Local
+		// ReSharper restore InconsistentNaming
 
 		#if(DEBUG_KEYS)
 		private static Dictionary<int, string> WMKeyNames = new Dictionary<int, string>
@@ -96,57 +96,80 @@ namespace GoToWindow.Api
 		{
 			/*
 				VKCode	Flags	WParam			Desc
+
 				0xA4	0x20	WM_SYSKEYDOWN	Alt Down
 				0x09	0x20	WM_SYSKEYDOWN	Tab Down
 				0x09	0xA0	WM_SYSKEYUP		Tab Up
 				0xA4	0x80	WM_KEYUP		Alt Up
+
+				0x5B	0x01	WM_KEYDOWN		Win Down
+				0x09	0x00	WM_KEYDOWN		Tab Down
+				0x09	0x80	WM_KEYUP		Tab Up
+				0x5B	0x81	WM_KEYUP		Win Up
 			*/
 
-		    if (nCode != HC_ACTION)
-                return CallNextHookEx(_hookID, nCode, wParam, lParam);
-		    
-            var keyInfo = (Kbdllhookstruct)Marshal.PtrToStructure(lParam, typeof(Kbdllhookstruct));
+			if (nCode != HC_ACTION)
+				return CallNextHookEx(_hookID, nCode, wParam, lParam);
 
-            #if(DEBUG_KEYS)
+			var keyInfo = (Kbdllhookstruct)Marshal.PtrToStructure(lParam, typeof(Kbdllhookstruct));
+
+			#if(DEBUG_KEYS)
 			Console.WriteLine("Keys: 0x{0:X2}\t0x{1:X2}\t{2}", keyInfo.VkCode, keyInfo.Flags, WMKeyNames[(int)wParam]);
 			#endif
 
-		    if (_shortcut.IsDown(keyInfo.VkCode, keyInfo.Flags))
-		    {
-		        if (wParam == (IntPtr)WM_SYSKEYDOWN)
-		        {
-                    #if(DEBUG_KEYS)
-					Debug.WriteLine("Keys: Shortcut down - Incrementing counter.");
-					#endif
-
-		            _shortcut.DownCounter++;
-		        }
-
-		        if (_shortcut.DownCounter < _shortcut.ShortcutPressesBeforeOpen)
-		            return CallNextHookEx(_hookID, nCode, wParam, lParam);
-
-				if (wParam == (IntPtr)WM_SYSKEYDOWN)
+			if(_shortcut.ControlVirtualKeyCode == keyInfo.VkCode)
+			{
+				if (wParam == (IntPtr)WM_SYSKEYDOWN || wParam == (IntPtr)WM_KEYDOWN)
 				{
 					#if(DEBUG_KEYS)
-					Debug.WriteLine("Keys: Shortcut down - Executing");
+					Console.WriteLine("Keys: Control Key Down");
+					#endif
+					_shortcut.ControlKeyDown();
+				}
+				else
+				{
+					#if(DEBUG_KEYS)
+					Console.WriteLine("Keys: Control Key Up");
+					#endif
+					if(_shortcut.ControlKeyUp())
+					{
+						return (IntPtr)1;
+					}
+				}
+			}
+			else if(_shortcut.VirtualKeyCode == keyInfo.VkCode)
+			{
+				if (wParam == (IntPtr)WM_SYSKEYDOWN || wParam == (IntPtr)WM_KEYDOWN)
+				{
+					#if(DEBUG_KEYS)
+					Console.WriteLine("Keys: Shortcut Key Down");
 					#endif
 
-					_callback();
+					if (_shortcut.ShortcutKeyDown())
+					{
+						#if(DEBUG_KEYS)
+						Console.WriteLine("Keys: Shortcut Key Handled");
+						#endif
+						_callback();
+						return (IntPtr)1;
+					}
 				}
+				else
+				{
+					#if(DEBUG_KEYS)
+					Console.WriteLine("Keys: Shortcut Key Up");
+					#endif
+					if (_shortcut.ShortcutKeyUp())
+					{
+						#if(DEBUG_KEYS)
+						Console.WriteLine("Keys: Shortcut Key Handled");
+						#endif
+						return (IntPtr)1;
+					}
+				}
+			}
 
-		        return (IntPtr)1;
-		    }
-			    
-		    if(_shortcut.IsControlKeyReleased(keyInfo.VkCode, keyInfo.Flags))
-		    {
-                #if(DEBUG_KEYS)
-				Debug.WriteLine("Keys: Control key up");
-				#endif
-
-		        _shortcut.DownCounter = 0;
-		    }
-
-		    return CallNextHookEx(_hookID, nCode, wParam, lParam);
+			return CallNextHookEx(_hookID, nCode, wParam, lParam);
 		}
 	}
 }
