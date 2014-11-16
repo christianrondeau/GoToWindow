@@ -37,6 +37,32 @@ $SetupLoadingGif = "$PSScriptRoot\GoToWindow.Setup\Loading.gif"
 $NuSpecXml = [xml](Get-Content $NuSpecPath)
 $Version = $NuSpecXml.package.metadata.version
 
+# ==================================== Synchronize RELEASES
+
+git checkout Releases\RELEASES
+
+$ReleasesToDownload = (Get-Content "$ReleasesFolder\RELEASES") | % { ($_ -split ' ')[1] }
+$ReleaseFilenames = @()
+
+$WebClient = New-Object System.Net.WebClient
+
+$ReleasesToDownload | % {
+	$ReleaseFilename = $_.Split("/")[-1]
+	$ReleaseFilenames += $ReleaseFilename
+	$ReleasePath = "$ReleasesFolder\$ReleaseFilename"
+
+	If(Test-Path -Path $ReleasePath) {
+		Write-Host "$ReleaseFilename already present" -ForegroundColor Gray
+	} Else {
+		Write-Host "Downloading $ReleaseFilename..."
+		$WebClient.DownloadFile($_, $ReleasePath)
+		Write-Host "$ReleaseFilename downloaded"
+	}
+}
+
+Write-Host "Deleting unreferenced nupkg files"
+dir "$ReleasesFolder\*.nupkg" | ? { $ReleaseFilenames -NotContains $_.Name } | Remove-Item
+
 # ==================================== Build
 
 If(Test-Path -Path $BuildPath) {
@@ -87,7 +113,7 @@ If(Test-Path -Path $OutputSetupExe) {
 	Remove-Item -Confirm:$false $OutputSetupExe
 }
 
-&($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath
+&($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath -baseUrl https://github.com/christianrondeau/GoToWindow/releases/download/v$Version/
 
 $SquirrelSetupExe = "$ReleasesFolder\Setup.exe"
 If(Test-Path -Path $SquirrelSetupExe) {

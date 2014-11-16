@@ -21,7 +21,8 @@ Thumbs.db
 *.lib
 *.sbr
 obj/
-[Rr]elease*/
+Releases/*
+!Releases/RELEASES
 _ReSharper*/
 [Tt]est[Rr]esult*
 packages/
