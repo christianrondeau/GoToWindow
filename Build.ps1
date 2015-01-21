@@ -31,6 +31,7 @@ $NuSpecPath = "$PSScriptRoot\GoToWindow.nuspec"
 $ReleasesFolder = "$PSScriptRoot\Releases"
 
 $SetupLoadingGif = "$PSScriptRoot\GoToWindow.Setup\Loading.gif"
+$SetupIcon = "$PSScriptRoot\GoToWindow\Resources\AppIcon.ico"
 
 # ==================================== NuSpec Metadata
 
@@ -113,7 +114,7 @@ If(Test-Path -Path $OutputSetupExe) {
 	Remove-Item -Confirm:$false $OutputSetupExe
 }
 
-&($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath -baseUrl https://github.com/christianrondeau/GoToWindow/releases/download/v$Version/
+&($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath -i $SetupIcon -baseUrl https://github.com/christianrondeau/GoToWindow/releases/download/v$Version/
 
 $SquirrelSetupExe = "$ReleasesFolder\Setup.exe"
 If(Test-Path -Path $SquirrelSetupExe) {
