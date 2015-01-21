@@ -177,7 +177,7 @@ namespace GoToWindow.Squirrel
 		{
 			_updateManager.CreateShortcutsForExecutable(
 				Path.GetFileName(Assembly.GetEntryAssembly().Location),
-				ShortcutLocation.Desktop | ShortcutLocation.StartMenu,
+				ShortcutLocation.StartMenu | ShortcutLocation.Startup,
 				updateOnly
 				);
 		}
@@ -186,7 +186,8 @@ namespace GoToWindow.Squirrel
 		{
 			_updateManager.RemoveShortcutsForExecutable(
 				Path.GetFileName(Assembly.GetEntryAssembly().Location),
-				ShortcutLocation.Desktop | ShortcutLocation.StartMenu);
+				ShortcutLocation.StartMenu | ShortcutLocation.Startup
+				);
 		}
 	}
 }
