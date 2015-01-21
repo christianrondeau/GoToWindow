@@ -28,7 +28,6 @@ namespace GoToWindow.ViewModels
 		private readonly SquirrelUpdater _updater;
 
 		private bool _originalHookAltTab;
-		private bool _originalStartWithWindows;
 
 		protected SettingsViewModel()
 		{
@@ -45,7 +44,6 @@ namespace GoToWindow.ViewModels
 		}
 
 		public bool HookAltTab { get; set; }
-		public bool StartWithWindows { get; set; }
         public int ShortcutPressesBeforeOpen { get; set; }
         public bool WindowListSingleClick { get; set; }
 		public bool NoElevatedPrivilegesWarning { get; set; }
@@ -88,7 +86,6 @@ namespace GoToWindow.ViewModels
 		public void Load()
 		{
 			HookAltTab = _originalHookAltTab = Properties.Settings.Default.HookAltTab;
-			StartWithWindows = _originalStartWithWindows = GetStartWithWindows();
 			ShortcutPressesBeforeOpen = Properties.Settings.Default.ShortcutPressesBeforeOpen;
 		    WindowListSingleClick = Properties.Settings.Default.WindowListSingleClick;
 
@@ -124,23 +121,8 @@ namespace GoToWindow.ViewModels
 			Enabled = true;
 		}
 
-		private static bool GetStartWithWindows()
-		{
-			var runList = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", false);
-		    
-            if (runList == null) return false;
-		    
-            var executablePath = Assembly.GetExecutingAssembly().Location;
-		    return ((string)runList.GetValue("GoToWindow") == executablePath);
-		}
-
 		public void Apply()
 		{
-			if (_originalStartWithWindows != StartWithWindows)
-			{
-				UpdateStartWithWindows(StartWithWindows);
-            }
-
             Properties.Settings.Default.HookAltTab = HookAltTab;
             Properties.Settings.Default.ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen;
             Properties.Settings.Default.WindowListSingleClick = WindowListSingleClick;
@@ -157,45 +139,6 @@ namespace GoToWindow.ViewModels
 			Properties.Settings.Default.Save();
 
 			Log.Info("Settings updated");
-		}
-
-		private static void UpdateStartWithWindows(bool active)
-		{
-			if (active)
-			{
-				var executablePath = Assembly.GetExecutingAssembly().Location;
-
-				var process = new Process
-				{
-					StartInfo = new ProcessStartInfo
-					{
-						FileName = "reg.exe",
-						Arguments = string.Format("add \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"GoToWindow\" /t REG_SZ /d \"{0}\" /f", executablePath),
-						Verb = "runas",
-						CreateNoWindow = true,
-						WindowStyle = ProcessWindowStyle.Hidden
-
-					}
-				};
-				process.Start();
-				process.WaitForExit();
-			}
-			else
-			{
-				var process = new Process
-				{
-					StartInfo = new ProcessStartInfo
-					{
-						FileName = "reg.exe",
-						Arguments = "delete \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"GoToWindow\" /f",
-						Verb = "runas",
-						CreateNoWindow = true,
-						WindowStyle = ProcessWindowStyle.Hidden
-					}
-				};
-				process.Start();
-				process.WaitForExit();
-			}
 		}
 	}
 }

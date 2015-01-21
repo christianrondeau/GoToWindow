@@ -94,8 +94,7 @@
 						<ComboBoxItem Tag="1">Single (Alt + Tab)</ComboBoxItem>
 						<ComboBoxItem Tag="2">Twice (Alt + Tab + Tab)</ComboBoxItem>
 					</ComboBox>
-					<CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,43,0,0"/>
-					<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,63,0,0"/>
+					<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the windows list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,63,0,0"/>
 				</Grid>
 			</TabItem>
 
