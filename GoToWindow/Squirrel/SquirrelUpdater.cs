@@ -65,7 +65,7 @@ namespace GoToWindow.Squirrel
 
 		public SquirrelUpdater(string updateUrl)
 		{
-			_updateManager = new UpdateManager(updateUrl, "GoToWindow", FrameworkVersion.Net45);
+			_updateManager = new UpdateManager(updateUrl, "GoToWindow");
 		}
 
 		public void CheckForUpdates(Action<string> callback, Action<Exception> errCallback)
@@ -177,7 +177,7 @@ namespace GoToWindow.Squirrel
 		{
 			_updateManager.CreateShortcutsForExecutable(
 				Path.GetFileName(Assembly.GetEntryAssembly().Location),
-				ShortcutLocation.Desktop | ShortcutLocation.StartMenu,
+				ShortcutLocation.StartMenu | ShortcutLocation.Startup,
 				updateOnly
 				);
 		}
@@ -186,7 +186,8 @@ namespace GoToWindow.Squirrel
 		{
 			_updateManager.RemoveShortcutsForExecutable(
 				Path.GetFileName(Assembly.GetEntryAssembly().Location),
-				ShortcutLocation.Desktop | ShortcutLocation.StartMenu);
+				ShortcutLocation.StartMenu | ShortcutLocation.Startup
+				);
 		}
 	}
 }

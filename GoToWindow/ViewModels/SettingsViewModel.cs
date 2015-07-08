@@ -37,7 +37,6 @@ namespace GoToWindow.ViewModels
 		private readonly IGoToWindowContext _context;
 		private readonly SquirrelUpdater _updater;
 
-		private bool _originalStartWithWindows;
 
 		protected SettingsViewModel()
 		{
@@ -53,7 +52,6 @@ namespace GoToWindow.ViewModels
 			Load();
 		}
 
-		public bool StartWithWindows { get; set; }
         public int ShortcutPressesBeforeOpen { get; set; }
         public bool WindowListSingleClick { get; set; }
 		public bool NoElevatedPrivilegesWarning { get; set; }
@@ -143,7 +141,6 @@ namespace GoToWindow.ViewModels
 		public void Load()
 		{
 			// Settings
-			StartWithWindows = _originalStartWithWindows = GetStartWithWindows();
 		    WindowListSingleClick = Properties.Settings.Default.WindowListSingleClick;
 
 			// Shortcut
@@ -178,12 +175,6 @@ namespace GoToWindow.ViewModels
 
 		public void Apply()
 		{
-			// Update Registry
-			if (_originalStartWithWindows != StartWithWindows)
-			{
-				UpdateStartWithWindows(StartWithWindows);
-			}
-
 			// Update Shortcut
 			var shortcut = new KeyboardShortcut
 			{
@@ -249,45 +240,6 @@ namespace GoToWindow.ViewModels
 		    
             var executablePath = Assembly.GetExecutingAssembly().Location;
 		    return ((string)runList.GetValue("GoToWindow") == executablePath);
-		}
-
-		private static void UpdateStartWithWindows(bool active)
-		{
-			if (active)
-			{
-				var executablePath = Assembly.GetExecutingAssembly().Location;
-
-				var process = new Process
-				{
-					StartInfo = new ProcessStartInfo
-					{
-						FileName = "reg.exe",
-						Arguments = string.Format("add \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"GoToWindow\" /t REG_SZ /d \"{0}\" /f", executablePath),
-						Verb = "runas",
-						CreateNoWindow = true,
-						WindowStyle = ProcessWindowStyle.Hidden
-
-					}
-				};
-				process.Start();
-				process.WaitForExit();
-			}
-			else
-			{
-				var process = new Process
-				{
-					StartInfo = new ProcessStartInfo
-					{
-						FileName = "reg.exe",
-						Arguments = "delete \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"GoToWindow\" /f",
-						Verb = "runas",
-						CreateNoWindow = true,
-						WindowStyle = ProcessWindowStyle.Hidden
-					}
-				};
-				process.Start();
-				process.WaitForExit();
-			}
 		}
 	}
 }

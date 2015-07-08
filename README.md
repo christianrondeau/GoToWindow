@@ -1,5 +1,7 @@
 # Go To Window
 
+[![Join the chat at https://gitter.im/christianrondeau/GoToWindow](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/christianrondeau/GoToWindow?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 > No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press `Alt` + `Tab` + `Tab`, type a few characters from the window title or process name you want to switch to and press enter. 
 
 > For the keyboard maniacs.

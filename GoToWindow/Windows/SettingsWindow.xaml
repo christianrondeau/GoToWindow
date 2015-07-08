@@ -68,7 +68,7 @@
 							<Span>.</Span>
 							<Hyperlink NavigateUri="http://christianrondeau.github.io/GoToWindow" RequestNavigate="UpdateNow_RequestNavigate">Update Now</Hyperlink>
 						</TextBlock>
-						
+
 						<TextBlock x:Name="NoElevatedPrivilegesWarning" Visibility="{Binding Path=NoElevatedPrivilegesWarning, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="Red" TextWrapping="Wrap">
 							<Span FontWeight="Bold">Go To Window is currently not running with administrative privileges (Run as Administrator).</Span>
 							<LineBreak />
@@ -78,14 +78,14 @@
 							<LineBreak />
 							<Span>Restart GoToWindow as an Administrator to remove this notice.</Span>
 						</TextBlock>
-						
+
 						<TextBlock>           
 							<Span>Official Website </Span>
 							<Hyperlink NavigateUri="http://christianrondeau.github.io/GoToWindow" RequestNavigate="OfficialWebsite_RequestNavigate">http://christianrondeau.github.io/GoToWindow</Hyperlink>
 						</TextBlock>
-						
+
 						<TextBlock Text="© Christian Rondeau 2014" FontStyle="Italic" />
-						
+
 					</StackPanel>
 				</Grid>
 			</TabItem>
@@ -96,9 +96,9 @@
 						<RowDefinition Height="32" />
 						<RowDefinition Height="*" />
 					</Grid.RowDefinitions>
-					
+
 					<TextBlock Grid.Row="0" Margin="8" FontWeight="Bold">General Go To Window settings</TextBlock>
-					
+
 					<StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top">
 						<StackPanel Orientation="Horizontal" Height="28">
 							<Label Content="Shortcut" Width="Auto" Height="Auto"/>
@@ -129,13 +129,12 @@
 									<ComboBoxItem Tag="1">Single (e.g. Alt + Tab)</ComboBoxItem>
 									<ComboBoxItem Tag="2">Double (e.g. Alt + Tab + Tab)</ComboBoxItem>
 								</ComboBox>
-								
+
 								<Label Foreground="Red" Visibility="{Binding Path=IsShortcutInvalid, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">Invalid shortcut</Label>
 							</StackPanel>
 						</StackPanel>
 
-						<CheckBox x:Name="StartWithWindowsCheckbox" Content="_Start with Windows" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Left" Margin="2" />
-						<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" Margin="2" />
+						<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the windows list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" Margin="2" />
 					</StackPanel>
 				</Grid>
 			</TabItem>
