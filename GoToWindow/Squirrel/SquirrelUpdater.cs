@@ -65,7 +65,7 @@ namespace GoToWindow.Squirrel
 
 		public SquirrelUpdater(string updateUrl)
 		{
-			_updateManager = new UpdateManager(updateUrl, "GoToWindow", FrameworkVersion.Net45);
+			_updateManager = new UpdateManager(updateUrl, "GoToWindow");
 		}
 
 		public void CheckForUpdates(Action<string> callback, Action<Exception> errCallback)
