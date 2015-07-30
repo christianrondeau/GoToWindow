@@ -12,7 +12,7 @@ namespace GoToWindow.Api.Tests
 			var shortcut = new KeyboardShortcut
 			{
 				VirtualKeyCode = (int)KeyboardVirtualKeys.Tab,
-				ControlVirtualKeyCode = (int)KeyboardControlKeys.Alt
+				ControlVirtualKeyCode = (int)KeyboardControlKeys.LAlt
 			};
 
 			using (KeyboardHook.Hook(shortcut, () => intercepted = true))

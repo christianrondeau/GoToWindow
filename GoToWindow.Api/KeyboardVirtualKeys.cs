@@ -1,13 +1,11 @@
-using System;
-
 namespace GoToWindow.Api
 {
 	public enum KeyboardControlKeys
 	{
 		Undefined = 0,
-		Ctrl = 0xA2, //VK_LCONTROL
-		Alt = 0xA4, //VK_LMENU,
-		Win = 0x5B //VK_LWIN
+		LCtrl = 0xA2, //VK_LCONTROL
+		LAlt = 0xA4, //VK_LMENU,
+		LWin = 0x5B //VK_LWIN
 	}
 
 	public enum KeyboardVirtualKeys

@@ -114,9 +114,9 @@
 							<StackPanel Orientation="Horizontal" Visibility="{Binding ShortcutPreset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Custom}">
 								<Label>- Key -</Label>
 								<ComboBox Margin="2" Width="Auto" x:Name="ShortcutControlKey1" SelectedValuePath="Tag"  SelectedValue="{Binding ShortcutControlKey1, UpdateSourceTrigger=PropertyChanged}">
-									<ComboBoxItem Tag="Ctrl">Ctrl</ComboBoxItem>
-									<ComboBoxItem Tag="Alt">Alt</ComboBoxItem>
-									<ComboBoxItem Tag="Win">Win</ComboBoxItem>
+									<ComboBoxItem Tag="LCtrl">Left Ctrl</ComboBoxItem>
+									<ComboBoxItem Tag="LAlt">Left Alt</ComboBoxItem>
+									<ComboBoxItem Tag="LWin">Left Win</ComboBoxItem>
 								</ComboBox>
 
 								<ComboBox Margin="2" Width="Auto" x:Name="ShortcutKey" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutKey, UpdateSourceTrigger=PropertyChanged}">

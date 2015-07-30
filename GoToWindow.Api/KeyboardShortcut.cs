@@ -34,48 +34,5 @@ namespace GoToWindow.Api
 			return string.Format("{0:X2}+{1:X2}:{2}", ControlVirtualKeyCode, VirtualKeyCode, ShortcutPressesBeforeOpen);
 		}
 
-		#region Stateful
-
-		private int _downCounter;
-		private bool _isControlKeyDown;
-		private bool _isActive;
-
-		public void ControlKeyDown()
-		{
-			_isControlKeyDown = true;
-			_downCounter = 0;
-		}
-
-		public bool ControlKeyUp()
-		{
-			_isControlKeyDown = false;
-
-			if (_isActive)
-			{
-				_isActive = false;
-				return true;
-			}
-
-			return false;
-		}
-
-		public bool ShortcutKeyDown()
-		{
-			if (!_isControlKeyDown)
-				return false;
-
-			if (_isActive)
-				return true;
-
-			return _isActive = ++_downCounter >= ShortcutPressesBeforeOpen;
-		}
-
-		public bool ShortcutKeyUp()
-		{
-			return _isControlKeyDown && _isActive;
-		}
-
-		#endregion
-
 	}
 }
