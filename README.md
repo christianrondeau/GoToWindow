@@ -70,4 +70,4 @@ See the [Plugins](PLUGINS.md) document for more information on extending GoToWin
 
 ## License
 
-Copyright (c) 2014 Christian Rondeau. Licensed under the [MIT license](LICENSE.md).
+Copyright (c) 2015 Christian Rondeau. Licensed under the [MIT license](LICENSE.md).

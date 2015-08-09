@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>GoToWindow</id>
-		<version>0.2.1</version>
+		<version>0.3.0</version>
 		<title>GoToWindow</title>
 		<authors>Christian Rondeau</authors>
 		<owners>Christian Rondeau</owners>
@@ -16,7 +16,7 @@
 			For the keyboard maniacs.
 		</description>
 		<summary>A keyboard-maniac alt-tab alternative</summary>
-		<copyright>Christian Rondeau 2014</copyright>
+		<copyright>Christian Rondeau 2015</copyright>
 		<language>en-US</language>
 		<frameworkAssemblies>
 			<frameworkAssembly assemblyName="System" targetFramework="net45" />

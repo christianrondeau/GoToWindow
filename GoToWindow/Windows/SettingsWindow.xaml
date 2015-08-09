@@ -80,7 +80,7 @@
 							<Hyperlink NavigateUri="http://christianrondeau.github.io/GoToWindow" RequestNavigate="OfficialWebsite_RequestNavigate">http://christianrondeau.github.io/GoToWindow</Hyperlink>
 						</TextBlock>
 
-						<TextBlock Text="© Christian Rondeau 2014" FontStyle="Italic" />
+						<TextBlock Text="© Christian Rondeau 2015" FontStyle="Italic" />
 
 					</StackPanel>
 				</Grid>
