@@ -9,6 +9,7 @@ using log4net;
 using GoToWindow.Squirrel;
 using GoToWindow.Windows;
 using GoToWindow.Api;
+using GoToWindow.ViewModels;
 
 namespace GoToWindow
 {
@@ -58,7 +59,7 @@ namespace GoToWindow
 			_menu = new GoToWindowTrayIcon(_context);
 
 			var shortcut = KeyboardShortcut.FromString(GoToWindow.Properties.Settings.Default.OpenShortcut);
-			_context.EnableAltTabHook(shortcut);
+			_context.EnableKeyboardHook(shortcut);
 
 			_context.Init();
 
@@ -71,7 +72,7 @@ namespace GoToWindow
 				Log.Info("Squirrel: First run");
 				Dispatcher.InvokeAsync(() =>
 				{
-					new FirstRunWindow(_context).Show();
+					new FirstRunWindow(_context) {DataContext = new FirstRunViewModel()}.Show();
 				});
 			}
 

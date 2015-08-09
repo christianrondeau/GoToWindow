@@ -54,10 +54,11 @@
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
     <Compile Include="GivenAWindow.cs" />
-    <Compile Include="InterceptAltTabTests.cs" />
+    <Compile Include="InterceptShortcutTests.cs" />
     <Compile Include="KeyboardSend.cs" />
     <Compile Include="KeyboardShortcutTests.cs" />
     <Compile Include="ProcessExtensionsTests.cs" />
+    <Compile Include="VirtualKeyDescriptionTests.cs" />
     <Compile Include="WindowEntryFactoryTests.cs" />
     <Compile Include="WindowListFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

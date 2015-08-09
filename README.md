@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/christianrondeau/GoToWindow](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/christianrondeau/GoToWindow?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-> No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press `Alt` + `Tab` + `Tab`, type a few characters from the window title or process name you want to switch to and press enter. 
+> No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press `Win` + `Tab` + `Tab`, type a few characters from the window title or process name you want to switch to and press enter. 
 
 > For the keyboard maniacs.
 
@@ -16,7 +16,7 @@
 
 Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to launch it automatically with Windows.
 
-* Press `Alt` + `Tab` + `Tab` to open the windows list. All windows are shown, with the most recently accessed first.
+* Press `Win` + `Tab` + `Tab` to open the windows list. All windows are shown, with the most recently accessed first.
 
 * Press the `Up` and `Down` arrows to navigate in the list, and press `Enter` to switch to the application.
 

@@ -7,7 +7,6 @@ namespace GoToWindow.ViewModels
 	{	
 		public DesignTimeSettingsViewModel()
 		{
-			ShortcutPreset = ShortcutPresets.Custom;
 			ShortcutControlKey1 = KeyboardControlKeys.LWin;
 			ShortcutKey = KeyboardVirtualKeys.Console;
 			ShortcutPressesBeforeOpen = 1;

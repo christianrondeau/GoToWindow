@@ -1,13 +1,18 @@
 ﻿<Window x:Class="GoToWindow.Windows.FirstRunWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Go To Window"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:viewModels="clr-namespace:GoToWindow.ViewModels"
+		mc:Ignorable="d"
+		Title="Go To Window"
 		Height="300" Width="440"
         AllowsTransparency="True"
 		Background="Transparent"
 		Icon="/GoToWindow;component/Resources/AppIcon.ico"
 		WindowStyle="None"
-		WindowStartupLocation="CenterScreen">
+		WindowStartupLocation="CenterScreen"
+		d:DataContext="{d:DesignInstance viewModels:DesignTimeFirstRunViewModel, IsDesignTimeCreatable=True}">
 	<Window.Resources>
 		<Style x:Key="RoundedButton" TargetType="{x:Type Button}">
 			<Setter Property="Template">
@@ -40,7 +45,11 @@
 					</StackPanel.Resources>
 					<TextBlock TextAlignment="Center" FontSize="22" FontWeight="Bold" Margin="0,16,0,0">Go To Window</TextBlock>
 					<TextBlock TextAlignment="Center" FontStyle="Italic" Foreground="Gray" Margin="0,4,0,16">Installation complete!</TextBlock>
-					<TextBlock TextAlignment="Center">Press Alt + Tab + Tab to start browsing through your windows.</TextBlock>
+					<TextBlock HorizontalAlignment="Left">
+							<Span>Press</Span>
+							<Run Text="{Binding ShortcutDescription, Mode=OneWay}" FontWeight="Bold" />
+						<Span>to start browsing through your windows.</Span>
+					</TextBlock>
 					<TextBlock TextAlignment="Center" TextWrapping="Wrap">Right click on the <Image Source="/GoToWindow;component/Resources/AppIcon.ico" Width="16" Height="16" Margin="2,0,2,0" /> icon in the system tray to access help, updates and settings.</TextBlock>
 					<Button Style="{StaticResource RoundedButton}" Cursor="Hand" HorizontalAlignment="Center" Width="78" Margin="16" IsDefault="True" IsCancel="True" Click="Button_Click">Got it!</Button>
 				</StackPanel>

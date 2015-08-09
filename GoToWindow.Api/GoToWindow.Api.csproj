@@ -50,6 +50,7 @@
     <Compile Include="KeyboardShortcut.cs" />
     <Compile Include="MouseSend.cs" />
     <Compile Include="ProcessExtensions.cs" />
+    <Compile Include="VirtualKeyDescription.cs" />
     <Compile Include="WindowControlMenuDisabler.cs" />
     <Compile Include="WindowEntry.cs" />
     <Compile Include="WindowEntryFactory.cs" />

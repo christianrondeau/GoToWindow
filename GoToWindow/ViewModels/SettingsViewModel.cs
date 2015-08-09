@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using GoToWindow.Api;
-using Microsoft.Win32;
-using log4net;
+using GoToWindow.Properties;
 using GoToWindow.Squirrel;
+using log4net;
+using Microsoft.Win32;
 
 namespace GoToWindow.ViewModels
 {
@@ -18,16 +18,6 @@ namespace GoToWindow.ViewModels
 		UpdateAvailable,
 		AlreadyUpToDate,
 		Error
-	}
-
-	public enum ShortcutPresets
-	{
-		Undefined,
-		Disabled,
-		AltTab,
-		AltTabTab,
-		WinTab,
-		Custom
 	}
 
 	public class SettingsViewModel : NotifyPropertyChangedViewModelBase
@@ -91,18 +81,6 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-		private ShortcutPresets _shortcutPreset;
-		public ShortcutPresets ShortcutPreset
-		{
-			get { return _shortcutPreset; }
-			set
-			{
-				_shortcutPreset = value;
-				OnPropertyChanged("ShortcutPreset");
-				UpdateShortcutValidity();
-			}
-		}
-
 		private KeyboardControlKeys _shortcutControlKey1;
 		public KeyboardControlKeys ShortcutControlKey1
 		{
@@ -141,11 +119,10 @@ namespace GoToWindow.ViewModels
 		public void Load()
 		{
 			// Settings
-		    WindowListSingleClick = Properties.Settings.Default.WindowListSingleClick;
+		    WindowListSingleClick = Settings.Default.WindowListSingleClick;
 
 			// Shortcut
-			var shortcut = KeyboardShortcut.FromString(GoToWindow.Properties.Settings.Default.OpenShortcut);
-			ShortcutPreset = ShortcutPresets.Custom; //TODO
+			var shortcut = KeyboardShortcut.FromString(Settings.Default.OpenShortcut);
 			ShortcutControlKey1 = Enum.IsDefined(typeof(KeyboardControlKeys), shortcut.ControlVirtualKeyCode) ? (KeyboardControlKeys)shortcut.ControlVirtualKeyCode : KeyboardControlKeys.Undefined;
 			ShortcutKey = Enum.IsDefined(typeof(KeyboardVirtualKeys), shortcut.VirtualKeyCode) ? (KeyboardVirtualKeys)shortcut.VirtualKeyCode : KeyboardVirtualKeys.Undefined;
 			ShortcutPressesBeforeOpen = shortcut.ShortcutPressesBeforeOpen;
@@ -154,7 +131,7 @@ namespace GoToWindow.ViewModels
 			NoElevatedPrivilegesWarning = !WindowsRuntimeHelper.GetHasElevatedPrivileges();
 
 			// Plugins
-			var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
+			var disabledPlugins = Settings.Default.DisabledPlugins ?? new StringCollection();
 
 			Plugins = _context.PluginsContainer.Plugins
 				.Select(plugin => new SettingsPluginViewModel
@@ -182,19 +159,19 @@ namespace GoToWindow.ViewModels
 				VirtualKeyCode = (int)ShortcutKey,
 				ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen
 			};
-			Properties.Settings.Default.OpenShortcut = shortcut.ToString();
-			_context.EnableAltTabHook(shortcut);
+			Settings.Default.OpenShortcut = shortcut.ToString();
+			_context.EnableKeyboardHook(shortcut);
 
 			// Settings
-			Properties.Settings.Default.WindowListSingleClick = WindowListSingleClick;
+			Settings.Default.WindowListSingleClick = WindowListSingleClick;
 
 			// Plugins
 			var disabledPlugins = new StringCollection();
 			disabledPlugins.AddRange(Plugins.Where(plugin => !plugin.Enabled).Select(plugin => plugin.Id).ToArray());
-			Properties.Settings.Default.DisabledPlugins = disabledPlugins;
+			Settings.Default.DisabledPlugins = disabledPlugins;
 
 			// Save
-			Properties.Settings.Default.Save();
+			Settings.Default.Save();
 			Log.InfoFormat("Settings updated. Shortcut is '{0}'", shortcut.ToString());
 		}
 
@@ -217,12 +194,6 @@ namespace GoToWindow.ViewModels
 
 		private bool CheckShortcutValidity()
 		{
-			if (ShortcutPreset == ShortcutPresets.Undefined)
-				return false;
-
-			if (ShortcutPreset != ShortcutPresets.Custom)
-				return true;
-
 			if (ShortcutControlKey1 == KeyboardControlKeys.Undefined)
 				return false;
 

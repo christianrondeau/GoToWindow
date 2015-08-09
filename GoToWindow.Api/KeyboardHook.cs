@@ -118,7 +118,6 @@ namespace GoToWindow.Api
 				if (_downCounter < _shortcut.ShortcutPressesBeforeOpen)
 					return CallNextHookEx(_hookID, nCode, wParam, lParam);
 
-				_downCounter = 0;
 				_callback();
 				return (IntPtr) 1;
 			}

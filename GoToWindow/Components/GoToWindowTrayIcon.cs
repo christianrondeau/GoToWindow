@@ -43,10 +43,8 @@ namespace GoToWindow.Components
 
 		public void ShowStartupTooltip()
 		{
-			var shortcutPressesBeforeOpen = KeyboardShortcut.FromString(Properties.Settings.Default.OpenShortcut).ShortcutPressesBeforeOpen;
-			var openShortcutDescription = shortcutPressesBeforeOpen == 1
-				? "Alt + Tab"
-				: "Alt + Tab + Tab";
+			var shortcut = KeyboardShortcut.FromString(Properties.Settings.Default.OpenShortcut);
+			var openShortcutDescription = shortcut.ToHumanReadableString();
 
 			var tooltipMessage = string.Format("Press {0} and start typing to find a window.", openShortcutDescription);
 

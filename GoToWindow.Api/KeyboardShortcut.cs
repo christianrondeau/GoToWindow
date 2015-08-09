@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 namespace GoToWindow.Api
 {
@@ -29,10 +30,16 @@ namespace GoToWindow.Api
 
 		public bool Enabled { get { return ControlVirtualKeyCode > 0 && VirtualKeyCode > 0 && ShortcutPressesBeforeOpen > 0; } }
 
+		public string ToHumanReadableString()
+		{
+			var virtualKeyString = " + " + VirtualKeyDescription.GetDescription((KeyboardVirtualKeys) VirtualKeyCode);
+			virtualKeyString = String.Concat(Enumerable.Repeat(virtualKeyString, ShortcutPressesBeforeOpen));
+			return VirtualKeyDescription.GetDescription((KeyboardControlKeys)ControlVirtualKeyCode) + virtualKeyString;
+		}
+
 		public override string ToString()
 		{
 			return string.Format("{0:X2}+{1:X2}:{2}", ControlVirtualKeyCode, VirtualKeyCode, ShortcutPressesBeforeOpen);
 		}
-
 	}
 }

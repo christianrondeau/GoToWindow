@@ -19,7 +19,7 @@ namespace GoToWindow
 		void Init();
 		void Show();
 		void Hide();
-		void EnableAltTabHook(KeyboardShortcut shortcut);
+		void EnableKeyboardHook(KeyboardShortcut shortcut);
 		void ShowSettings();
 		void UpdateAvailable(string version);
 	}
@@ -77,7 +77,7 @@ namespace GoToWindow
 				if (_state == GoToWindowState.Shown)
 				{
 					Log.Debug("Sending Tab Again to Main Window.");
-					_mainWindow.TabAgain();
+					_mainWindow.ShortcutAgain();
 					return;
 				}
 
@@ -173,14 +173,14 @@ namespace GoToWindow
 			Application.Current.Dispatcher.InvokeAsync(HideWindow, DispatcherPriority.ApplicationIdle);
 		}
 
-		public void EnableAltTabHook(KeyboardShortcut shortcut)
+		public void EnableKeyboardHook(KeyboardShortcut shortcut)
 		{
 			if (shortcut.Enabled)
 			{
 				if (_hooks != null)
 					_hooks.Dispose();
 
-				_hooks = KeyboardHook.Hook(shortcut, HandleAltTab);
+				_hooks = KeyboardHook.Hook(shortcut, HandleShortcut);
 			}
 			else if (_hooks != null)
 			{
@@ -271,7 +271,7 @@ namespace GoToWindow
 			}
 		}
 
-		private void HandleAltTab()
+		private void HandleShortcut()
 		{
 			Application.Current.Dispatcher.InvokeAsync(Show, DispatcherPriority.Normal);
 		}

@@ -32,5 +32,14 @@ namespace GoToWindow.Api.Tests
 			var shortcut = KeyboardShortcut.FromString("");
 			Assert.AreEqual(false, shortcut.Enabled);
 		}
+
+		[TestMethod]
+		public void CanCreateHumanReadableString()
+		{
+			Assert.AreEqual("Left Alt + Tab", KeyboardShortcut.FromString("A4+09:1").ToHumanReadableString());
+			Assert.AreEqual("Left Alt + Tab + Tab", KeyboardShortcut.FromString("A4+09:2").ToHumanReadableString());
+			Assert.AreEqual("Left Win + Tab", KeyboardShortcut.FromString("5B+09:1").ToHumanReadableString());
+			Assert.AreEqual("Left Win + Tab + Tab", KeyboardShortcut.FromString("5B+09:2").ToHumanReadableString());
+		}
 	}
 }

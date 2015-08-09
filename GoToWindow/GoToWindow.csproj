@@ -105,7 +105,9 @@
     <Compile Include="GoToWindowPluginsContainer.cs" />
     <Compile Include="Squirrel\SquirrelCommandLineArgumentsHandler.cs" />
     <Compile Include="Squirrel\SquirrelUpdater.cs" />
+    <Compile Include="ViewModels\DesignTimeFirstRunViewModel.cs" />
     <Compile Include="ViewModels\DesignTimeMainViewModel.cs" />
+    <Compile Include="ViewModels\FirstRunViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NotifyPropertyChangedViewModelBase.cs" />
     <Compile Include="ViewModels\PerformanceLogger.cs" />

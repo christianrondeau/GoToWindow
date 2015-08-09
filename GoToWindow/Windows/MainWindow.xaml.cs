@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using GoToWindow.Api;
 using GoToWindow.Extensibility;
+using GoToWindow.Properties;
 using GoToWindow.Squirrel;
 using GoToWindow.ViewModels;
 using log4net;
@@ -17,8 +18,8 @@ namespace GoToWindow.Windows
 
         private const int PageCount = 4;
 
-        private bool _releasedAlt;
-        private bool _closeOnAltUp;
+        private bool _releasedControlKey;
+        private bool _closeOnControlKeyUp;
 
         private MainViewModel ViewModel { get { return (MainViewModel)DataContext; } }
 
@@ -27,10 +28,10 @@ namespace GoToWindow.Windows
             InitializeComponent();
         }
 
-        public void TabAgain()
+        public void ShortcutAgain()
         {
-            if (!_releasedAlt)
-                _closeOnAltUp = true;
+            if (!_releasedControlKey)
+                _closeOnControlKeyUp = true;
 
             if (Keyboard.IsKeyDown(Key.LeftShift))
                 ScrollToPreviousWindowEntry(1);
@@ -79,8 +80,8 @@ namespace GoToWindow.Windows
 
 		public void DataReady()
 		{
-		    _releasedAlt = false;
-		    _closeOnAltUp = false;
+		    _releasedControlKey = false;
+		    _closeOnControlKeyUp = false;
 
 			ApplyFilter("");
 
@@ -212,14 +213,15 @@ namespace GoToWindow.Windows
 			if (e.Key == Key.LeftCtrl)
 				ViewModel.IsRowIndexVisible = false;
 
-            if (e.Key == Key.LeftAlt || e.Key == Key.System && e.SystemKey == Key.LeftAlt)
-            {
-                if (_closeOnAltUp)
-                    FocusSelectedWindowItem();
+	        var controlVirtualKeyCode = KeyboardShortcut.FromString(Settings.Default.OpenShortcut).ControlVirtualKeyCode;
+	        if (KeyInterop.VirtualKeyFromKey(e.Key) != controlVirtualKeyCode && (e.Key != Key.System || e.SystemKey != Key.LeftAlt)) 
+				return;
 
-                _releasedAlt = true;
-            }
-        }
+	        if (_closeOnControlKeyUp)
+		        FocusSelectedWindowItem();
+
+	        _releasedControlKey = true;
+		}
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

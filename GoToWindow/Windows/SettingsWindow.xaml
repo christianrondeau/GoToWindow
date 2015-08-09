@@ -20,10 +20,6 @@
 		<converters:IncrementIntConverter x:Key="IncrementIntConverter" />
 		<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 		<converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
-		<converters:ValueConverterGroup x:Key="InvertEnumToVisibilityConverter">
-			<converters:EnumToVisibilityConverter/>
-			<converters:InverseVisibilityConverter  />
-		</converters:ValueConverterGroup>
 	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -101,37 +97,25 @@
 
 					<StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top">
 						<StackPanel Orientation="Horizontal" Height="28">
-							<Label Content="Shortcut" Width="Auto" Height="Auto"/>
-
-							<ComboBox Margin="2" Width="Auto" x:Name="Preset" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutPreset, UpdateSourceTrigger=PropertyChanged}">
-								<ComboBoxItem Tag="Disabled">Disabled (No Shortcut)</ComboBoxItem>
-								<ComboBoxItem Tag="AltTab">Alt + Tab</ComboBoxItem>
-								<ComboBoxItem Tag="AltTabTab">Alt + Tab + Tab</ComboBoxItem>
-								<ComboBoxItem Tag="WinTab">Win + Tab</ComboBoxItem>
-								<ComboBoxItem Tag="Custom">Custom</ComboBoxItem>
+							<Label Content="Shortcut:" Width="Auto" Height="Auto"/>
+							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutControlKey1" SelectedValuePath="Tag"  SelectedValue="{Binding ShortcutControlKey1, UpdateSourceTrigger=PropertyChanged}">
+								<ComboBoxItem Tag="LCtrl">Left Ctrl</ComboBoxItem>
+								<ComboBoxItem Tag="LAlt">Left Alt</ComboBoxItem>
+								<ComboBoxItem Tag="LWin">Left Win</ComboBoxItem>
 							</ComboBox>
 
-							<StackPanel Orientation="Horizontal" Visibility="{Binding ShortcutPreset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Custom}">
-								<Label>- Key -</Label>
-								<ComboBox Margin="2" Width="Auto" x:Name="ShortcutControlKey1" SelectedValuePath="Tag"  SelectedValue="{Binding ShortcutControlKey1, UpdateSourceTrigger=PropertyChanged}">
-									<ComboBoxItem Tag="LCtrl">Left Ctrl</ComboBoxItem>
-									<ComboBoxItem Tag="LAlt">Left Alt</ComboBoxItem>
-									<ComboBoxItem Tag="LWin">Left Win</ComboBoxItem>
-								</ComboBox>
+							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutKey" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutKey, UpdateSourceTrigger=PropertyChanged}">
+								<ComboBoxItem Tag="Tab">Tab</ComboBoxItem>
+								<ComboBoxItem Tag="Console">Console (~)</ComboBoxItem>
+								<ComboBoxItem Tag="Console">Escape</ComboBoxItem>
+							</ComboBox>
 
-								<ComboBox Margin="2" Width="Auto" x:Name="ShortcutKey" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutKey, UpdateSourceTrigger=PropertyChanged}">
-									<ComboBoxItem Tag="Tab">Tab</ComboBoxItem>
-									<ComboBoxItem Tag="Console">Console (~)</ComboBoxItem>
-									<ComboBoxItem Tag="Console">Escape</ComboBoxItem>
-								</ComboBox>
+							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutPressesBeforeOpenComboBox" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}">
+								<ComboBoxItem Tag="1">Single (e.g. Alt + Tab)</ComboBoxItem>
+								<ComboBoxItem Tag="2">Double (e.g. Alt + Tab + Tab)</ComboBoxItem>
+							</ComboBox>
 
-								<ComboBox Margin="2" Width="Auto" x:Name="ShortcutPressesBeforeOpenComboBox" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}">
-									<ComboBoxItem Tag="1">Single (e.g. Alt + Tab)</ComboBoxItem>
-									<ComboBoxItem Tag="2">Double (e.g. Alt + Tab + Tab)</ComboBoxItem>
-								</ComboBox>
-
-								<Label Foreground="Red" Visibility="{Binding Path=IsShortcutInvalid, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">Invalid shortcut</Label>
-							</StackPanel>
+							<Label Foreground="Red" Visibility="{Binding Path=IsShortcutInvalid, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">Invalid shortcut</Label>
 						</StackPanel>
 
 						<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the windows list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" Margin="2" />

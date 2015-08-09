@@ -50,7 +50,7 @@ namespace GoToWindow.Api
 
             EnumWindows((hWnd, lParam) =>
             {
-                if (!EligibleForAltTab(hWnd, lShellWindow))
+                if (!EligibleForActivation(hWnd, lShellWindow))
                     return true;
 
                 var window = WindowEntryFactory.Create(hWnd);
@@ -88,7 +88,7 @@ namespace GoToWindow.Api
 			"Button"
 		};
 
-        private static bool EligibleForAltTab(IntPtr hWnd, IntPtr lShellWindow)
+        private static bool EligibleForActivation(IntPtr hWnd, IntPtr lShellWindow)
         {
             // http://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
 
