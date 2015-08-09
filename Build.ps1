@@ -40,6 +40,8 @@ $Version = $NuSpecXml.package.metadata.version
 
 # ==================================== Synchronize RELEASES
 
+Write-Host "Synchronizing releases..." -ForegroundColor White
+
 git checkout Releases\RELEASES
 
 $ReleasesToDownload = (Get-Content "$ReleasesFolder\RELEASES") | % { ($_ -split ' ')[1] }
@@ -66,6 +68,8 @@ dir "$ReleasesFolder\*.nupkg" | ? { $ReleaseFilenames -NotContains $_.Name } | R
 
 # ==================================== Build
 
+Write-Host "Building..." -ForegroundColor White
+
 If(Test-Path -Path $BuildPath) {
 	Remove-Item -Confirm:$false "$BuildPath\*.*"
 }
@@ -81,6 +85,8 @@ If(Test-Path -Path $BuildPath) {
 
 # ==================================== Zip
 
+Write-Host "Zipping..." -ForegroundColor White
+
 $ReleaseZip = "$ReleasesFolder\GoToWindow.$Version.zip"
 	
 If(!(Test-Path -Path $ReleasesFolder )){
@@ -94,6 +100,8 @@ If(Test-Path -Path $ReleaseZip) {
 ZipFiles $ReleaseZip $BuildPath
 
 # ==================================== Squirrel
+
+Write-Host "Squirrel..." -ForegroundColor White
 
 $NuPkgPath = "$PSScriptRoot\GoToWindow.$Version.nupkg"
 
@@ -122,6 +130,8 @@ If(Test-Path -Path $SquirrelSetupExe) {
 }
 
 # ==================================== Cleanup
+
+Write-Host "Cleanup..." -ForegroundColor White
 
 If(Test-Path -Path $NuPkgPath) {
 	Remove-Item -Confirm:$false $NuPkgPath
