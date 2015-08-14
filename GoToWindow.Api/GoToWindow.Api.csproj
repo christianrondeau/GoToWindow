@@ -60,6 +60,7 @@
     <Compile Include="WindowsListFactory.cs" />
     <Compile Include="WindowsSearch.cs" />
     <Compile Include="WindowsRuntimeHelper.cs" />
+    <Compile Include="WindowsStoreApp.cs" />
     <Compile Include="WindowToForeground.cs" />
     <Compile Include="WmiProcessWatcher.cs" />
   </ItemGroup>
