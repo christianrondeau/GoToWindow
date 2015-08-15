@@ -8,15 +8,16 @@ namespace GoToWindow.Api.Tests
 		[TestMethod]
 		public void CanReadEnumValuesWithoutDescriptions()
 		{
-			Assert.AreEqual("Unnamed Key", VirtualKeyDescription.GetDescription(KeyboardVirtualKeys.Undefined));
+			Assert.AreEqual("Unnamed Key", VirtualKeyDescription.GetDescription(KeyboardVirtualKeys.Custom));
 			Assert.AreEqual("Unnamed Key", VirtualKeyDescription.GetDescription(KeyboardControlKeys.Undefined));
 		}
 
 		[TestMethod]
 		public void CanReadVirtualKeys()
 		{
+			Assert.AreEqual("F1", VirtualKeyDescription.GetDescription((KeyboardVirtualKeys)0x70));
+			Assert.AreEqual("F12", VirtualKeyDescription.GetDescription((KeyboardVirtualKeys)0x7B));
 			Assert.AreEqual("Tab", VirtualKeyDescription.GetDescription(KeyboardVirtualKeys.Tab));
-			Assert.AreEqual("~", VirtualKeyDescription.GetDescription(KeyboardVirtualKeys.Console));
 			Assert.AreEqual("Escape", VirtualKeyDescription.GetDescription(KeyboardVirtualKeys.Escape));
 		}
 

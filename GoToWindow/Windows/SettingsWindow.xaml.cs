@@ -4,6 +4,7 @@ using System.Windows;
 using GoToWindow.Squirrel;
 using GoToWindow.ViewModels;
 using System.Diagnostics;
+using System.Windows.Input;
 using System.Windows.Navigation;
 
 namespace GoToWindow.Windows
@@ -48,6 +49,16 @@ namespace GoToWindow.Windows
 		{
 			if (DataContext != null && !((SettingsViewModel)DataContext).Enabled)
 				e.Cancel = true;
+		}
+
+		private void CustomShortcutKey_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			e.Handled = true;
+
+			if (DataContext == null)
+				return;
+
+			((SettingsViewModel)DataContext).ShortcutKey = KeyInterop.VirtualKeyFromKey(e.Key);
 		}
 	}
 }

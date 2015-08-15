@@ -19,7 +19,16 @@
 	<Window.Resources>
 		<converters:IncrementIntConverter x:Key="IncrementIntConverter" />
 		<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<converters:ValueConverterGroup x:Key="InvertBooleanToVisibilityConverter">
+			<converters:BooleanToVisibilityConverter/>
+			<converters:InverseVisibilityConverter  />
+		</converters:ValueConverterGroup>
 		<converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+		<converters:ShortcutKeyToStringConverter x:Key="ShortcutKeyToStringConverter" />
+		<converters:ValueConverterGroup x:Key="InvertEnumToVisibilityConverter">
+			<converters:EnumToVisibilityConverter/>
+			<converters:InverseVisibilityConverter  />
+		</converters:ValueConverterGroup>
 	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -98,24 +107,27 @@
 					<StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top">
 						<StackPanel Orientation="Horizontal" Height="28">
 							<Label Content="Shortcut:" Width="Auto" Height="Auto"/>
-							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutControlKey1" SelectedValuePath="Tag"  SelectedValue="{Binding ShortcutControlKey1, UpdateSourceTrigger=PropertyChanged}">
+							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutControlKey1" SelectedValuePath="Tag"  SelectedValue="{Binding ShortcutControlKey, UpdateSourceTrigger=PropertyChanged}">
 								<ComboBoxItem Tag="LCtrl">Left Ctrl</ComboBoxItem>
 								<ComboBoxItem Tag="LAlt">Left Alt</ComboBoxItem>
 								<ComboBoxItem Tag="LWin">Left Win</ComboBoxItem>
 							</ComboBox>
 
-							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutKey" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutKey, UpdateSourceTrigger=PropertyChanged}">
+							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutKey" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutKeyPreset, UpdateSourceTrigger=PropertyChanged}">
+								<ComboBoxItem Tag="Custom">Custom...</ComboBoxItem>
 								<ComboBoxItem Tag="Tab">Tab</ComboBoxItem>
-								<ComboBoxItem Tag="Console">Console (~)</ComboBoxItem>
-								<ComboBoxItem Tag="Console">Escape</ComboBoxItem>
+								<ComboBoxItem Tag="Escape">Escape</ComboBoxItem>
 							</ComboBox>
+
+							<TextBox Margin="2" x:Name="CustomShortcutKey" PreviewKeyDown="CustomShortcutKey_OnPreviewKeyDown" Text="{Binding ShortcutKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShortcutKeyToStringConverter}}" Visibility="{Binding ShortcutKeyPreset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Custom}" TextAlignment="Center" Width="48" Height="24" ToolTip="Click inside the box and type the key you want to use as a shortcut, without Ctrl, Alt, Shift or Win." />
 
 							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutPressesBeforeOpenComboBox" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}">
-								<ComboBoxItem Tag="1">Single (e.g. Alt + Tab)</ComboBoxItem>
-								<ComboBoxItem Tag="2">Double (e.g. Alt + Tab + Tab)</ComboBoxItem>
+								<ComboBoxItem Tag="1">Once</ComboBoxItem>
+								<ComboBoxItem Tag="2">Twice</ComboBoxItem>
 							</ComboBox>
 
-							<Label Foreground="Red" Visibility="{Binding Path=IsShortcutInvalid, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">Invalid shortcut</Label>
+							<Label Foreground="Green" Visibility="{Binding Path=IsShortcutInvalid, Converter={StaticResource InvertBooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" Content="{Binding ShortcutDescription, UpdateSourceTrigger=PropertyChanged}"/>
+							<Label Foreground="Red" Visibility="{Binding Path=IsShortcutInvalid, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" Content="Invalid shortcut"/>
 						</StackPanel>
 
 						<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the windows list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" Margin="2" />

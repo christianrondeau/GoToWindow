@@ -42,11 +42,21 @@ namespace GoToWindow.ViewModels
 			Load();
 		}
 
-        public int ShortcutPressesBeforeOpen { get; set; }
-        public bool WindowListSingleClick { get; set; }
+		public bool WindowListSingleClick { get; set; }
 		public bool NoElevatedPrivilegesWarning { get; set; }
 		public string Version { get; set; }
 		public List<SettingsPluginViewModel> Plugins { get; protected set; }
+
+		private int _shortcutPressesBeforeOpen;
+		public int ShortcutPressesBeforeOpen
+		{
+			get { return _shortcutPressesBeforeOpen; }
+			set
+			{
+				_shortcutPressesBeforeOpen = value;
+				UpdateShortcutDescription();
+			}
+		}
 
 		private string _latestAvailableRelease;
 		public string LatestAvailableRelease
@@ -81,27 +91,30 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-		private KeyboardControlKeys _shortcutControlKey1;
-		public KeyboardControlKeys ShortcutControlKey1
+		private KeyboardControlKeys _shortcutControlKey;
+		public KeyboardControlKeys ShortcutControlKey
 		{
-			get { return _shortcutControlKey1; }
+			get { return _shortcutControlKey; }
 			set
 			{
-				_shortcutControlKey1 = value;
-				OnPropertyChanged("ShortcutControlKey1");
+				_shortcutControlKey = value;
+				OnPropertyChanged("ShortcutControlKey");
 				UpdateShortcutValidity();
+				UpdateShortcutDescription();
 			}
 		}
 
-		private KeyboardVirtualKeys _shortcutKey;
-		public KeyboardVirtualKeys ShortcutKey
+		private KeyboardVirtualKeys _shortcutKeyPreset;
+		public KeyboardVirtualKeys ShortcutKeyPreset
 		{
-			get { return _shortcutKey; }
+			get { return _shortcutKeyPreset; }
 			set
 			{
-				_shortcutKey = value;
-				OnPropertyChanged("ShortcutKey");
-				UpdateShortcutValidity();
+				_shortcutKeyPreset = value;
+				if (value == KeyboardVirtualKeys.Custom)
+					ShortcutKey = (int) KeyboardVirtualKeys.Tab;
+				OnPropertyChanged("ShortcutKeyPreset");
+				UpdateShortcutDescription();
 			}
 		}
 
@@ -116,6 +129,40 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
+		private int _shortcutKey;
+		public int ShortcutKey
+		{
+			get { return _shortcutKey; }
+			set
+			{
+				_shortcutKey = value;
+				OnPropertyChanged("ShortcutKey");
+				UpdateShortcutValidity();
+				UpdateShortcutDescription();
+			}
+		}
+
+		private bool _showCustomShortcutKey;
+		public bool ShowCustomShortcutKey
+		{
+			get { return _showCustomShortcutKey; }
+			set
+			{
+				_showCustomShortcutKey = value;
+				OnPropertyChanged("ShowCustomShortcutKey");
+			}
+		}
+
+		public string ShortcutDescription
+		{
+			get { return CreateShortcut().ToHumanReadableString(); }
+		}
+
+		public void UpdateShortcutDescription()
+		{
+			OnPropertyChanged("ShortcutDescription");
+		}
+
 		public void Load()
 		{
 			// Settings
@@ -123,8 +170,9 @@ namespace GoToWindow.ViewModels
 
 			// Shortcut
 			var shortcut = KeyboardShortcut.FromString(Settings.Default.OpenShortcut);
-			ShortcutControlKey1 = Enum.IsDefined(typeof(KeyboardControlKeys), shortcut.ControlVirtualKeyCode) ? (KeyboardControlKeys)shortcut.ControlVirtualKeyCode : KeyboardControlKeys.Undefined;
-			ShortcutKey = Enum.IsDefined(typeof(KeyboardVirtualKeys), shortcut.VirtualKeyCode) ? (KeyboardVirtualKeys)shortcut.VirtualKeyCode : KeyboardVirtualKeys.Undefined;
+			ShortcutControlKey = Enum.IsDefined(typeof(KeyboardControlKeys), shortcut.ControlVirtualKeyCode) ? (KeyboardControlKeys)shortcut.ControlVirtualKeyCode : KeyboardControlKeys.Undefined;
+			ShortcutKeyPreset = Enum.IsDefined(typeof(KeyboardVirtualKeys), shortcut.VirtualKeyCode) ? (KeyboardVirtualKeys)shortcut.VirtualKeyCode : KeyboardVirtualKeys.Custom;
+			ShortcutKey = shortcut.VirtualKeyCode;
 			ShortcutPressesBeforeOpen = shortcut.ShortcutPressesBeforeOpen;
 
 			// Warnings
@@ -153,12 +201,7 @@ namespace GoToWindow.ViewModels
 		public void Apply()
 		{
 			// Update Shortcut
-			var shortcut = new KeyboardShortcut
-			{
-				ControlVirtualKeyCode = (int)ShortcutControlKey1,
-				VirtualKeyCode = (int)ShortcutKey,
-				ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen
-			};
+			var shortcut = CreateShortcut();
 			Settings.Default.OpenShortcut = shortcut.ToString();
 			_context.EnableKeyboardHook(shortcut);
 
@@ -173,6 +216,16 @@ namespace GoToWindow.ViewModels
 			// Save
 			Settings.Default.Save();
 			Log.InfoFormat("Settings updated. Shortcut is '{0}'", shortcut.ToString());
+		}
+
+		private KeyboardShortcut CreateShortcut()
+		{
+			return new KeyboardShortcut
+			{
+				ControlVirtualKeyCode = (int)ShortcutControlKey,
+				VirtualKeyCode = ShortcutKey,
+				ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen
+			};
 		}
 
 		private void CheckForUpdatesCallback(string latestVersion)
@@ -194,10 +247,10 @@ namespace GoToWindow.ViewModels
 
 		private bool CheckShortcutValidity()
 		{
-			if (ShortcutControlKey1 == KeyboardControlKeys.Undefined)
+			if (ShortcutControlKey == KeyboardControlKeys.Undefined)
 				return false;
 
-			if (ShortcutKey == KeyboardVirtualKeys.Undefined)
+			if (ShortcutKey == 0)
 				return false;
 
 			return true;

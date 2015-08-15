@@ -113,6 +113,7 @@
     <Compile Include="..\GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs">
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
+    <Compile Include="Converters\ShortcutKeyToStringConverter.cs" />
     <Compile Include="Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="BindingExtensions\SettingsBindingExtension.cs" />
     <Compile Include="Commands\GoToWindowEntryShortcutCommand.cs" />

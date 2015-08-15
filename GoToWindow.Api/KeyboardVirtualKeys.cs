@@ -15,11 +15,10 @@ namespace GoToWindow.Api
 
 	public enum KeyboardVirtualKeys
 	{
-		Undefined = 0,
+		[Description("Custom")]
+		Custom = 0,
 		[Description("Tab")]
 		Tab = 0x09, //VK_TAB
-		[Description("~")]
-		Console = 0xC0, //~
 		[Description("Escape")]
 		Escape = 0x1B //VK_ESCAPE
 	}
