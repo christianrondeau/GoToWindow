@@ -60,6 +60,7 @@
     <Compile Include="ViewModel\IWindowSearchResult.cs" />
     <Compile Include="ViewModel\SearchHelper.cs" />
     <Compile Include="ViewModel\SearchResultBase.cs" />
+    <Compile Include="ViewModel\ErrorResult.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

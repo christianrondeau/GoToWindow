@@ -6,11 +6,16 @@ using System.Windows.Data;
 using System.Windows.Input;
 using GoToWindow.Commands;
 using GoToWindow.Extensibility;
+using GoToWindow.Extensibility.Controls;
+using GoToWindow.Extensibility.ViewModel;
+using log4net;
 
 namespace GoToWindow.ViewModels
 {
 	public class MainViewModel : NotifyPropertyChangedViewModelBase
 	{
+		private static readonly ILog Log = LogManager.GetLogger(typeof(MainViewModel).Assembly, "GoToWindow");
+
 		public CollectionViewSource Windows { get; protected set; }
 		public ISearchResult SelectedWindowEntry { get; set; }
 
@@ -100,18 +105,29 @@ namespace GoToWindow.ViewModels
 		{
 			Empty();
 
-			var list = new List<ISearchResult>();
-			var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
-
-			foreach (var plugin in plugins.Where(plugin => !disabledPlugins.Contains(plugin.Id)))
+			try
 			{
-				using (new PerformanceLogger(string.Format("Plugin '{0}'", plugin.Title)))
-				{
-					plugin.BuildList(list);
-				}
-			}
+				var list = new List<ISearchResult>();
+				var disabledPlugins = Properties.Settings.Default.DisabledPlugins ?? new StringCollection();
 
-			Windows.Source = list.ToArray();
+				foreach (var plugin in plugins.Where(plugin => !disabledPlugins.Contains(plugin.Id)))
+				{
+					using (new PerformanceLogger(string.Format("Plugin '{0}'", plugin.Title)))
+					{
+						plugin.BuildList(list);
+					}
+				}
+
+				Windows.Source = list.ToArray();
+			}
+			catch (Exception exc)
+			{
+				Windows.Source = new ISearchResult[]
+				{
+					new ErrorResult("Could not load the list of windows", exc, () => new BasicListEntry())
+				};
+				Log.Error("Error while loading the windows list", exc);
+			}
 
 			IsEmpty = false;
 		}

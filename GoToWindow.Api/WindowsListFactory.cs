@@ -50,15 +50,24 @@ namespace GoToWindow.Api
 
             EnumWindows((hWnd, lParam) =>
             {
-                if (!EligibleForActivation(hWnd, lShellWindow))
+                if (!HWndEligibleForActivation(hWnd, lShellWindow))
                     return true;
+
+	            var className = GetClassName(hWnd);
+
+	            if (!ClassEligibleForActivation(className))
+					return true;
 
                 var window = WindowEntryFactory.Create(hWnd);
 
                 if (window == null || window.ProcessId == currentProcessId || window.Title == null)
                     return true;
 
-	            window.ProcessName = WmiProcessWatcher.GetProcessName(window.ProcessId, () => window.ProcessName);
+	            window.ProcessName = GetProcessName(window);
+
+#if(DEBUG)
+				Log.DebugFormat("Found Window: {0} {1} Class: '{2}' Title: '{3}'", window.ProcessId, window.ProcessName, className, window.Title);
+#endif
 
 	            if (IsKnownException(window))
 		            return true;
@@ -70,6 +79,39 @@ namespace GoToWindow.Api
 
             return new WindowsList(windows);
         }
+
+	    private static bool ClassEligibleForActivation(string className)
+	    {
+		    if (Array.IndexOf(WindowsClassNamesToSkip, className) > -1)
+			    return false;
+
+		    if (className.StartsWith("WMP9MediaBarFlyout")) //WMP's "now playing" taskbar-toolbar
+			    return false;
+
+		    return true;
+	    }
+
+	    private static string GetClassName(IntPtr hWnd)
+	    {
+		    var classNameStringBuilder = new StringBuilder(256);
+		    var length = GetClassName(hWnd, classNameStringBuilder, classNameStringBuilder.Capacity);
+		    return length == 0 ? null : classNameStringBuilder.ToString();
+	    }
+
+	    private static string GetProcessName(IWindowEntry window)
+	    {
+		    var processName = WmiProcessWatcher.GetProcessName(window.ProcessId, () => window.ProcessName);
+
+		    if (processName == null)
+		    {
+			    using (var process = Process.GetProcessById((int) window.ProcessId))
+			    {
+				    processName = process.ProcessName;
+			    }
+			}
+
+		    return processName;
+	    }
 
 	    private static bool IsKnownException(IWindowEntry window)
 	    {
@@ -88,7 +130,7 @@ namespace GoToWindow.Api
 			"Button"
 		};
 
-        private static bool EligibleForActivation(IntPtr hWnd, IntPtr lShellWindow)
+        private static bool HWndEligibleForActivation(IntPtr hWnd, IntPtr lShellWindow)
         {
             // http://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
 
@@ -98,19 +140,6 @@ namespace GoToWindow.Api
             var root = GetAncestor(hWnd, GetAncestorFlags.GetRootOwner);
 
             if (GetLastVisibleActivePopUpOfWindow(root) != hWnd)
-                return false;
-
-            var classNameStringBuilder = new StringBuilder(256);
-            var length = GetClassName(hWnd, classNameStringBuilder, classNameStringBuilder.Capacity);
-            if (length == 0)
-                return false;
-
-            var className = classNameStringBuilder.ToString();
-
-            if (Array.IndexOf(WindowsClassNamesToSkip, className) > -1)
-                return false;
-
-            if (className.StartsWith("WMP9MediaBarFlyout")) //WMP's "now playing" taskbar-toolbar
                 return false;
 
             return true;

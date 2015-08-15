@@ -13,7 +13,6 @@ namespace GoToWindow.Plugins.Core.ViewModel
 		private static readonly ILog Log = LogManager.GetLogger(typeof(WindowSearchCommandResult).Assembly, "GoToWindow");
 		private static readonly Regex ValidQuery = new Regex(@"^[^:\\/<>|""]+$", RegexOptions.Compiled);
 
-
 		private string _text;
 		private string _query;
 

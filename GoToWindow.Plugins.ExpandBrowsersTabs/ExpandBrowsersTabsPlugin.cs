@@ -51,6 +51,10 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 
 				ITabsFinder finder;
 				var browserName = item.ProcessName;
+
+				if (browserName == null)
+					continue;
+
 				if (!finders.TryGetValue(browserName, out finder))
 				{
 					Func<ITabsFinder> finderCtor;
