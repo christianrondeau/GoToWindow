@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace GoToWindow.Windows
 {
-	public partial class FirstRunWindow : Window
+	public partial class FirstRunWindow
 	{
 		public FirstRunWindow()
 		{

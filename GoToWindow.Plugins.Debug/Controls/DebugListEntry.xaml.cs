@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace GoToWindow.Plugins.Debug.Controls
+﻿namespace GoToWindow.Plugins.Debug.Controls
 {
-	public partial class DebugListEntry : UserControl
+	public partial class DebugListEntry
 	{
 		public DebugListEntry()
 		{

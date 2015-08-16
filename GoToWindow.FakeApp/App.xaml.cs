@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace GoToWindow.FakeApp
+﻿namespace GoToWindow.FakeApp
 {
-	public partial class App : Application
+	public partial class App
 	{
 	}
 }

@@ -13,7 +13,7 @@ using GoToWindow.ViewModels;
 
 namespace GoToWindow
 {
-	public partial class App : Application
+	public partial class App
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(App).Assembly, "GoToWindow");
 

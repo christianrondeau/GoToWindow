@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace GoToWindow.Extensibility.Controls
 {
-	public partial class BasicListEntry : UserControl
+	public partial class BasicListEntry
 	{
 		public BasicListEntry()
 		{

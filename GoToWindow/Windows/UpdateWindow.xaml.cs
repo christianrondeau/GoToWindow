@@ -2,7 +2,7 @@
 
 namespace GoToWindow.Windows
 {
-	public partial class UpdateWindow : Window
+	public partial class UpdateWindow
 	{
 		public UpdateWindow()
 		{

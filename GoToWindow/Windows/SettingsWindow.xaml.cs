@@ -9,7 +9,7 @@ using System.Windows.Navigation;
 
 namespace GoToWindow.Windows
 {
-	public partial class SettingsWindow : Window
+	public partial class SettingsWindow
 	{
 		public SettingsWindow()
 		{

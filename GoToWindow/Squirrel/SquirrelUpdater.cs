@@ -47,6 +47,8 @@ namespace GoToWindow.Squirrel
 				{
 					var appPath = Path.GetFileName(Assembly.GetEntryAssembly().Location);
 					var dirPath = Path.GetDirectoryName(appPath);
+					if (dirPath == null)
+						throw new ApplicationException(string.Format("Could not get the directory name from path {0}", appPath));
 					return Path.Combine(dirPath, updateUrl);
 				}
 

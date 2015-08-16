@@ -62,6 +62,8 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 						finder = finderCtor();
 					else
 						continue;
+
+					finders.Add(browserName, finder);
 				}
 
 			    string errorMessage;

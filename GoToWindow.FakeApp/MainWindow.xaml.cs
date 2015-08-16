@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace GoToWindow.FakeApp
 {
-	public partial class MainWindow : Window
+	public partial class MainWindow
 	{
 		private const int MaxKeyInputMessages = 20;
 

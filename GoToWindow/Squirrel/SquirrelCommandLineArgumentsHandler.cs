@@ -1,19 +1,11 @@
 ﻿using System.Linq;
 using log4net;
-using System.Windows;
-using GoToWindow.Windows;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace GoToWindow.Squirrel
 {
 	public class SquirrelCommandLineArgumentsHandler
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SquirrelCommandLineArgumentsHandler).Assembly, "GoToWindow");
-
-		public SquirrelCommandLineArgumentsHandler()
-		{
-		}
 
 		public bool IsFirstRun { get; private set; }
 

@@ -12,7 +12,7 @@ using log4net;
 
 namespace GoToWindow.Windows
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(MainWindow).Assembly, "GoToWindow");
 
@@ -47,13 +47,13 @@ namespace GoToWindow.Windows
 
         private void WindowsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (!Properties.Settings.Default.WindowListSingleClick)
+            if (!Settings.Default.WindowListSingleClick)
                 FocusSelectedWindowItem();
         }
 
         private void WindowsListView_MouseClick(object sender, MouseButtonEventArgs e)
         {
-            if (Properties.Settings.Default.WindowListSingleClick)
+            if (Settings.Default.WindowListSingleClick)
                 FocusSelectedWindowItem();
         }
 

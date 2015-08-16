@@ -7,7 +7,6 @@ using GoToWindow.Api;
 using GoToWindow.Properties;
 using GoToWindow.Squirrel;
 using log4net;
-using Microsoft.Win32;
 
 namespace GoToWindow.ViewModels
 {
@@ -26,7 +25,6 @@ namespace GoToWindow.ViewModels
 
 		private readonly IGoToWindowContext _context;
 		private readonly SquirrelUpdater _updater;
-
 
 		protected SettingsViewModel()
 		{
@@ -200,7 +198,7 @@ namespace GoToWindow.ViewModels
 
 			// Save
 			Settings.Default.Save();
-			Log.InfoFormat("Settings updated. Shortcut is '{0}'", shortcut.ToString());
+			Log.InfoFormat("Settings updated. Shortcut is '{0}' ({1})", shortcut.ToHumanReadableString(), shortcut);
 		}
 
 		private KeyboardShortcut CreateShortcut()
@@ -241,16 +239,6 @@ namespace GoToWindow.ViewModels
 				return false;
 
 			return new KeyboardShortcut((int)ShortcutControlKey, ShortcutKey, ShortcutKey).IsValid;
-		}
-
-		private static bool GetStartWithWindows()
-		{
-			var runList = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", false);
-		    
-            if (runList == null) return false;
-		    
-            var executablePath = Assembly.GetExecutingAssembly().Location;
-		    return ((string)runList.GetValue("GoToWindow") == executablePath);
 		}
 	}
 }
