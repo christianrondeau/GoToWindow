@@ -68,15 +68,17 @@ namespace GoToWindow
 			else
 				Log.WarnFormat("Application started with invalid shortcut. Shortcut is '{0}', reason: {1}", GoToWindow.Properties.Settings.Default.OpenShortcut, shortcut.InvalidReason);
 
-			_menu.ShowStartupTooltip();
-
-			if(isFirstRun)
+			if (isFirstRun)
 			{
 				Log.Info("Squirrel: First run");
 				Dispatcher.InvokeAsync(() =>
 				{
 					new FirstRunWindow(_context) {DataContext = new FirstRunViewModel()}.Show();
 				});
+			}
+			else
+			{
+				_menu.ShowStartupTooltip();
 			}
 
 			SquirrelContext.AcquireUpdater().CheckForUpdates(_context.UpdateAvailable, null);

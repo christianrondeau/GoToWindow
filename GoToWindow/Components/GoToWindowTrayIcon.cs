@@ -56,7 +56,7 @@ namespace GoToWindow.Components
 			_trayIcon.ShowBalloonTip(
 				"Go To Window",
 				tooltipMessage,
-				BalloonIcon.Info);
+				BalloonIcon.None);
 		}
 
 		public void Dispose()
