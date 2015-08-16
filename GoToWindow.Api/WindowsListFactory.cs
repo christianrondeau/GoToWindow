@@ -110,6 +110,12 @@ namespace GoToWindow.Api
 			    }
 			}
 
+			if ("WWAHost".Equals(processName, StringComparison.OrdinalIgnoreCase))
+				return "Windows Store App";
+
+			if ("ApplicationFrameHost".Equals(processName, StringComparison.OrdinalIgnoreCase))
+				return "Windows Store App";
+
 		    return processName;
 	    }
 
@@ -127,7 +133,8 @@ namespace GoToWindow.Api
 			"DV2ControlHost",
 			"MsgrIMEWindowClass",
 			"SysShadow",
-			"Button"
+			"Button",
+			"Windows.UI.Core.CoreWindow", // Windows 10 Store Apps when minimized
 		};
 
         private static bool HWndEligibleForActivation(IntPtr hWnd, IntPtr lShellWindow)
