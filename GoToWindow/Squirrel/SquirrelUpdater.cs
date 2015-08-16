@@ -177,19 +177,20 @@ namespace GoToWindow.Squirrel
 
 		internal void InstallShortcuts(bool updateOnly)
 		{
-			_updateManager.CreateShortcutsForExecutable(
-				Path.GetFileName(Assembly.GetEntryAssembly().Location),
-				ShortcutLocation.StartMenu | ShortcutLocation.Startup,
-				updateOnly
-				);
+			var executableFilename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
+
+			_updateManager.CreateShortcutsForExecutable(executableFilename, ShortcutLocation.StartMenu, updateOnly);
+			_updateManager.CreateShortcutsForExecutable(executableFilename, ShortcutLocation.Startup, updateOnly);
+			_updateManager.CreateShortcutsForExecutable(executableFilename, ShortcutLocation.Desktop, updateOnly);
 		}
 
 		internal void RemoveShortcuts()
 		{
-			_updateManager.RemoveShortcutsForExecutable(
-				Path.GetFileName(Assembly.GetEntryAssembly().Location),
-				ShortcutLocation.StartMenu | ShortcutLocation.Startup
-				);
+			var executableFilename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
+
+			_updateManager.RemoveShortcutsForExecutable(executableFilename, ShortcutLocation.StartMenu);
+			_updateManager.RemoveShortcutsForExecutable(executableFilename, ShortcutLocation.Desktop);
+			_updateManager.RemoveShortcutsForExecutable(executableFilename, ShortcutLocation.Startup);
 		}
 	}
 }
