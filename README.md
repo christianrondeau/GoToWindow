@@ -1,4 +1,4 @@
-# Go To Window
+# GoToWindow
 
 [![Join the chat at https://gitter.im/christianrondeau/GoToWindow](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/christianrondeau/GoToWindow?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -34,15 +34,17 @@ Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to
 
 * By default, GoToWindow expands web browser's tabs. This slows down display a little bit. You can disable it in the Settings, under the Plugins tab.
 
+* Windows 10 is supported, but there's a few glitches (icons and process name not showing up, some closed apps still showing up...)
+
 ## Bugs
 
-If for some reason Go To Window crashes, create an [issue](https://github.com/christianrondeau/GoToWindow/issues) (check if one already exists before).
+If for some reason GoToWindow crashes, create an [issue](https://github.com/christianrondeau/GoToWindow/issues) (check if one already exists before).
 
 Please include:
 
-* Log (`GoToWindow.log` in the installation directory).<br />_Only include the last ~20 lines._
+* Log (`GoToWindow.log` in the installation directory).<br />_Only include the last ~50 lines._
 * Version of Windows
-* Version of Go To Window
+* Version of GoToWindow
 
 ## Plugins
 
@@ -56,7 +58,7 @@ GoToWindow is extensible. Even the core functionality is a plug-in, that can be 
 
 ### Installing Additional Plug-ins
 
-Simply drop the plug-in files under `GoToWindow\Plugins` directory, and restart Go To Window.
+Simply drop the plug-in files under `GoToWindow\Plugins` directory, and restart GoToWindow.
 
 ### Writing your own Plug-ins
 
