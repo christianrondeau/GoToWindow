@@ -48,7 +48,7 @@ namespace GoToWindow.Api
 				return;
 			}
 
-			if (Enum.IsDefined(typeof (KeyboardControlKeys), (KeyboardControlKeys) virtualKeyCode))
+			if (Enum.IsDefined(typeof (ModifierVirtualKeys), (ModifierVirtualKeys) virtualKeyCode))
 			{
 				IsValid = false;
 				return;	

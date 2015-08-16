@@ -91,8 +91,8 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-		private KeyboardControlKeys _shortcutControlKey;
-		public KeyboardControlKeys ShortcutControlKey
+		private ModifierVirtualKeys _shortcutControlKey;
+		public ModifierVirtualKeys ShortcutControlKey
 		{
 			get { return _shortcutControlKey; }
 			set
@@ -100,34 +100,6 @@ namespace GoToWindow.ViewModels
 				_shortcutControlKey = value;
 				OnPropertyChanged("ShortcutControlKey");
 				UpdateShortcutValidity();
-				UpdateShortcutDescription();
-			}
-		}
-
-		private KeyboardVirtualKeys _shortcutKeyPreset;
-		public KeyboardVirtualKeys ShortcutKeyPreset
-		{
-			get { return _shortcutKeyPreset; }
-			set
-			{
-
-				if (value == KeyboardVirtualKeys.Custom)
-				{
-					ShortcutKey = (int) KeyboardVirtualKeys.Tab;
-					_shortcutKeyPreset = KeyboardVirtualKeys.Custom;
-				}
-				else if (Enum.IsDefined(typeof (KeyboardVirtualKeys), value))
-				{
-					ShortcutKey = (int)value;
-					_shortcutKeyPreset = value;
-				}
-				else
-				{
-					ShortcutKey = (int)value;
-					_shortcutKeyPreset = KeyboardVirtualKeys.Custom;
-				}
-
-				OnPropertyChanged("ShortcutKeyPreset");
 				UpdateShortcutDescription();
 			}
 		}
@@ -184,8 +156,7 @@ namespace GoToWindow.ViewModels
 
 			// Shortcut
 			var shortcut = KeyboardShortcut.FromString(Settings.Default.OpenShortcut);
-			ShortcutControlKey = Enum.IsDefined(typeof(KeyboardControlKeys), shortcut.ControlVirtualKeyCode) ? (KeyboardControlKeys)shortcut.ControlVirtualKeyCode : KeyboardControlKeys.Undefined;
-			ShortcutKeyPreset = Enum.IsDefined(typeof(KeyboardVirtualKeys), shortcut.VirtualKeyCode) ? (KeyboardVirtualKeys)shortcut.VirtualKeyCode : KeyboardVirtualKeys.Custom;
+			ShortcutControlKey = Enum.IsDefined(typeof(ModifierVirtualKeys), shortcut.ControlVirtualKeyCode) ? (ModifierVirtualKeys)shortcut.ControlVirtualKeyCode : ModifierVirtualKeys.Undefined;
 			ShortcutKey = shortcut.VirtualKeyCode;
 			ShortcutPressesBeforeOpen = shortcut.ShortcutPressesBeforeOpen;
 
@@ -263,7 +234,7 @@ namespace GoToWindow.ViewModels
 
 		private bool CheckShortcutValidity()
 		{
-			if (ShortcutControlKey == KeyboardControlKeys.Undefined)
+			if (ShortcutControlKey == ModifierVirtualKeys.Undefined)
 				return false;
 
 			if (ShortcutKey == 0)

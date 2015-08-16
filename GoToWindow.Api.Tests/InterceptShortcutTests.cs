@@ -9,7 +9,7 @@ namespace GoToWindow.Api.Tests
 		public void CanInterceptAltTab()
 		{
 			var intercepted = false;
-			var shortcut = new KeyboardShortcut((int) KeyboardControlKeys.LAlt, (int) KeyboardVirtualKeys.Tab, 1);
+			var shortcut = new KeyboardShortcut((int)ModifierVirtualKeys.LAlt, /* VK_TAB */ 0x09, 1);
 
 			using (KeyboardHook.Hook(shortcut, () => intercepted = true))
 			{
@@ -25,7 +25,7 @@ namespace GoToWindow.Api.Tests
 		public void CanInterceptWinTab()
 		{
 			var intercepted = false;
-			var shortcut = new KeyboardShortcut((int)KeyboardControlKeys.LWin, (int)KeyboardVirtualKeys.Tab, 1);
+			var shortcut = new KeyboardShortcut((int)ModifierVirtualKeys.LWin, /* VK_TAB */ 0x09, 1);
 
 			using (KeyboardHook.Hook(shortcut, () => intercepted = true))
 			{

@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace GoToWindow.Api
 {
-	public enum KeyboardControlKeys
+	public enum ModifierVirtualKeys
 	{
 		Undefined = 0,
 		[Description("Left Control")]
@@ -13,15 +13,5 @@ namespace GoToWindow.Api
 		LWin = 0x5B, //VK_LWIN
 		[Description("Left Shift")]
 		LShift = 0x10 // VK_SHIFT
-	}
-
-	public enum KeyboardVirtualKeys
-	{
-		[Description("Custom")]
-		Custom = 0,
-		[Description("Tab")]
-		Tab = 0x09, //VK_TAB
-		[Description("Escape")]
-		Escape = 0x1B //VK_ESCAPE
 	}
 }

@@ -7,9 +7,8 @@ namespace GoToWindow.ViewModels
 	{	
 		public DesignTimeSettingsViewModel()
 		{
-			ShortcutControlKey = KeyboardControlKeys.LWin;
-			ShortcutKeyPreset = KeyboardVirtualKeys.Custom;
-			ShortcutKey = (int)KeyboardVirtualKeys.Escape;
+			ShortcutControlKey = ModifierVirtualKeys.LWin;
+			ShortcutKey = /* VK_TAB */ 0x09;
 			ShortcutPressesBeforeOpen = 1;
 
 			Version = "0.0.0";

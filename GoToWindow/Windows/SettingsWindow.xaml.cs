@@ -51,7 +51,7 @@ namespace GoToWindow.Windows
 				e.Cancel = true;
 		}
 
-		private void CustomShortcutKey_OnPreviewKeyDown(object sender, KeyEventArgs e)
+		private void ShortcutKey_OnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			e.Handled = true;
 

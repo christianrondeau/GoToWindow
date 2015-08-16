@@ -24,7 +24,7 @@ namespace GoToWindow.Api
 
 		public static string GetModifierVirtualKeyDescription(int vkKey)
 		{
-			var member = typeof (KeyboardControlKeys).GetMember(((KeyboardControlKeys) vkKey).ToString());
+			var member = typeof (ModifierVirtualKeys).GetMember(((ModifierVirtualKeys) vkKey).ToString());
 			var memberInfo = member.FirstOrDefault();
 			if (memberInfo == null)
 				return UnnamedKey;

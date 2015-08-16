@@ -114,7 +114,7 @@ namespace GoToWindow.Api
 			Console.WriteLine("Keys: 0x{0:X2}\t0x{1:X2}\t{2}\t{3}", keyInfo.VkCode, keyInfo.Flags, WMKeyNames[(int)wParam], GetAsyncKeyState(_shortcut.ControlVirtualKeyCode));
 			#endif
 
-			var expectedDownWParam = _shortcut.ControlVirtualKeyCode == (int)KeyboardControlKeys.LAlt ? WM_SYSKEYDOWN : WM_KEYDOWN;
+			var expectedDownWParam = _shortcut.ControlVirtualKeyCode == (int)ModifierVirtualKeys.LAlt ? WM_SYSKEYDOWN : WM_KEYDOWN;
 
 			if ((int) wParam != expectedDownWParam)
 				return CallNextHookEx(_hookID, nCode, wParam, lParam);

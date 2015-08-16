@@ -25,10 +25,6 @@
 		</converters:ValueConverterGroup>
 		<converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
 		<converters:ShortcutKeyToStringConverter x:Key="ShortcutKeyToStringConverter" />
-		<converters:ValueConverterGroup x:Key="InvertEnumToVisibilityConverter">
-			<converters:EnumToVisibilityConverter/>
-			<converters:InverseVisibilityConverter  />
-		</converters:ValueConverterGroup>
 	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -113,13 +109,7 @@
 								<ComboBoxItem Tag="LWin">Left Win</ComboBoxItem>
 							</ComboBox>
 
-							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutKey" SelectedValuePath="Tag" SelectedValue="{Binding ShortcutKeyPreset, UpdateSourceTrigger=PropertyChanged}">
-								<ComboBoxItem Tag="Custom">Custom...</ComboBoxItem>
-								<ComboBoxItem Tag="Tab">Tab</ComboBoxItem>
-								<ComboBoxItem Tag="Escape">Escape</ComboBoxItem>
-							</ComboBox>
-
-							<TextBox Margin="2" x:Name="CustomShortcutKey" PreviewKeyDown="CustomShortcutKey_OnPreviewKeyDown" Text="{Binding ShortcutKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShortcutKeyToStringConverter}}" Visibility="{Binding ShortcutKeyPreset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Custom}" TextAlignment="Center" Width="48" Height="24" ToolTip="Click inside the box and type the key you want to use as a shortcut, without Ctrl, Alt, Shift or Win." />
+							<TextBox Margin="2" x:Name="ShortcutKey" PreviewKeyDown="ShortcutKey_OnPreviewKeyDown" Text="{Binding ShortcutKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShortcutKeyToStringConverter}}" TextAlignment="Center" Width="48" Height="24" ToolTip="Click inside the box and type the key you want to use as a shortcut, without Ctrl, Alt, Shift or Win." />
 
 							<ComboBox Margin="2" Width="Auto" x:Name="ShortcutPressesBeforeOpenComboBox" SelectedIndex="{Binding ShortcutPressesBeforeOpen, Converter={StaticResource IncrementIntConverter}, ConverterParameter=-1}">
 								<ComboBoxItem Tag="1">Once</ComboBoxItem>
