@@ -26,7 +26,7 @@ namespace GoToWindow.Api
 			// ReSharper restore RedundantArgumentName
 		}
 
-		public readonly bool IsValid;
+		public bool IsValid;
 		public string InvalidReason { get; set; }
 		public int ControlVirtualKeyCode;
 		public int VirtualKeyCode;
@@ -42,22 +42,30 @@ namespace GoToWindow.Api
 
 		public KeyboardShortcut(int controlVirtualKeyCode, int virtualKeyCode, int shortcutPressesBeforeOpen)
 		{
-			if (controlVirtualKeyCode <= 0 || virtualKeyCode <= 0 || shortcutPressesBeforeOpen <= 0)
+			if (!Validate(controlVirtualKeyCode, virtualKeyCode, shortcutPressesBeforeOpen))
 			{
 				IsValid = false;
 				return;
-			}
-
-			if (Enum.IsDefined(typeof (ModifierVirtualKeys), (ModifierVirtualKeys) virtualKeyCode))
-			{
-				IsValid = false;
-				return;	
 			}
 
 			ControlVirtualKeyCode = controlVirtualKeyCode;
 			VirtualKeyCode = virtualKeyCode;
 			ShortcutPressesBeforeOpen = shortcutPressesBeforeOpen;
 			IsValid = true;
+		}
+
+		private static bool Validate(int controlVirtualKeyCode, int virtualKeyCode, int shortcutPressesBeforeOpen)
+		{
+			if (controlVirtualKeyCode <= 0 || virtualKeyCode <= 0 || shortcutPressesBeforeOpen <= 0)
+				return false;
+
+			if (Enum.IsDefined(typeof (ModifierVirtualKeys), (ModifierVirtualKeys) virtualKeyCode))
+				return false;
+
+			if (controlVirtualKeyCode == (int) ModifierVirtualKeys.LWin && virtualKeyCode == 0x53) // WIN + S
+				return false;
+
+			return true;
 		}
 
 		public string ToHumanReadableString()
