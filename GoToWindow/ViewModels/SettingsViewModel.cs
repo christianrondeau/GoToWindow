@@ -110,9 +110,23 @@ namespace GoToWindow.ViewModels
 			get { return _shortcutKeyPreset; }
 			set
 			{
-				_shortcutKeyPreset = value;
+
 				if (value == KeyboardVirtualKeys.Custom)
+				{
 					ShortcutKey = (int) KeyboardVirtualKeys.Tab;
+					_shortcutKeyPreset = KeyboardVirtualKeys.Custom;
+				}
+				else if (Enum.IsDefined(typeof (KeyboardVirtualKeys), value))
+				{
+					ShortcutKey = (int)value;
+					_shortcutKeyPreset = value;
+				}
+				else
+				{
+					ShortcutKey = (int)value;
+					_shortcutKeyPreset = KeyboardVirtualKeys.Custom;
+				}
+
 				OnPropertyChanged("ShortcutKeyPreset");
 				UpdateShortcutDescription();
 			}
@@ -220,12 +234,14 @@ namespace GoToWindow.ViewModels
 
 		private KeyboardShortcut CreateShortcut()
 		{
+			// ReSharper disable RedundantArgumentName
 			return new KeyboardShortcut
-			{
-				ControlVirtualKeyCode = (int)ShortcutControlKey,
-				VirtualKeyCode = ShortcutKey,
-				ShortcutPressesBeforeOpen = ShortcutPressesBeforeOpen
-			};
+				(
+				controlVirtualKeyCode: (int) ShortcutControlKey,
+				virtualKeyCode: ShortcutKey,
+				shortcutPressesBeforeOpen: ShortcutPressesBeforeOpen
+				);
+			// ReSharper restore RedundantArgumentName
 		}
 
 		private void CheckForUpdatesCallback(string latestVersion)
@@ -253,7 +269,7 @@ namespace GoToWindow.ViewModels
 			if (ShortcutKey == 0)
 				return false;
 
-			return true;
+			return new KeyboardShortcut((int)ShortcutControlKey, ShortcutKey, ShortcutKey).IsValid;
 		}
 
 		private static bool GetStartWithWindows()

@@ -1,10 +1,12 @@
+using GoToWindow.Api;
+
 namespace GoToWindow.ViewModels
 {
 	public class DesignTimeFirstRunViewModel
 	{
 		public string ShortcutDescription
 		{
-			get { return "Win + Tab + Tab"; }
+			get { return KeyboardShortcut.FromString(Properties.Settings.Default.OpenShortcut).ToHumanReadableString(); }
 		}
 	}
 }

@@ -2,50 +2,54 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace GoToWindow.Api
 {
 	public class VirtualKeyDescription
 	{
+		// http://blog.molecular-matters.com/2011/09/05/properly-handling-keyboard-input/
+
+		// ReSharper disable InconsistentNaming
+		private const uint MAPVK_VK_TO_VSC = 0x0;
+		// ReSharper restore InconsistentNaming
+
 		[DllImport("user32.dll")]
-		static extern int MapVirtualKey(uint uCode, uint uMapType);
+		internal static extern int MapVirtualKey(uint uCode, uint uMapType);
 
-		private const string UnnamedKey = "Unnamed Key";
-		private const int F1VirtualKeyCode = 0x70;
-		private const int FMaxVirtualKeyCode = 0x87;
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		internal static extern int GetKeyNameText(uint lParam, [MarshalAs(UnmanagedType.LPWStr), Out]StringBuilder str, int size);
 
-		private static bool IsFKey(int value)
+		private const string UnnamedKey = "?";
+
+		public static string GetModifierVirtualKeyDescription(int vkKey)
 		{
-			return value >= F1VirtualKeyCode && value <= FMaxVirtualKeyCode;
-		}
-
-		public static string GetDescription<TEnum>(TEnum key) where TEnum : struct
-		{
-			var value = (int) (object) key;
-
-			if (IsFKey(value))
-				return "F" + (value - F1VirtualKeyCode + 1);
-
-			var description = GetDescriptionInternal(typeof(TEnum), key.ToString());
-			if (description != null)
-				return description;
-
-			var nonVirtualKey = MapVirtualKey((uint)(int)value, 2);
-			var mappedChar = Convert.ToChar(nonVirtualKey);
-			return mappedChar.ToString();
-		}
-
-		private static string GetDescriptionInternal(Type enumType, string value)
-		{
-			if (enumType == null) throw new ArgumentNullException("enumType");
-
-			var member = enumType.GetMember(value);
+			var member = typeof (KeyboardControlKeys).GetMember(((KeyboardControlKeys) vkKey).ToString());
 			var memberInfo = member.FirstOrDefault();
 			if (memberInfo == null)
-				return null;
-			var attributes = memberInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+				return UnnamedKey;
+			var attributes = memberInfo.GetCustomAttributes(typeof (DescriptionAttribute), false);
 			var attribute = attributes.Cast<DescriptionAttribute>().FirstOrDefault();
 			return attribute != null ? attribute.Description : UnnamedKey;
+		}
+
+		public static string GetVirtualKeyDescription(int vkKey)
+		{
+			if (vkKey <= 0)
+				return UnnamedKey;
+
+			var scanCode = MapVirtualKey((uint)vkKey, MAPVK_VK_TO_VSC);
+
+			if (scanCode == 0)
+				return UnnamedKey;
+
+			var sb = new StringBuilder();
+			var length = GetKeyNameText(((uint)scanCode) << 16, sb, 256);
+			if (length > 0)
+				return sb.ToString();
+
+			var mappedChar = Convert.ToChar(scanCode);
+			return mappedChar.ToString();
 		}
 	}
 }

@@ -10,31 +10,61 @@ namespace GoToWindow.Api
 		public static KeyboardShortcut FromString(string value)
 		{
 			if (string.IsNullOrEmpty(value))
-				return new KeyboardShortcut();
+				return new KeyboardShortcut("Empty shortcut");
 
 			var matches = StringRepresentation.Match(value);
 
 			if (!matches.Success)
-				throw new ApplicationException(string.Format("Invalid keyboard shortcut: '{0}'", value));
-			
-			return new KeyboardShortcut{
-				ControlVirtualKeyCode = Convert.ToInt32(matches.Groups[1].Value, 16),
-				VirtualKeyCode = Convert.ToInt32(matches.Groups[2].Value, 16),
-				ShortcutPressesBeforeOpen = Convert.ToInt32(matches.Groups[3].Value)
-			};
+				return new KeyboardShortcut("Configured value does not match the required format");
+
+			// ReSharper disable RedundantArgumentName
+			return new KeyboardShortcut(
+				controlVirtualKeyCode: Convert.ToInt32(matches.Groups[1].Value, 16),
+				virtualKeyCode: Convert.ToInt32(matches.Groups[2].Value, 16),
+				shortcutPressesBeforeOpen: Convert.ToInt32(matches.Groups[3].Value)
+				);
+			// ReSharper restore RedundantArgumentName
 		}
 
+		public readonly bool IsValid;
+		public string InvalidReason { get; set; }
 		public int ControlVirtualKeyCode;
 		public int VirtualKeyCode;
 		public int ShortcutPressesBeforeOpen;
 
 		public bool Enabled { get { return ControlVirtualKeyCode > 0 && VirtualKeyCode > 0 && ShortcutPressesBeforeOpen > 0; } }
 
+		public KeyboardShortcut(string invalidReason)
+		{
+			InvalidReason = invalidReason;
+			IsValid = false;
+		}
+
+		public KeyboardShortcut(int controlVirtualKeyCode, int virtualKeyCode, int shortcutPressesBeforeOpen)
+		{
+			if (controlVirtualKeyCode <= 0 || virtualKeyCode <= 0 || shortcutPressesBeforeOpen <= 0)
+			{
+				IsValid = false;
+				return;
+			}
+
+			if (Enum.IsDefined(typeof (KeyboardControlKeys), (KeyboardControlKeys) virtualKeyCode))
+			{
+				IsValid = false;
+				return;	
+			}
+
+			ControlVirtualKeyCode = controlVirtualKeyCode;
+			VirtualKeyCode = virtualKeyCode;
+			ShortcutPressesBeforeOpen = shortcutPressesBeforeOpen;
+			IsValid = true;
+		}
+
 		public string ToHumanReadableString()
 		{
-			var virtualKeyString = " + " + VirtualKeyDescription.GetDescription((KeyboardVirtualKeys) VirtualKeyCode);
+			var virtualKeyString = " + " + VirtualKeyDescription.GetVirtualKeyDescription(VirtualKeyCode);
 			virtualKeyString = String.Concat(Enumerable.Repeat(virtualKeyString, ShortcutPressesBeforeOpen));
-			return VirtualKeyDescription.GetDescription((KeyboardControlKeys)ControlVirtualKeyCode) + virtualKeyString;
+			return VirtualKeyDescription.GetModifierVirtualKeyDescription(ControlVirtualKeyCode) + virtualKeyString;
 		}
 
 		public override string ToString()

@@ -10,7 +10,9 @@ namespace GoToWindow.Api
 		[Description("Left Alt")]
 		LAlt = 0xA4, //VK_LMENU,
 		[Description("Left Win")]
-		LWin = 0x5B //VK_LWIN
+		LWin = 0x5B, //VK_LWIN
+		[Description("Left Shift")]
+		LShift = 0x10 // VK_SHIFT
 	}
 
 	public enum KeyboardVirtualKeys

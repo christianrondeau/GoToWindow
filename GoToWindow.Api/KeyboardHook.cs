@@ -100,6 +100,14 @@ namespace GoToWindow.Api
 			if (nCode != HC_ACTION)
 				return CallNextHookEx(_hookID, nCode, wParam, lParam);
 
+			if (!_shortcut.IsValid)
+			{
+#if(DEBUG_KEYS)
+				Console.WriteLine("Invalid: " + _shortcut.InvalidReason);
+#endif
+				return CallNextHookEx(_hookID, nCode, wParam, lParam);
+			}
+
 			var keyInfo = (Kbdllhookstruct)Marshal.PtrToStructure(lParam, typeof(Kbdllhookstruct));
 
 			#if(DEBUG_KEYS)

@@ -8,12 +8,14 @@ namespace GoToWindow.Api.Tests
 		[TestMethod]
 		public void ToStringContainsAllKeys()
 		{
+			// ReSharper disable RedundantArgumentNameForLiteralExpression
 			var shortcut = new KeyboardShortcut
-			{
-				ControlVirtualKeyCode = 0xA4,
-				VirtualKeyCode = 0x09,
-				ShortcutPressesBeforeOpen = 2
-			};
+			(
+				controlVirtualKeyCode: 0xA4,
+				virtualKeyCode: 0x09,
+				shortcutPressesBeforeOpen: 2
+			);
+			// ReSharper restore RedundantArgumentNameForLiteralExpression
 			Assert.AreEqual("A4+09:2", shortcut.ToString());
 		}
 

@@ -55,6 +55,9 @@ namespace GoToWindow.Windows
 		{
 			e.Handled = true;
 
+			if (e.IsUp)
+				return;
+
 			if (DataContext == null)
 				return;
 

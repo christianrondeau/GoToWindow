@@ -63,7 +63,10 @@ namespace GoToWindow
 
 			_context.Init();
 
-			Log.InfoFormat("Application started. Shortcut is '{0}'", shortcut.ToString());
+			if (shortcut.IsValid)
+				Log.InfoFormat("Application started. Shortcut is '{0}' ({1})", shortcut.ToHumanReadableString(), GoToWindow.Properties.Settings.Default.OpenShortcut);
+			else
+				Log.WarnFormat("Application started with invalid shortcut. Shortcut is '{0}', reason: {1}", GoToWindow.Properties.Settings.Default.OpenShortcut, shortcut.InvalidReason);
 
 			_menu.ShowStartupTooltip();
 
@@ -82,9 +85,9 @@ namespace GoToWindow
 		private bool WaitForOtherInstancesToShutDown()
 		{
 			const int msBetweenAttempts = 500;
-			bool isOnlyRunningProcessInstance;
-			for(int attempt = 0; attempt < 10; attempt++)
+			for(var attempt = 0; attempt < 10; attempt++)
 			{
+				bool isOnlyRunningProcessInstance;
 				_mutex = new Mutex(true, "GoToWindow", out isOnlyRunningProcessInstance);
 
 				if (isOnlyRunningProcessInstance)

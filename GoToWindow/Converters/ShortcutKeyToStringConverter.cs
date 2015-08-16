@@ -12,7 +12,7 @@ namespace GoToWindow.Converters
 			if (!(value is Int32))
 				throw new NotSupportedException("Only Int32 can be converted to a key");
 
-			var description = VirtualKeyDescription.GetDescription((KeyboardVirtualKeys) value);
+			var description = VirtualKeyDescription.GetVirtualKeyDescription((int) value);
 			return description ?? "?";
 		}
 
