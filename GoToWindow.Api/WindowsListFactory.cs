@@ -129,12 +129,13 @@ namespace GoToWindow.Api
 
 	    private static readonly string[] WindowsClassNamesToSkip =
 		{
-			"Shell_TrayWnd",
-			"DV2ControlHost",
-			"MsgrIMEWindowClass",
-			"SysShadow",
-			"Button",
+			"Shell_TrayWnd", // Task Bar
+			"DV2ControlHost", // Start Menu
+			"MsgrIMEWindowClass", // Messenger
+			"SysShadow", // Messenger
+			"Button", // UI component, e.g. Start Menu button
 			"Windows.UI.Core.CoreWindow", // Windows 10 Store Apps when minimized
+			"MultitaskingViewFrame", // The original Win + Tab view
 		};
 
         private static bool HWndEligibleForActivation(IntPtr hWnd, IntPtr lShellWindow)
