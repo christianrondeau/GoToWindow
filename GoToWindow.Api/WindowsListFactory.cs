@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using log4net;
@@ -9,13 +10,15 @@ namespace GoToWindow.Api
 {
     /// <remarks>
     /// Thanks to Tommy Carlier for how to get the list of windows: http://blog.tcx.be/2006/05/getting-list-of-all-open-windows.html
+	/// Thanks to taby for window eligibility: http://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
+	/// Thanks to Hans Passant & Tim Beaudet for Windows 10 apps process name: http://stackoverflow.com/a/32513438/154480
     /// </remarks>
     public static class WindowsListFactory
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(WindowsListFactory).Assembly, "GoToWindow");
         private const int MaxLastActivePopupIterations = 50;
 
-        delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
+		delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
         public enum GetAncestorFlags
         {
@@ -42,43 +45,131 @@ namespace GoToWindow.Api
         [DllImport("user32.dll")]
         static extern IntPtr GetLastActivePopup(IntPtr hWnd);
 
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+		[DllImport("user32.dll", SetLastError = true)]
+		static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
         public static WindowsList Load()
         {
             var lShellWindow = GetShellWindow();
             var windows = new List<IWindowEntry>();
             var currentProcessId = Process.GetCurrentProcess().Id;
 
-            EnumWindows((hWnd, lParam) =>
-            {
-                if (!HWndEligibleForActivation(hWnd, lShellWindow))
-                    return true;
-
-	            var className = GetClassName(hWnd);
-
-	            if (!ClassEligibleForActivation(className))
-					return true;
-
-                var window = WindowEntryFactory.Create(hWnd);
-
-                if (window == null || window.ProcessId == currentProcessId || window.Title == null)
-                    return true;
-
-	            window.ProcessName = GetProcessName(window);
-
-#if(DEBUG)
-				Log.DebugFormat("Found Window: {0} {1} Class: '{2}' Title: '{3}'", window.ProcessId, window.ProcessName, className, window.Title);
-#endif
-
-	            if (IsKnownException(window))
-		            return true;
-
-	            windows.Add(window);
-
-                return true;
-            }, 0);
+	        EnumWindows((hWnd, lParam) =>
+	        {
+		        InspectPotentialWindow(hWnd, lShellWindow, currentProcessId, windows);
+		        return true;
+	        }, 0);
 
             return new WindowsList(windows);
         }
+
+	    private static void InspectPotentialWindow(IntPtr hWnd, IntPtr lShellWindow, int currentProcessId, ICollection<IWindowEntry> windows)
+	    {
+		    if (!HWndEligibleForActivation(hWnd, lShellWindow))
+			    return;
+
+		    var className = GetClassName(hWnd);
+
+		    if (className == "ApplicationFrameWindow")
+			    InspectWindows10AppWindow(hWnd, windows, className);
+		    else
+			    InspectNormalWindow(hWnd, currentProcessId, windows, className);
+	    }
+
+		private static void InspectNormalWindow(IntPtr hWnd, int currentProcessId, ICollection<IWindowEntry> windows, string className)
+		{
+			if (!ClassEligibleForActivation(className))
+				return;
+
+			var window = WindowEntryFactory.Create(hWnd);
+
+			if (IsKnownException(window))
+				return;
+
+			if (window.ProcessId == currentProcessId || window.Title == null)
+				return;
+
+			UpdateProcessName(window);
+			windows.Add(window);
+			LogDebugWindow("- Found normal window: ", window, className);
+		}
+
+	    private static void InspectWindows10AppWindow(IntPtr hWnd, ICollection<IWindowEntry> windows, string className)
+	    {
+		    Log.Debug("- Found Window 10 App");
+
+		    var foundChildren = false;
+		    uint processId;
+		    GetWindowThreadProcessId(hWnd, out processId);
+
+		    EnumChildWindows(hWnd, (childHWnd, lparam) =>
+		    {
+			    uint childProcessId;
+			    GetWindowThreadProcessId(childHWnd, out childProcessId);
+				Log.Debug("  - Checking process: " + childProcessId);
+			    if (processId != childProcessId)
+			    {
+				    var childClassName = GetClassName(hWnd);
+
+				    var window = WindowEntryFactory.Create(childHWnd, childProcessId);
+				    if (window.Title != null)
+				    {
+						UpdateProcessName(window);
+
+					    if (IsKnownWindows10Exception(window)) return true;
+
+						//TODO: Windows 10 App Icons
+						// 1. Get the window.ProcessFileName
+						// 2. Look in the folder for AppManifest.xml
+						// 3. Look for Package/Properties/Logo
+						// 4. Load that file (should be a PNG)
+
+					    windows.Add(window);
+					    foundChildren = true;
+					    LogDebugWindow("    - Found window: ", window, childClassName);
+				    }
+			    }
+			    return true;
+		    }, IntPtr.Zero);
+
+		    if (!foundChildren)
+		    {
+				var window = WindowEntryFactory.Create(hWnd, processId);
+			    if (window.Title != null)
+			    {
+				    window.ProcessName = "Windows 10 App";
+				    windows.Add(window);
+				    LogDebugWindow("    - No windows found: ", window, className);
+			    }
+		    }
+	    }
+
+	    private static bool IsKnownWindows10Exception(WindowEntry window)
+	    {
+		    if (window.ProcessName == "MicrosoftEdge")
+			    return true;
+
+		    if (window.ProcessName == "MicrosoftEdgeCP")
+		    {
+			    if (window.Title == "CoreInput")
+				    return true;
+
+				if (window.Title == "about:tabs")
+					return true;
+		    }
+
+		    return false;
+	    }
+
+	    [Conditional("DEBUG")]
+	    private static void LogDebugWindow(string message, WindowEntry window, string className)
+	    {
+			Log.Debug(message + window + ", Class: " + className);
+	    }
 
 	    private static bool ClassEligibleForActivation(string className)
 	    {
@@ -98,25 +189,26 @@ namespace GoToWindow.Api
 		    return length == 0 ? null : classNameStringBuilder.ToString();
 	    }
 
-	    private static string GetProcessName(IWindowEntry window)
+	    private static void UpdateProcessName(IWindowEntry window)
 	    {
-		    var processName = WmiProcessWatcher.GetProcessName(window.ProcessId, () => window.ProcessName);
-
-		    if (processName == null)
+		    window.ProcessName = WmiProcessWatcher.GetProcessName(window.ProcessId, () =>
 		    {
 			    using (var process = Process.GetProcessById((int) window.ProcessId))
 			    {
-				    processName = process.ProcessName;
+					//TODO: Windows 10 App Icons
+					/*
+				    try
+				    {
+						window.ProcessFileName = process.MainModule.FileName;
+				    }
+				    catch (Exception ex)
+				    {
+						Log.Warn("Could not get the executable name of the process " + window, ex);
+				    }
+					 * */
+				    return process.ProcessName;
 			    }
-			}
-
-			if ("WWAHost".Equals(processName, StringComparison.OrdinalIgnoreCase))
-				return "Windows Store App";
-
-			if ("ApplicationFrameHost".Equals(processName, StringComparison.OrdinalIgnoreCase))
-				return "Windows Store App";
-
-		    return processName;
+		    });
 	    }
 
 	    private static bool IsKnownException(IWindowEntry window)
@@ -134,14 +226,13 @@ namespace GoToWindow.Api
 			"MsgrIMEWindowClass", // Messenger
 			"SysShadow", // Messenger
 			"Button", // UI component, e.g. Start Menu button
-			"Windows.UI.Core.CoreWindow", // Windows 10 Store Apps when minimized
+			"Windows.UI.Core.CoreWindow", // Windows 10 Store Apps
+			"Frame Alternate Owner", // Edge
 			"MultitaskingViewFrame", // The original Win + Tab view
 		};
 
         private static bool HWndEligibleForActivation(IntPtr hWnd, IntPtr lShellWindow)
         {
-            // http://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
-
             if (hWnd == lShellWindow)
                 return false;
 

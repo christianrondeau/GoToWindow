@@ -21,10 +21,15 @@ namespace GoToWindow.Api
 
 		public static WindowEntry Create(IntPtr hWnd)
 		{
-			var windowTitle = GetWindowTitle(hWnd);
-
 			uint processId;
 			GetWindowThreadProcessId(hWnd, out processId);
+
+			return Create(hWnd, processId);
+		}
+
+		public static WindowEntry Create(IntPtr hWnd, uint processId)
+		{
+			var windowTitle = GetWindowTitle(hWnd);
 
 		    var iconHandle = WindowIcon.GetAppIcon(hWnd);
             var isVisible = !IsIconic(hWnd);
