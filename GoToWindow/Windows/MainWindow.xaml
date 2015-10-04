@@ -124,7 +124,7 @@
 						</TextBox.Template>
 					</TextBox>
 				</Viewbox>
-				<Button Cursor="Hand" HorizontalAlignment="Left" Name="ClearSearchButton" Grid.Column="1" Width="32" Height="32" Style="{StaticResource RoundButton}" Click="ClearSearchButton_Click">
+				<Button Cursor="Hand" HorizontalAlignment="Left" Name="ClearSearchButton" Grid.Column="1" Width="32" Height="32" Style="{StaticResource RoundButton}" Click="ClearSearchButton_Click" KeyboardNavigation.IsTabStop="False">
 					<Image Width="16" Height="16" Source="/GoToWindow;component/Resources/Close.png"></Image>
 				</Button>
 			</Grid>
