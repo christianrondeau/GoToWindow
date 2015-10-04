@@ -61,17 +61,40 @@ namespace GoToWindow.Squirrel
 
 	public class SquirrelUpdater : IDisposable
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(SquirrelUpdater).Assembly, "GoToWindow");
+		public static readonly bool Enabled;
+		private static readonly ILog Log;
+		private static string _executableFilename;
+
 		private IUpdateManager _updateManager;
 		private UpdateInfo _updateInfo;
 
+		static SquirrelUpdater()
+		{
+			Log = LogManager.GetLogger(typeof(SquirrelUpdater).Assembly, "GoToWindow");
+
+			_executableFilename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
+
+			Enabled = _executableFilename.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), StringComparison.InvariantCultureIgnoreCase);
+
+			if (!Enabled)
+				Log.Info("Updates are disabled because GoToWindow is not running from the AppData directory");
+		}
+
 		public SquirrelUpdater(string updateUrl)
 		{
+			if (!Enabled) return;
+
 			_updateManager = new UpdateManager(updateUrl, "GoToWindow");
 		}
 
 		public void CheckForUpdates(Action<string> callback, Action<Exception> errCallback)
 		{
+			if (!Enabled)
+			{
+				callback(null);
+				return;
+			}
+
 			var checkForUpdateTask = _updateManager.CheckForUpdate();
 			checkForUpdateTask.ContinueWith(t => CheckForUpdateCallback(callback, t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
 			checkForUpdateTask.ContinueWith(t => HandleAsyncError(errCallback, t.Exception), TaskContinuationOptions.OnlyOnFaulted);
@@ -97,6 +120,9 @@ namespace GoToWindow.Squirrel
 
 		public void Update(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback)
 		{
+			if (!Enabled)
+				throw new ApplicationException("Updates are currently disabled");
+
 			if (_updateInfo == null)
 				throw new ApplicationException("The update available link was shown while update info is not available to SettingsViewModel.Update.");
 
@@ -177,20 +203,20 @@ namespace GoToWindow.Squirrel
 
 		internal void InstallShortcuts(bool updateOnly)
 		{
-			var executableFilename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
+			if (!Enabled) return;
 
-			_updateManager.CreateShortcutsForExecutable(executableFilename, ShortcutLocation.StartMenu, updateOnly, null, null);
-			_updateManager.CreateShortcutsForExecutable(executableFilename, ShortcutLocation.Startup, updateOnly, null, null);
-			_updateManager.CreateShortcutsForExecutable(executableFilename, ShortcutLocation.Desktop, updateOnly, null, null);
+			_updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.StartMenu, updateOnly, null, null);
+			_updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.Startup, updateOnly, null, null);
+			_updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.Desktop, updateOnly, null, null);
 		}
 
 		internal void RemoveShortcuts()
 		{
-			var executableFilename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
+			if (!Enabled) return;
 
-			_updateManager.RemoveShortcutsForExecutable(executableFilename, ShortcutLocation.StartMenu);
-			_updateManager.RemoveShortcutsForExecutable(executableFilename, ShortcutLocation.Desktop);
-			_updateManager.RemoveShortcutsForExecutable(executableFilename, ShortcutLocation.Startup);
+			_updateManager.RemoveShortcutsForExecutable(_executableFilename, ShortcutLocation.StartMenu);
+			_updateManager.RemoveShortcutsForExecutable(_executableFilename, ShortcutLocation.Desktop);
+			_updateManager.RemoveShortcutsForExecutable(_executableFilename, ShortcutLocation.Startup);
 		}
 	}
 }
