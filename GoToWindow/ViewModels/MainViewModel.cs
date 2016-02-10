@@ -148,15 +148,9 @@ namespace GoToWindow.ViewModels
 
         private ISearchResult GetEntryAt(int index)
         {
-			if (Windows == null)
-				return null;
+            var items = Windows?.View?.Cast<ISearchResult>().ToArray();
 
-            var items = Windows.View.Cast<ISearchResult>().ToArray();
-
-            if (index < items.Length)
-                return items[index];
-
-            return null;
+            return index < items?.Length ? items[index] : null;
         }
 
         private void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
