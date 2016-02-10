@@ -72,12 +72,14 @@ namespace GoToWindow.Squirrel
 		{
 			Log = LogManager.GetLogger(typeof(SquirrelUpdater).Assembly, "GoToWindow");
 
-			_executableFilename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
+		    var executablePath = Assembly.GetEntryAssembly().Location;
+		    _executableFilename = Path.GetFileName(executablePath);
 
-			Enabled = _executableFilename.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), StringComparison.InvariantCultureIgnoreCase);
+		    var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+		    Enabled = executablePath.StartsWith(appDataPath, StringComparison.InvariantCultureIgnoreCase);
 
-			if (!Enabled)
-				Log.Info("Updates are disabled because GoToWindow is not running from the AppData directory");
+		    if (!Enabled)
+		        Log.Info($"Updates are disabled because GoToWindow is not running from the AppData directory. Executable: {executablePath}, App Data: {appDataPath}");
 		}
 
 		public SquirrelUpdater(string updateUrl)
@@ -206,9 +208,9 @@ namespace GoToWindow.Squirrel
 			if (!Enabled) return;
 
 			_updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.StartMenu, updateOnly, null, null);
-			_updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.Startup, updateOnly, null, null);
 			_updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.Desktop, updateOnly, null, null);
-		}
+            _updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.Startup, updateOnly, null, null);
+        }
 
 		internal void RemoveShortcuts()
 		{
