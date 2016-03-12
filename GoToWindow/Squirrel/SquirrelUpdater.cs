@@ -79,7 +79,7 @@ namespace GoToWindow.Squirrel
 		    Enabled = executablePath.StartsWith(appDataPath, StringComparison.InvariantCultureIgnoreCase);
 
 		    if (!Enabled)
-		        Log.Info($"Updates are disabled because GoToWindow is not running from the AppData directory. Executable: {executablePath}, App Data: {appDataPath}");
+		        Log.Info(String.Format("Updates are disabled because GoToWindow is not running from the AppData directory. Executable: {0}, App Data: {1}", executablePath, appDataPath));
 		}
 
 		public SquirrelUpdater(string updateUrl)
