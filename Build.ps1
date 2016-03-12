@@ -6,7 +6,12 @@ Write-Host "Building Go To Window..." -ForegroundColor Green
 # ==================================== Functions
 
 Function GetMSBuildExe {
-	Return "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
+	[CmdletBinding()]
+	$DotNetVersion = "4.0"
+	$RegKey = "HKLM:\software\Microsoft\MSBuild\ToolsVersions\$DotNetVersion"
+	$RegProperty = "MSBuildToolsPath"
+	$MSBuildExe = Join-Path -Path (Get-ItemProperty $RegKey).$RegProperty -ChildPath "msbuild.exe"
+	Return $MSBuildExe
 }
 
 Function ZipFiles($Filename, $Source)

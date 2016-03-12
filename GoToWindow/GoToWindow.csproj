@@ -9,13 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GoToWindow</RootNamespace>
     <AssemblyName>GoToWindow</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,9 +52,8 @@
       <HintPath>..\packages\DeltaCompressionDotNet.1.0.0\lib\net45\DeltaCompressionDotNet.PatchApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\squirrel.windows.1.2.3\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
