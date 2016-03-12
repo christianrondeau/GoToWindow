@@ -8,7 +8,9 @@ namespace GoToWindow.Commands
 	{
 		private readonly Func<int, ISearchResult> _getEntryAt;
 
+#pragma warning disable 67
 		public event EventHandler CanExecuteChanged;
+#pragma warning restore 67
 		public event EventHandler Executed;
 
 		public GoToWindowEntryShortcutCommand(Func<int, ISearchResult> getEntryAt)

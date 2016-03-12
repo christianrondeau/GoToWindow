@@ -10,7 +10,9 @@ namespace GoToWindow.Extensibility.ViewModel
 		private readonly string _message;
 		private readonly Exception _exc;
 
+#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 67
 
 		public ErrorResult(string message, Exception exc, Func<UserControl> viewCtor)
 			: base(viewCtor)
