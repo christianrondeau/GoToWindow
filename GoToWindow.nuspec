@@ -54,6 +54,7 @@
 		<file src="GoToWindow\bin\Release\Splat.dll" target="lib\net45\Splat.dll" />
 		<file src="GoToWindow\bin\Release\Squirrel.dll" target="lib\net45\Squirrel.dll" />
 		<file src="GoToWindow\bin\Release\Nuget.Squirrel.dll" target="lib\net45\Nuget.Squirrel.dll" />
+		<file src="GoToWindow\bin\Release\ICSharpCode.SharpZipLib.dll" target="lib\net45\ICSharpCode.SharpZipLib.dll" />
 
 		<!-- Config Files -->
 		<file src="GoToWindow\bin\Release\GoToWindow.exe.config" target="lib\net45\GoToWindow.exe.config" />
