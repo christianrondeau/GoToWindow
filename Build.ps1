@@ -117,16 +117,16 @@ If(Test-Path -Path $SquirrelDeltaNuPkgOutputPath) {
 	Remove-Item -Confirm:$false $SquirrelDeltaNuPkgOutputPath
 }
 
-$OutputSetupExe = "$ReleasesFolder\GoToWindow.Setup.$Version.exe"
-If(Test-Path -Path $OutputSetupExe) {
-	Remove-Item -Confirm:$false $OutputSetupExe
+$OutputSetupMsi = "$ReleasesFolder\GoToWindow.Setup.$Version.msi"
+If(Test-Path -Path $OutputSetupMsi) {
+	Remove-Item -Confirm:$false $OutputSetupMsi
 }
 
 &($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath -i $SetupIcon -baseUrl https://github.com/christianrondeau/GoToWindow/releases/download/v$Version/
 
-$SquirrelSetupExe = "$ReleasesFolder\Setup.exe"
-If(Test-Path -Path $SquirrelSetupExe) {
-	Rename-Item $SquirrelSetupExe $OutputSetupExe
+$SquirrelSetupMsi = "$ReleasesFolder\Setup.msi"
+If(Test-Path -Path $SquirrelSetupMsi) {
+	Rename-Item $SquirrelSetupMsi $OutputSetupMsi
 }
 
 # ==================================== Cleanup
