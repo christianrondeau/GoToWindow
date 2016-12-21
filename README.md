@@ -12,6 +12,8 @@
 
 [Download latest release](https://github.com/christianrondeau/GoToWindow/releases)
 
+![GoToWindow screenshot](http://christianrondeau.github.io/GoToWindow/images/GoToWindow_Screenshot_1.png)
+
 ## Usage
 
 Launch `GoToWindow.exe`. You can also place it in in the Windows Startup menu to launch it automatically with Windows.
