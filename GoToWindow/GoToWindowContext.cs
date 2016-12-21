@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using GoToWindow.Api;
+using GoToWindow.Properties;
 using GoToWindow.ViewModels;
 using GoToWindow.Windows;
 using log4net;
@@ -18,7 +19,7 @@ namespace GoToWindow
 		IGoToWindowPluginsContainer PluginsContainer { get; }
 		void Init();
 		void Show();
-		void Hide();
+		void Hide(bool requested);
 		void EnableKeyboardHook(KeyboardShortcut shortcut);
 		void ShowSettings();
 		void UpdateAvailable(string version);
@@ -129,13 +130,16 @@ namespace GoToWindow
 			}
 		}
 
-		public void Hide()
+		public void Hide(bool requested)
 		{
-			Hide(false);
+			Hide(false, requested);
 		}
 
-		public void Hide(bool hideIfPending)
+		public void Hide(bool hideIfPending, bool requested)
 		{
+			if (!requested && Settings.Default.KeepOpenOnLostFocus)
+				return;
+
 			lock (_lock)
 			{
 				if (_state == GoToWindowState.Showing)
@@ -256,7 +260,7 @@ namespace GoToWindow
 			Log.DebugFormat("Window does not have focus when initialization is complete. Current foreground window is {0} (Process '{1}')", foregroundWindow.HWnd, foregroundWindow.ProcessName);
 #endif
 
-			Hide();
+			Hide(false);
 			return true;
 		}
 
@@ -276,9 +280,9 @@ namespace GoToWindow
 			Application.Current.Dispatcher.InvokeAsync(Show, DispatcherPriority.Normal);
 		}
 
-		private void _mainViewModel_Hide(object sender, EventArgs e)
+		private void _mainViewModel_Hide(object sender, CloseEventArgs e)
 		{
-			Hide();
+			Hide(false, e.Requested);
 		}
 
 		public void Dispose()

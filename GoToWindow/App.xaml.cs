@@ -137,7 +137,7 @@ namespace GoToWindow
 			Log.Debug("Application deactivated.");
 
 			if (_context != null)
-				_context.Hide();
+				_context.Hide(false);
 		}
 
 		private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

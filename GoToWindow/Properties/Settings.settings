@@ -11,5 +11,8 @@
     <Setting Name="OpenShortcut" Type="System.String" Scope="User">
       <Value Profile="(Default)">5B+09:2</Value>
     </Setting>
+    <Setting Name="KeepOpenOnLostFocus" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

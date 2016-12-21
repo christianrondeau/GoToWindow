@@ -87,7 +87,7 @@ namespace GoToWindow.ViewModels
 
         public ICommand GoToWindowEntryShortcut { get; private set; }
 
-		public event EventHandler Close;
+		public event CloseEventHandler Close;
 
         public MainViewModel()
         {
@@ -140,10 +140,10 @@ namespace GoToWindow.ViewModels
 			IsRowIndexVisible = false;
 		}
 
-		public void AskClose()
+		public void AskClose(bool requested)
 		{
 			if (Close != null)
-				Close(this, new EventArgs());
+				Close(this, new CloseEventArgs(requested));
 		}
 
         private ISearchResult GetEntryAt(int index)
@@ -162,7 +162,19 @@ namespace GoToWindow.ViewModels
         private void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
         {
             if (Close != null)
-                Close(this, new EventArgs());
+                Close(this, new CloseEventArgs(true));
         }
+	}
+
+	public delegate void CloseEventHandler(object sender, CloseEventArgs args);
+
+	public class CloseEventArgs : EventArgs
+	{
+		public bool Requested { get; private set; }
+
+		public CloseEventArgs(bool requested)
+		{
+			Requested = requested;
+		}
 	}
 }

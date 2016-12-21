@@ -41,6 +41,7 @@ namespace GoToWindow.ViewModels
 		}
 
 		public bool WindowListSingleClick { get; set; }
+		public bool KeepOpenOnLostFocus { get; set; }
 		public bool NoElevatedPrivilegesWarning { get; set; }
 		public string Version { get; set; }
 		public List<SettingsPluginViewModel> Plugins { get; protected set; }
@@ -151,6 +152,7 @@ namespace GoToWindow.ViewModels
 		{
 			// Settings
 		    WindowListSingleClick = Settings.Default.WindowListSingleClick;
+			KeepOpenOnLostFocus = Settings.Default.KeepOpenOnLostFocus;
 
 			// Shortcut
 			var shortcut = KeyboardShortcut.FromString(Settings.Default.OpenShortcut);
@@ -190,6 +192,7 @@ namespace GoToWindow.ViewModels
 
 			// Settings
 			Settings.Default.WindowListSingleClick = WindowListSingleClick;
+			Settings.Default.KeepOpenOnLostFocus = KeepOpenOnLostFocus;
 
 			// Plugins
 			var disabledPlugins = new StringCollection();

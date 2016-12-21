@@ -121,6 +121,7 @@
 						</StackPanel>
 
 						<CheckBox x:Name="WindowListSingleClick" Content="Click once to select an item in the windows list" IsChecked="{Binding WindowListSingleClick}" HorizontalAlignment="Left" Margin="2" />
+						<CheckBox x:Name="KeepOpenWhenLostFocus" Content="Keep the GoToWindow search form opened when focus is lost" IsChecked="{Binding KeepOpenOnLostFocus}" HorizontalAlignment="Left" Margin="2" />
 					</StackPanel>
 				</Grid>
 			</TabItem>
