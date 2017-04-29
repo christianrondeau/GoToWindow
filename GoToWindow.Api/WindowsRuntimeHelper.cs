@@ -18,10 +18,7 @@ namespace GoToWindow.Api
 
             var identity = WindowsIdentity.GetCurrent();
 
-            if (identity == null)
-                return false;
-
-            var principal = new WindowsPrincipal(identity);
+	        var principal = new WindowsPrincipal(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200);
         }
 	}

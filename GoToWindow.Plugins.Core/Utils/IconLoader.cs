@@ -27,7 +27,7 @@ namespace GoToWindow.Plugins.Core.Utils
 
 		private static BitmapFrame ConvertFromFile(string path)
 		{
-			if (String.IsNullOrEmpty(path) || !File.Exists(path))
+			if (string.IsNullOrEmpty(path) || !File.Exists(path))
 				return null;
 
 			using (var icon = Icon.ExtractAssociatedIcon(path))

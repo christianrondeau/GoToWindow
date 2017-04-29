@@ -11,11 +11,11 @@ namespace GoToWindow.Plugins.Core
 	[Export(GoToWindowConstants.PluginContractName, typeof(IGoToWindowPlugin))]
 	public class CorePlugin : IGoToWindowPlugin
 	{
-		public string Id { get { return "GoToWindow.Core"; } }
+		public string Id => "GoToWindow.Core";
 
-		public string Title { get { return "GoToWindow Core"; } }
+		public string Title => "GoToWindow Core";
 
-		public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.Core; } }
+		public GoToWindowPluginSequence Sequence => GoToWindowPluginSequence.Core;
 
 		public void BuildList(List<ISearchResult> list)
 		{

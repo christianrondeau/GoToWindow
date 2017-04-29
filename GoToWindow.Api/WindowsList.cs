@@ -9,6 +9,6 @@ namespace GoToWindow.Api
 			Windows = windows;
 		}
 
-		public IList<IWindowEntry> Windows { get; private set; }
+		public IList<IWindowEntry> Windows { get; }
 	}
 }

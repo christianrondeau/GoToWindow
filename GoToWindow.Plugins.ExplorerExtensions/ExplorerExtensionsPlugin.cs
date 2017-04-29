@@ -16,11 +16,11 @@ namespace GoToWindow.Plugins.ExplorerExtensions
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ExplorerExtensionsPlugin).Assembly, "GoToWindow");
 		private InternetExplorer[] _explorerWindows;
 
-		public string Id { get { return "GoToWindow.ExplorerExtensions"; } }
+		public string Id => "GoToWindow.ExplorerExtensions";
 
-		public string Title { get { return "GoToWindow Explorer Extensions"; } }
+		public string Title => "GoToWindow Explorer Extensions";
 
-		public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.AfterCore; } }
+		public GoToWindowPluginSequence Sequence => GoToWindowPluginSequence.AfterCore;
 
 		public void BuildList(List<ISearchResult> list)
 		{

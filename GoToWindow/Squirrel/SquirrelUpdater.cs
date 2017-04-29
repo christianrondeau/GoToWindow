@@ -48,7 +48,7 @@ namespace GoToWindow.Squirrel
 					var appPath = Path.GetFileName(Assembly.GetEntryAssembly().Location);
 					var dirPath = Path.GetDirectoryName(appPath);
 					if (dirPath == null)
-						throw new ApplicationException(string.Format("Could not get the directory name from path {0}", appPath));
+						throw new ApplicationException($"Could not get the directory name from path {appPath}");
 					return Path.Combine(dirPath, updateUrl);
 				}
 
@@ -63,7 +63,7 @@ namespace GoToWindow.Squirrel
 	{
 		public static readonly bool Enabled;
 		private static readonly ILog Log;
-		private static string _executableFilename;
+		private static readonly string ExecutableFilename;
 
 		private IUpdateManager _updateManager;
 		private UpdateInfo _updateInfo;
@@ -73,13 +73,14 @@ namespace GoToWindow.Squirrel
 			Log = LogManager.GetLogger(typeof(SquirrelUpdater).Assembly, "GoToWindow");
 
 		    var executablePath = Assembly.GetEntryAssembly().Location;
-		    _executableFilename = Path.GetFileName(executablePath);
+		    ExecutableFilename = Path.GetFileName(executablePath);
 
 		    var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-		    Enabled = executablePath.StartsWith(appDataPath, StringComparison.InvariantCultureIgnoreCase);
+		    Enabled = executablePath?.StartsWith(appDataPath, StringComparison.InvariantCultureIgnoreCase) ?? false;
 
 		    if (!Enabled)
-		        Log.Info(String.Format("Updates are disabled because GoToWindow is not running from the AppData directory. Executable: {0}, App Data: {1}", executablePath, appDataPath));
+		        Log.Info(
+			        $"Updates are disabled because GoToWindow is not running from the AppData directory. Executable: {executablePath}, App Data: {appDataPath}");
 		}
 
 		public SquirrelUpdater(string updateUrl)
@@ -177,12 +178,11 @@ namespace GoToWindow.Squirrel
             }
         }
 
-		private void HandleAsyncError(Action<Exception> errCallback, Exception exc)
+		private static void HandleAsyncError(Action<Exception> errCallback, Exception exc)
 		{
 			Log.Error("Error while trying to check for updates", exc);
-			
-			if (errCallback != null)
-				errCallback(exc);
+
+			errCallback?.Invoke(exc);
 		}
 
 		public void Dispose()
@@ -207,18 +207,18 @@ namespace GoToWindow.Squirrel
 		{
 			if (!Enabled) return;
 
-			_updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.StartMenu, updateOnly, null, null);
-			_updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.Desktop, updateOnly, null, null);
-            _updateManager.CreateShortcutsForExecutable(_executableFilename, ShortcutLocation.Startup, updateOnly, null, null);
+			_updateManager.CreateShortcutsForExecutable(ExecutableFilename, ShortcutLocation.StartMenu, updateOnly, null, null);
+			_updateManager.CreateShortcutsForExecutable(ExecutableFilename, ShortcutLocation.Desktop, updateOnly, null, null);
+            _updateManager.CreateShortcutsForExecutable(ExecutableFilename, ShortcutLocation.Startup, updateOnly, null, null);
         }
 
 		internal void RemoveShortcuts()
 		{
 			if (!Enabled) return;
 
-			_updateManager.RemoveShortcutsForExecutable(_executableFilename, ShortcutLocation.StartMenu);
-			_updateManager.RemoveShortcutsForExecutable(_executableFilename, ShortcutLocation.Desktop);
-			_updateManager.RemoveShortcutsForExecutable(_executableFilename, ShortcutLocation.Startup);
+			_updateManager.RemoveShortcutsForExecutable(ExecutableFilename, ShortcutLocation.StartMenu);
+			_updateManager.RemoveShortcutsForExecutable(ExecutableFilename, ShortcutLocation.Desktop);
+			_updateManager.RemoveShortcutsForExecutable(ExecutableFilename, ShortcutLocation.Startup);
 		}
 	}
 }

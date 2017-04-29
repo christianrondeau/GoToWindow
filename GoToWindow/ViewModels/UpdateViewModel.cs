@@ -10,7 +10,7 @@ namespace GoToWindow.ViewModels
 		private UpdateStatus _updateStatus;
 		public UpdateStatus UpdateStatus
 		{
-			get { return _updateStatus; }
+			get => _updateStatus;
 			set
 			{
 				_updateStatus = value;
@@ -21,7 +21,7 @@ namespace GoToWindow.ViewModels
 		private bool _enabled;
 		public bool Enabled
 		{
-			get { return _enabled; }
+			get => _enabled;
 			set
 			{
 				_enabled = value;
@@ -32,7 +32,7 @@ namespace GoToWindow.ViewModels
 		private int _progress;
 		public int Progress
 		{
-			get { return _progress; }
+			get => _progress;
 			set
 			{
 				_progress = value;

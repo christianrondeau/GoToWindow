@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using System.Linq;
 
@@ -11,7 +10,7 @@ namespace GoToWindow.Extensibility.ViewModel
 			if (string.IsNullOrEmpty(searchQuery))
 				return true;
 
-			var text = String.Join(" ", fields);
+			var text = string.Join(" ", fields);
 
 			return searchQuery
 				.Split(' ')

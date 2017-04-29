@@ -7,7 +7,6 @@ namespace GoToWindow.Extensibility.ViewModel
 {
 	public class ErrorResult : SearchResultBase, IBasicSearchResult, INotifyPropertyChanged
 	{
-		private readonly string _message;
 		private readonly Exception _exc;
 
 #pragma warning disable 67
@@ -17,7 +16,7 @@ namespace GoToWindow.Extensibility.ViewModel
 		public ErrorResult(string message, Exception exc, Func<UserControl> viewCtor)
 			: base(viewCtor)
 		{
-			_message = message;
+			Title = message;
 			_exc = exc;
 		}
 
@@ -30,24 +29,12 @@ namespace GoToWindow.Extensibility.ViewModel
 			return true;
 		}
 
-		public BitmapFrame Icon
-		{
-			get { return null; }
-		}
+		public BitmapFrame Icon => null;
 
-		public string Title
-		{
-			get { return _message; }
-		}
+		public string Title { get; }
 
-		public string ProcessName
-		{
-			get { return "error"; }
-		}
+		public string ProcessName => "error";
 
-		public string Error
-		{
-			get { return _exc.Message; }
-		}
+		public string Error => _exc.Message;
 	}
 }

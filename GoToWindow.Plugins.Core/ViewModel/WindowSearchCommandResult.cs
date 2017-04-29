@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using GoToWindow.Api;
@@ -18,12 +17,12 @@ namespace GoToWindow.Plugins.Core.ViewModel
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public string BeforeText { get { return "Search for '"; } }
-		public string AfterText { get { return "' using Windows Search"; } }
+		public string BeforeText => "Search for '";
+		public string AfterText => "' using Windows Search";
 
 		public string Text
 		{
-			get { return _text; }
+			get => _text;
 			set
 			{
 				_text = value;
@@ -39,8 +38,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
 
 		protected void OnPropertyChanged(string name)
 		{
-			if (PropertyChanged != null)
-				PropertyChanged(this, new PropertyChangedEventArgs(name));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 		}
 
 		public void Select()
@@ -53,7 +51,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
 		{
 			_query = searchQuery;
 			Text = _query;
-			return !String.IsNullOrWhiteSpace(searchQuery) && ValidQuery.IsMatch(searchQuery);
+			return !string.IsNullOrWhiteSpace(searchQuery) && ValidQuery.IsMatch(searchQuery);
 		}
 	}
 }

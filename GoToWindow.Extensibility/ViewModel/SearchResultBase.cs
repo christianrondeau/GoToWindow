@@ -8,12 +8,9 @@ namespace GoToWindow.Extensibility.ViewModel
 		private readonly Func<UserControl> _viewCtor;
 	    private UserControl _view;
 
-		public UserControl View
-		{
-			get { return _view ?? (_view = _viewCtor()); }
-		}
+		public UserControl View => _view ?? (_view = _viewCtor());
 
-	    protected SearchResultBase(Func<UserControl> viewCtor)
+		protected SearchResultBase(Func<UserControl> viewCtor)
 		{
 			_viewCtor = viewCtor;
 		}

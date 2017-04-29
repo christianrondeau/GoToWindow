@@ -9,7 +9,7 @@ namespace GoToWindow.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (!(value is Int32))
+			if (!(value is int))
 				throw new NotSupportedException("Only Int32 can be converted to a key");
 
 			var description = VirtualKeyDescription.GetVirtualKeyDescription((int) value);

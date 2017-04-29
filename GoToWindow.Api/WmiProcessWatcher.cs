@@ -45,9 +45,9 @@ namespace GoToWindow.Api
         private static void ProcessStarted(object sender, EventArrivedEventArgs e)
         {
             var processName = (string)e.NewEvent["ProcessName"];
-            var processId = (UInt32)e.NewEvent["ProcessId"];
+            var processId = (uint)e.NewEvent["ProcessId"];
 
-            if (String.IsNullOrEmpty(processName))
+            if (string.IsNullOrEmpty(processName))
                 return;
 
             _map[processId] = Path.GetFileNameWithoutExtension(processName);
@@ -55,7 +55,7 @@ namespace GoToWindow.Api
 
         private static void ProcessStopped(object sender, EventArrivedEventArgs e)
         {
-            var processId = (UInt32)e.NewEvent["ProcessId"];
+            var processId = (uint)e.NewEvent["ProcessId"];
 
             _map.Remove(processId);
         }
@@ -82,13 +82,12 @@ namespace GoToWindow.Api
             if (_map == null)
                 return getProcessName();
 
-            string processName;
-            if (_map.TryGetValue(processId, out processName))
-            {
-                return processName;
-            }
+			if (_map.TryGetValue(processId, out string processName))
+			{
+				return processName;
+			}
 
-            processName = getProcessName();
+			processName = getProcessName();
             _map[processId] = processName;
             return processName;
         }

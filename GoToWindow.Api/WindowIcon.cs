@@ -23,8 +23,7 @@ namespace GoToWindow.Api
 		public static IntPtr GetAppIcon(IntPtr hwnd)
 		{
 			// http://codeutopia.net/blog/2007/12/18/find-an-applications-icon-with-winapi/
-			IntPtr iconHandle;
-			var result = SendMessageTimeout(hwnd, WM_GETICON, ICON_BIG, 0, SMTO_ABORTIFHUNG, PerIconTimeoutMilliseconds, out iconHandle);
+			var result = SendMessageTimeout(hwnd, WM_GETICON, ICON_BIG, 0, SMTO_ABORTIFHUNG, PerIconTimeoutMilliseconds, out IntPtr iconHandle);
 			if (result != IntPtr.Zero && iconHandle == IntPtr.Zero)
 				result = SendMessageTimeout(hwnd, WM_GETICON, ICON_SMALL, 0, SMTO_ABORTIFHUNG, PerIconTimeoutMilliseconds, out iconHandle);
 			if (result != IntPtr.Zero && iconHandle == IntPtr.Zero)

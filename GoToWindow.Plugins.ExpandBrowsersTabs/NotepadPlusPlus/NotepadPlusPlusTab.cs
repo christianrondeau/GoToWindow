@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Automation;
+﻿using System.Windows.Automation;
 using GoToWindow.Api;
 using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
@@ -17,8 +16,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.NotepadPlusPlus
 
 		public void Select()
 		{
-			Object o;
-			if(_tabElement.TryGetCurrentPattern(SelectionItemPattern.Pattern, out o))
+			if (_tabElement.TryGetCurrentPattern(SelectionItemPattern.Pattern, out object o))
 			{
 				((SelectionItemPattern)o).Select();
 			}

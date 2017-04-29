@@ -101,7 +101,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 			return acc;
 		}
 
-		private static IAccessible FindAccessibleDescendant(IAccessible parent, String strName)
+		private static IAccessible FindAccessibleDescendant(IAccessible parent, string strName)
 		{
 			var accessibleChildCount = parent.accChildCount;
 			if (accessibleChildCount == 0)
@@ -124,8 +124,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 
 		private static List<IAccessible> AccChildren(IAccessible accessible)
 		{
-			int children;
-			var res = GetAccessibleChildren(accessible, out children);
+			var res = GetAccessibleChildren(accessible, out int _);
 			var list = new List<IAccessible>();
 			if (res == null) return list;
 			list.AddRange(res.OfType<IAccessible>());

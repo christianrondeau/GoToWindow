@@ -76,7 +76,7 @@ namespace GoToWindow.Api
 		internal static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
 
 		[DllImport("user32.dll")]
-		private static extern bool PostMessage(IntPtr hWnd, UInt32 msg, Int32 wParam, Int32 lParam);
+		private static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 
 
 		public static void AttachedThreadInputAction(Action action)
@@ -94,7 +94,8 @@ namespace GoToWindow.Api
 				if (threadsAttached)
 					action();
 				else 
-					Log.Warn(string.Format("Cannow bring window to foreground. Could not attach to thread {0} from fore thread {1}", appThread, foreThread));
+					Log.Warn(
+						$"Cannow bring window to foreground. Could not attach to thread {appThread} from fore thread {foreThread}");
 			}
 			finally
 			{
@@ -109,8 +110,7 @@ namespace GoToWindow.Api
 
 			AttachedThreadInputAction(() =>
 			{
-				WINDOWPLACEMENT state;
-				GetWindowPlacement(hwnd, out state);
+				GetWindowPlacement(hwnd, out WINDOWPLACEMENT state);
 				if (state.ShowCmd == ShowWindowCommands.ShowMinimized)
 				{
 					PostMessage(hwnd, WM_SYSCOMMAND, SC_RESTORE, 0);

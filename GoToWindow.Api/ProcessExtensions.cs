@@ -52,7 +52,7 @@ namespace GoToWindow.Api
 			}
 			catch(Win32Exception exc)
 			{
-				Log.Error(string.Format("Error while trying to get executable path of process {0} with PID {1}", process.ProcessName, process.Id), exc);
+				Log.Error($"Error while trying to get executable path of process {process.ProcessName} with PID {process.Id}", exc);
 				return null;
 			}
 		}

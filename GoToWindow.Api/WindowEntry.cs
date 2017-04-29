@@ -31,7 +31,7 @@ namespace GoToWindow.Api
 
 		public override string ToString()
 		{
-            return String.Format("{0} ({1}): \"{2}\"", ProcessName, ProcessId, Title);
+            return $"{ProcessName} ({ProcessId}): \"{Title}\"";
 		}
 	}
 }

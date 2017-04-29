@@ -25,13 +25,11 @@ namespace GoToWindow.Commands
 
 		public void Execute(object parameter)
 		{
-			var selectedWindowEntry = _getEntryAt(Int32.Parse((string)parameter) - 1);
+			var selectedWindowEntry = _getEntryAt(int.Parse((string)parameter) - 1);
 
-			if (selectedWindowEntry != null)
-				selectedWindowEntry.Select();
+			selectedWindowEntry?.Select();
 
-			if (Executed != null)
-				Executed(this, new EventArgs());
+			Executed?.Invoke(this, new EventArgs());
 		}
 	}
 }

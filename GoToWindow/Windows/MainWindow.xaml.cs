@@ -21,9 +21,9 @@ namespace GoToWindow.Windows
         private bool _releasedControlKey;
         private bool _closeOnControlKeyUp;
 
-        private MainViewModel ViewModel { get { return (MainViewModel)DataContext; } }
+        private MainViewModel ViewModel => (MainViewModel)DataContext;
 
-        public MainWindow()
+	    public MainWindow()
         {
             InitializeComponent();
         }

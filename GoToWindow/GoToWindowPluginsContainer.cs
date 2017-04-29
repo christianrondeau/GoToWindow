@@ -71,7 +71,7 @@ namespace GoToWindow
 			var typeLoadExc = exc as ReflectionTypeLoadException;
 
 			if (typeLoadExc != null)
-				Log.Error(String.Join("; ", typeLoadExc.LoaderExceptions.Select(e => e.Message)), typeLoadExc);
+				Log.Error(string.Join("; ", typeLoadExc.LoaderExceptions.Select(e => e.Message)), typeLoadExc);
 			else
 				Log.Error(exc);
 

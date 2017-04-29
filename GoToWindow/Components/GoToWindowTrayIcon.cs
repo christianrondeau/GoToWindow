@@ -46,7 +46,7 @@ namespace GoToWindow.Components
 			var shortcut = KeyboardShortcut.FromString(Properties.Settings.Default.OpenShortcut);
 			var openShortcutDescription = shortcut.ToHumanReadableString();
 
-			var tooltipMessage = string.Format("Press {0} and start typing to find a window.", openShortcutDescription);
+			var tooltipMessage = $"Press {openShortcutDescription} and start typing to find a window.";
 
 			if (!WindowsRuntimeHelper.GetHasElevatedPrivileges())
 			{

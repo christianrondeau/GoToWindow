@@ -21,8 +21,7 @@ namespace GoToWindow.Api
 
 		public static WindowEntry Create(IntPtr hWnd)
 		{
-			uint processId;
-			GetWindowThreadProcessId(hWnd, out processId);
+			GetWindowThreadProcessId(hWnd, out uint processId);
 
 			return Create(hWnd, processId);
 		}

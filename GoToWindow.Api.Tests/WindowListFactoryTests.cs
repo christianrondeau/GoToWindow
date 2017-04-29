@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,7 +22,7 @@ namespace GoToWindow.Api.Tests
 		private void AssertExists(IList<IWindowEntry> windows, IWindowEntry expected)
 		{
 			var containsExpected = windows.Any(expected.IsSameWindow);
-			Assert.IsTrue(containsExpected, String.Format("Expected window {0}.\r\nWindows List:\r\n{1}", expected, String.Join("\r\n", windows)));
+			Assert.IsTrue(containsExpected, $"Expected window {expected}.\r\nWindows List:\r\n{string.Join("\r\n", windows)}");
 		}
 	}
 }

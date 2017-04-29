@@ -13,27 +13,25 @@ namespace GoToWindow.Api.Tests
             return executablePath != null ? Path.Combine(executablePath, filename) : null;
 		}
 
-		private readonly Process _process;
-		private readonly string _executable;
-		public IWindowEntry ExpectedWindow { get; private set; }
-		public Process Process { get { return _process; } }
-		public string Executable { get { return _executable; } }
+		public IWindowEntry ExpectedWindow { get; }
+		public Process Process { get; }
+		public string Executable { get; }
 
 		public GivenAnApp(string title)
 		{
-			_executable = GetResourcePath("GoToWindow.FakeApp.exe");
+			Executable = GetResourcePath("GoToWindow.FakeApp.exe");
 			const string processName = "GoToWindow.FakeApp";
 
-			_process = new Process
+			Process = new Process
 			{
 				StartInfo = new ProcessStartInfo
 				{
-					FileName = _executable,
+					FileName = Executable,
 					Arguments = "\"" + title + "\""
 				}
 			};
 
-			if (!_process.Start())
+			if (!Process.Start())
 				throw new Exception("Could not start fake app");
 
 			Thread.Sleep(1000); //TODO: Instead wait for some console output
@@ -41,16 +39,16 @@ namespace GoToWindow.Api.Tests
 			ExpectedWindow = new WindowEntry
 			{
 				Title = title,
-				ProcessId = (uint)_process.Id,
+				ProcessId = (uint)Process.Id,
 				ProcessName = processName,
-				HWnd = _process.MainWindowHandle
+				HWnd = Process.MainWindowHandle
 			};
 		}
 
 		public void Dispose()
 		{
-			_process.Kill();
-			_process.Dispose();
+			Process.Kill();
+			Process.Dispose();
 		}
 	}
 }

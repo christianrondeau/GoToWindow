@@ -13,13 +13,13 @@ namespace GoToWindow.Plugins.Core.ViewModel
 		private readonly IWindowEntry _entry;
 		private BitmapFrame _icon;
 
-	    public BitmapFrame Icon { get { return _icon ?? (_icon = LoadIcon()); } }
-		public string Title { get { return _entry.Title; } }
-		public string ProcessName { get { return _entry.ProcessName; } }
-		public IntPtr HWnd { get { return _entry.HWnd; } }
+	    public BitmapFrame Icon => _icon ?? (_icon = LoadIcon());
+		public string Title => _entry.Title;
+		public string ProcessName => _entry.ProcessName;
+		public IntPtr HWnd => _entry.HWnd;
 
-	    public bool IsVisible { get { return _entry.IsVisible; } }
-	    public string Error { get; private set; }
+		public bool IsVisible => _entry.IsVisible;
+		public string Error { get; private set; }
 
 	    public CoreSearchResult(IWindowEntry entry, Func<UserControl> viewCtor)
 			: base(viewCtor)

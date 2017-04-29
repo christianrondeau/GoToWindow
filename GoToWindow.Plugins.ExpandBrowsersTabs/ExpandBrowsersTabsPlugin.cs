@@ -24,11 +24,11 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 
 		private static readonly ILog Log = LogManager.GetLogger(typeof(ExpandBrowsersTabsPlugin).Assembly, "GoToWindow");
 
-		public string Id { get { return "GoToWindow.ExpandBrowsersTabs"; } }
+		public string Id => "GoToWindow.ExpandBrowsersTabs";
 
-		public string Title { get { return "GoToWindow Expand Browser Tabs"; } }
+		public string Title => "GoToWindow Expand Browser Tabs";
 
-		public GoToWindowPluginSequence Sequence { get { return GoToWindowPluginSequence.AfterCore; } }
+		public GoToWindowPluginSequence Sequence => GoToWindowPluginSequence.AfterCore;
 
 		private static readonly IDictionary<string, Func<ITabsFinder>> TabsFinders = new Dictionary<string, Func<ITabsFinder>>
 		{
@@ -46,19 +46,14 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 			{
 				var item = list[index] as IWindowSearchResult;
 
-				if (item == null)
-					continue;
-
-				ITabsFinder finder;
-				var browserName = item.ProcessName;
+				var browserName = item?.ProcessName;
 
 				if (browserName == null)
 					continue;
 
-				if (!finders.TryGetValue(browserName, out finder))
+				if (!finders.TryGetValue(browserName, out ITabsFinder finder))
 				{
-					Func<ITabsFinder> finderCtor;
-					if (TabsFinders.TryGetValue(browserName, out finderCtor))
+					if (TabsFinders.TryGetValue(browserName, out Func<ITabsFinder> finderCtor))
 						finder = finderCtor();
 					else
 						continue;
@@ -66,12 +61,11 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs
 					finders.Add(browserName, finder);
 				}
 
-			    string errorMessage;
-			    if (!finder.CanGetTabsOfWindow(item, out errorMessage))
-			    {
-			        item.SetError(errorMessage);
-			        continue;
-			    }
+				if (!finder.CanGetTabsOfWindow(item, out string errorMessage))
+				{
+					item.SetError(errorMessage);
+					continue;
+				}
 
 				IEnumerable<ITab> tabs = null;
 

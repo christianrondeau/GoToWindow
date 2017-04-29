@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 
 namespace GoToWindow.Api
@@ -13,11 +12,11 @@ namespace GoToWindow.Api
 				KeyboardSend.KeyPress((byte) 'S');
 			KeyboardSend.KeyUp(KeyboardSend.LWin);
 
-			if (String.IsNullOrEmpty(query)) return;
+			if (string.IsNullOrEmpty(query)) return;
 
 			Thread.Sleep(100);
 
-			var keysToSend = query.Trim().Select(Char.ToUpper).Where(OnlyValidWindowsSearchCharacters);
+			var keysToSend = query.Trim().Select(char.ToUpper).Where(OnlyValidWindowsSearchCharacters);
 			foreach (var uc in keysToSend)
 			{
 				KeyboardSend.KeyPress((byte) uc);

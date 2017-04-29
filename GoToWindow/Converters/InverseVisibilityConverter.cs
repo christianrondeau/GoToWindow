@@ -9,6 +9,8 @@ namespace GoToWindow.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
+			if (value == null) throw new ArgumentNullException(nameof(value));
+
 			return (Visibility)value == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
 		}
 

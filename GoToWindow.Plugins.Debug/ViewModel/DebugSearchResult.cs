@@ -9,14 +9,14 @@ namespace GoToWindow.Plugins.Debug.ViewModel
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(DebugSearchResult).Assembly, "GoToWindow");
 
-		public UserControl View { get; private set; }
+		public UserControl View { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _message;
         public string Message
         {
-            get { return _message; }
-            set
+            get => _message;
+	        set
             {
                 _message = value;
                 OnPropertyChanged("Message");
@@ -43,8 +43,7 @@ namespace GoToWindow.Plugins.Debug.ViewModel
 
         protected void OnPropertyChanged(string name)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+	        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 	}
 }

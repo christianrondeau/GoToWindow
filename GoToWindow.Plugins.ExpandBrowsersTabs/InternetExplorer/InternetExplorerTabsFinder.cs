@@ -28,8 +28,8 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 			{
 				var document = ie.Document;
 
-				if(document == null || document.GetType().Name != "HTMLDocumentClass")
-					continue;
+				if (document == null) continue;
+				if (document.GetType().Name != "HTMLDocumentClass") continue;
 
 				yield return new InternetExplorerTab(document.title ?? ie.LocationName, ie);
 			}

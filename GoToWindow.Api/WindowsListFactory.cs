@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using log4net;
@@ -103,13 +102,11 @@ namespace GoToWindow.Api
 		    Log.Debug("- Found Window 10 App");
 
 		    var foundChildren = false;
-		    uint processId;
-		    GetWindowThreadProcessId(hWnd, out processId);
+			GetWindowThreadProcessId(hWnd, out uint processId);
 
-		    EnumChildWindows(hWnd, (childHWnd, lparam) =>
+			EnumChildWindows(hWnd, (childHWnd, lparam) =>
 		    {
-			    uint childProcessId;
-			    GetWindowThreadProcessId(childHWnd, out childProcessId);
+				GetWindowThreadProcessId(childHWnd, out uint childProcessId);
 				Log.Debug("  - Checking process: " + childProcessId);
 			    if (processId != childProcessId)
 			    {
@@ -261,7 +258,8 @@ namespace GoToWindow.Api
                 currentWindow = lastPopUp;
             }
 
-            Log.Warn(string.Format("Could not find last active popup for window {0} after {1} iterations", window, MaxLastActivePopupIterations));
+            Log.Warn(
+	            $"Could not find last active popup for window {window} after {MaxLastActivePopupIterations} iterations");
             return IntPtr.Zero;
         }
     }

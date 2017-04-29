@@ -10,7 +10,10 @@ namespace GoToWindow.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var range = Int32.Parse(parameter.ToString());
+			if (value == null) throw new ArgumentNullException(nameof(value));
+			if (parameter == null) throw new ArgumentNullException(nameof(parameter));
+
+			var range = int.Parse(parameter.ToString());
 			var item = (ListViewItem)value;
 			var listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
 

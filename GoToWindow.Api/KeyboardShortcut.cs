@@ -32,7 +32,7 @@ namespace GoToWindow.Api
 		public int VirtualKeyCode;
 		public int ShortcutPressesBeforeOpen;
 
-		public bool Enabled { get { return ControlVirtualKeyCode > 0 && VirtualKeyCode > 0 && ShortcutPressesBeforeOpen > 0; } }
+		public bool Enabled => ControlVirtualKeyCode > 0 && VirtualKeyCode > 0 && ShortcutPressesBeforeOpen > 0;
 
 		public KeyboardShortcut(string invalidReason)
 		{
@@ -71,13 +71,13 @@ namespace GoToWindow.Api
 		public string ToHumanReadableString()
 		{
 			var virtualKeyString = " + " + VirtualKeyDescription.GetVirtualKeyDescription(VirtualKeyCode);
-			virtualKeyString = String.Concat(Enumerable.Repeat(virtualKeyString, ShortcutPressesBeforeOpen));
+			virtualKeyString = string.Concat(Enumerable.Repeat(virtualKeyString, ShortcutPressesBeforeOpen));
 			return VirtualKeyDescription.GetModifierVirtualKeyDescription(ControlVirtualKeyCode) + virtualKeyString;
 		}
 
 		public override string ToString()
 		{
-			return string.Format("{0:X2}+{1:X2}:{2}", ControlVirtualKeyCode, VirtualKeyCode, ShortcutPressesBeforeOpen);
+			return $"{ControlVirtualKeyCode:X2}+{VirtualKeyCode:X2}:{ShortcutPressesBeforeOpen}";
 		}
 	}
 }

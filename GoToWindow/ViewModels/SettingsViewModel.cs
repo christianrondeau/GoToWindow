@@ -49,7 +49,7 @@ namespace GoToWindow.ViewModels
 		private int _shortcutPressesBeforeOpen;
 		public int ShortcutPressesBeforeOpen
 		{
-			get { return _shortcutPressesBeforeOpen; }
+			get => _shortcutPressesBeforeOpen;
 			set
 			{
 				_shortcutPressesBeforeOpen = value;
@@ -60,7 +60,7 @@ namespace GoToWindow.ViewModels
 		private string _latestAvailableRelease;
 		public string LatestAvailableRelease
 		{
-			get { return _latestAvailableRelease; }
+			get => _latestAvailableRelease;
 			set
 			{
 				_latestAvailableRelease = value;
@@ -71,7 +71,7 @@ namespace GoToWindow.ViewModels
 		private CheckForUpdatesStatus _updateAvailable;
 		public CheckForUpdatesStatus UpdateAvailable
 		{
-			get { return _updateAvailable; }
+			get => _updateAvailable;
 			set
 			{
 				_updateAvailable = value;
@@ -82,7 +82,7 @@ namespace GoToWindow.ViewModels
 		private bool _enabled;
 		public bool Enabled
 		{
-			get { return _enabled; }
+			get => _enabled;
 			set
 			{
 				_enabled = value;
@@ -93,7 +93,7 @@ namespace GoToWindow.ViewModels
 		private ModifierVirtualKeys _shortcutControlKey;
 		public ModifierVirtualKeys ShortcutControlKey
 		{
-			get { return _shortcutControlKey; }
+			get => _shortcutControlKey;
 			set
 			{
 				_shortcutControlKey = value;
@@ -106,7 +106,7 @@ namespace GoToWindow.ViewModels
 		private bool _isShortcutInvalid;
 		public bool IsShortcutInvalid
 		{
-			get { return _isShortcutInvalid; }
+			get => _isShortcutInvalid;
 			set
 			{
 				_isShortcutInvalid = value;
@@ -117,7 +117,7 @@ namespace GoToWindow.ViewModels
 		private int _shortcutKey;
 		public int ShortcutKey
 		{
-			get { return _shortcutKey; }
+			get => _shortcutKey;
 			set
 			{
 				_shortcutKey = value;
@@ -130,7 +130,7 @@ namespace GoToWindow.ViewModels
 		private bool _showCustomShortcutKey;
 		public bool ShowCustomShortcutKey
 		{
-			get { return _showCustomShortcutKey; }
+			get => _showCustomShortcutKey;
 			set
 			{
 				_showCustomShortcutKey = value;
@@ -138,10 +138,7 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-		public string ShortcutDescription
-		{
-			get { return CreateShortcut().ToHumanReadableString(); }
-		}
+		public string ShortcutDescription => CreateShortcut().ToHumanReadableString();
 
 		public void UpdateShortcutDescription()
 		{
@@ -176,7 +173,7 @@ namespace GoToWindow.ViewModels
 				.OrderBy(plugin => plugin.Name)
 				.ToList();
 			var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
-			Version = String.Format("{0}.{1}.{2}", currentVersion.Major, currentVersion.Minor, currentVersion.Build);
+			Version = $"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}";
 
 			// Updates
 			UpdateAvailable = CheckForUpdatesStatus.Checking;

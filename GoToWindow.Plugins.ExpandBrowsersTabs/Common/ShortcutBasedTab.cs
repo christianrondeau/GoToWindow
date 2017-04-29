@@ -6,7 +6,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Common
 {
 	public abstract class ShortcutBasedTab : TabBase
 	{
-		private int TabIndex { get; set; }
+		private int TabIndex { get; }
 
 		protected ShortcutBasedTab(string title, int tabIndex)
 			: base(title)

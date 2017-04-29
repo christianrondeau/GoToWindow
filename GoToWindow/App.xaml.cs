@@ -89,8 +89,7 @@ namespace GoToWindow
 			const int msBetweenAttempts = 500;
 			for(var attempt = 0; attempt < 10; attempt++)
 			{
-				bool isOnlyRunningProcessInstance;
-				_mutex = new Mutex(true, "GoToWindow", out isOnlyRunningProcessInstance);
+				_mutex = new Mutex(true, "GoToWindow", out bool isOnlyRunningProcessInstance);
 
 				if (isOnlyRunningProcessInstance)
 					return true;
@@ -136,8 +135,7 @@ namespace GoToWindow
 		{
 			Log.Debug("Application deactivated.");
 
-			if (_context != null)
-				_context.Hide(false);
+			_context?.Hide(false);
 		}
 
 		private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -17,12 +16,12 @@ namespace GoToWindow.Plugins.ExplorerExtensions.ViewModel
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public string BeforeText { get { return "Open Windows Explorer with path '"; } }
-		public string AfterText { get { return "'"; } }
+		public string BeforeText => "Open Windows Explorer with path '";
+		public string AfterText => "'";
 
 		public string Text
 		{
-			get { return _text; }
+			get => _text;
 			set
 			{
 				_text = value;
@@ -38,8 +37,7 @@ namespace GoToWindow.Plugins.ExplorerExtensions.ViewModel
 
 		protected void OnPropertyChanged(string name)
 		{
-			if (PropertyChanged != null)
-				PropertyChanged(this, new PropertyChangedEventArgs(name));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 		}
 
 		public void Select()
@@ -52,7 +50,7 @@ namespace GoToWindow.Plugins.ExplorerExtensions.ViewModel
 		{
 			_query = searchQuery;
 			Text = _query;
-			var isPathQuery = !String.IsNullOrWhiteSpace(searchQuery) && searchQuery.Length >= 2 && searchQuery[1] == ':';
+			var isPathQuery = !string.IsNullOrWhiteSpace(searchQuery) && searchQuery.Length >= 2 && searchQuery[1] == ':';
 
 			if (!isPathQuery) return false;
 

@@ -22,8 +22,8 @@ namespace GoToWindow.ViewModels
 		private string _searchText;
         public string SearchText
         {
-            get { return _searchText; }
-            set
+            get => _searchText;
+	        set
             {
                 _searchText = value;
                 OnPropertyChanged("SearchText");
@@ -33,7 +33,7 @@ namespace GoToWindow.ViewModels
 		private bool _isEmpty;
 		public bool IsEmpty
 		{
-			get { return _isEmpty; }
+			get => _isEmpty;
 			set
 			{
 				_isEmpty = value;
@@ -44,7 +44,7 @@ namespace GoToWindow.ViewModels
 		private int _availableWindowWidth;
 		public int AvailableWindowWidth
 		{
-			get { return _availableWindowWidth; }
+			get => _availableWindowWidth;
 			set
 			{
 				_availableWindowWidth = value;
@@ -55,7 +55,7 @@ namespace GoToWindow.ViewModels
 		private int _availableWindowHeight;
 		public int AvailableWindowHeight
 		{
-			get { return _availableWindowHeight; }
+			get => _availableWindowHeight;
 			set
 			{
 				_availableWindowHeight = value;
@@ -66,7 +66,7 @@ namespace GoToWindow.ViewModels
 		private bool _isRowIndexVisible;
 		public bool IsRowIndexVisible
 		{
-			get { return _isRowIndexVisible; }
+			get => _isRowIndexVisible;
 			set
 			{
 				_isRowIndexVisible = value;
@@ -77,7 +77,7 @@ namespace GoToWindow.ViewModels
 		private bool _updateAvailable;
 		public bool UpdateAvailable
 		{
-			get { return _updateAvailable; }
+			get => _updateAvailable;
 			set
 			{
 				_updateAvailable = value;
@@ -85,7 +85,7 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-        public ICommand GoToWindowEntryShortcut { get; private set; }
+        public ICommand GoToWindowEntryShortcut { get; }
 
 		public event CloseEventHandler Close;
 
@@ -112,7 +112,7 @@ namespace GoToWindow.ViewModels
 
 				foreach (var plugin in plugins.Where(plugin => !disabledPlugins.Contains(plugin.Id)))
 				{
-					using (new PerformanceLogger(string.Format("Plugin '{0}'", plugin.Title)))
+					using (new PerformanceLogger($"Plugin '{plugin.Title}'"))
 					{
 						plugin.BuildList(list);
 					}
@@ -142,18 +142,14 @@ namespace GoToWindow.ViewModels
 
 		public void AskClose(bool requested)
 		{
-			if (Close != null)
-				Close(this, new CloseEventArgs(requested));
+			Close?.Invoke(this, new CloseEventArgs(requested));
 		}
 
         private ISearchResult GetEntryAt(int index)
         {
-			if (Windows == null || Windows.View == null)
-				return null;
+	        var items = Windows?.View?.Cast<ISearchResult>().ToArray();
 
-            var items = Windows.View.Cast<ISearchResult>().ToArray();
-
-            if (index < items.Length)
+            if (index < items?.Length)
                 return items[index];
 
             return null;
@@ -161,16 +157,15 @@ namespace GoToWindow.ViewModels
 
         private void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
         {
-            if (Close != null)
-                Close(this, new CloseEventArgs(true));
-        }
+			Close?.Invoke(this, new CloseEventArgs(true));
+		}
 	}
 
 	public delegate void CloseEventHandler(object sender, CloseEventArgs args);
 
 	public class CloseEventArgs : EventArgs
 	{
-		public bool Requested { get; private set; }
+		public bool Requested { get; }
 
 		public CloseEventArgs(bool requested)
 		{

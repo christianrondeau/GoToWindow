@@ -9,11 +9,11 @@ namespace GoToWindow.Extensibility.ViewModel
 {
 	public class DesignTimeSearchResult : IBasicSearchResult
 	{
-		public UserControl View { get; private set; }
+		public UserControl View { get; }
 
-		public BitmapFrame Icon { get; private set; }
-		public string Title { get; private set; }
-		public string ProcessName { get; private set; }
+		public BitmapFrame Icon { get; }
+		public string Title { get; }
+		public string ProcessName { get; }
 		public string Error { get; set; }
 
 		public DesignTimeSearchResult()

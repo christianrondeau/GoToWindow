@@ -38,7 +38,7 @@ namespace GoToWindow
 
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
 
-		private readonly Object _lock = new Object();
+		private readonly object _lock = new object();
 		private readonly MainViewModel _mainViewModel;
 		private readonly MainWindow _mainWindow;
 
@@ -52,7 +52,7 @@ namespace GoToWindow
 
 		public void UpdateAvailable(string version)
 		{
-			_mainViewModel.UpdateAvailable = !String.IsNullOrEmpty(version);
+			_mainViewModel.UpdateAvailable = !string.IsNullOrEmpty(version);
 		}
 
 		public GoToWindowContext()
@@ -89,8 +89,7 @@ namespace GoToWindow
 				_state = GoToWindowState.Showing;
 			}
 
-			if (Showing != null)
-				Showing(this, new EventArgs());
+			Showing?.Invoke(this, new EventArgs());
 
 			SetAvailableWindowSize(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
 			_mainWindow.Left = SystemParameters.PrimaryScreenWidth/2f - _mainViewModel.AvailableWindowWidth/2f;
@@ -181,8 +180,7 @@ namespace GoToWindow
 		{
 			if (shortcut.Enabled)
 			{
-				if (_hooks != null)
-					_hooks.Dispose();
+				_hooks?.Dispose();
 
 				_hooks = KeyboardHook.Hook(shortcut, HandleShortcut);
 			}

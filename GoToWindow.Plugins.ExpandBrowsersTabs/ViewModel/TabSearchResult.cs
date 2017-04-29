@@ -11,25 +11,13 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.ViewModel
 		private readonly IWindowSearchResult _item;
 		private readonly ITab _tab;
 
-		public BitmapFrame Icon
-		{
-			get { return _item.Icon; }
-		}
+		public BitmapFrame Icon => _item.Icon;
 
-		public string Title
-		{
-			get { return _tab.Title; }
-		}
+		public string Title => _tab.Title;
 
-		public string ProcessName
-		{
-			get { return _item.ProcessName; }
-		}
+		public string ProcessName => _item.ProcessName;
 
-        public string Error
-        {
-            get { return _item.Error; }
-        }
+		public string Error => _item.Error;
 
 		public TabSearchResult(IWindowSearchResult item, ITab tab, Func<UserControl> viewCtor)
 			: base(viewCtor)
