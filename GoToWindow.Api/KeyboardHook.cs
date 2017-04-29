@@ -37,7 +37,7 @@ namespace GoToWindow.Api
 		private static extern IntPtr GetModuleHandle(string lpModuleName);
 
 		[DllImport("user32.dll")]
-		static extern short GetAsyncKeyState(int vKey);
+		private static extern short GetAsyncKeyState(int vKey);
 
 		// ReSharper disable InconsistentNaming
 		// ReSharper disable UnusedMember.Local

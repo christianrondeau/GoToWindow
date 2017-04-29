@@ -16,7 +16,7 @@ namespace GoToWindow.Windows
 			context.Showing += context_Showing;
 		}
 
-		void context_Showing(object sender, EventArgs e)
+		private void context_Showing(object sender, EventArgs e)
 		{
 			Close();
 		}

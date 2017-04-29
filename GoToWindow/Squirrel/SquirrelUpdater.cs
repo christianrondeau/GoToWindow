@@ -35,7 +35,7 @@ namespace GoToWindow.Squirrel
             Updater.Dispose();
         }
 
-		static string GetUpdateUrl()
+		private static string GetUpdateUrl()
 		{
 			var args = Environment.GetCommandLineArgs();
 			var updateUrlArgumentIndex = Array.IndexOf(args, "-updateUrl");

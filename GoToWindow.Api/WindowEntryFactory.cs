@@ -7,17 +7,17 @@ namespace GoToWindow.Api
 	public static class WindowEntryFactory
 	{
 		[DllImport("user32.dll")]
-		static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+		private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
 		[DllImport("user32.dll")]
-		static extern int GetWindowTextLength(IntPtr hWnd);
+		private static extern int GetWindowTextLength(IntPtr hWnd);
 
 		[DllImport("user32.dll", SetLastError = true)]
-		static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+		private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool IsIconic(IntPtr hWnd);
+        private static extern bool IsIconic(IntPtr hWnd);
 
 		public static WindowEntry Create(IntPtr hWnd)
 		{

@@ -17,7 +17,7 @@ namespace GoToWindow.Api
         private static readonly ILog Log = LogManager.GetLogger(typeof(WindowsListFactory).Assembly, "GoToWindow");
         private const int MaxLastActivePopupIterations = 50;
 
-		delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
+	    private delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
         public enum GetAncestorFlags
         {
@@ -27,29 +27,29 @@ namespace GoToWindow.Api
         }
 
         [DllImport("user32.dll")]
-        static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
+        private static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
 
         [DllImport("user32.dll")]
-        static extern bool IsWindowVisible(IntPtr hWnd);
+        private static extern bool IsWindowVisible(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetShellWindow();
+        private static extern IntPtr GetShellWindow();
 
         [DllImport("user32.dll", ExactSpelling = true)]
-        static extern IntPtr GetAncestor(IntPtr hwnd, GetAncestorFlags flags);
+        private static extern IntPtr GetAncestor(IntPtr hwnd, GetAncestorFlags flags);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+        private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetLastActivePopup(IntPtr hWnd);
+        private static extern IntPtr GetLastActivePopup(IntPtr hWnd);
 
 		[DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+		private static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
 		[DllImport("user32.dll", SetLastError = true)]
-		static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+		private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         public static WindowsList Load()
         {
@@ -258,8 +258,7 @@ namespace GoToWindow.Api
                 currentWindow = lastPopUp;
             }
 
-            Log.Warn(
-	            $"Could not find last active popup for window {window} after {MaxLastActivePopupIterations} iterations");
+            Log.Warn( $"Could not find last active popup for window {window} after {MaxLastActivePopupIterations} iterations");
             return IntPtr.Zero;
         }
     }
