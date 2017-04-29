@@ -107,7 +107,7 @@ namespace GoToWindow
 			_mainWindow.SetFocus();
 			_mainWindowEntry.Focus();
 
-			Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Background);
+			Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Input);
 		}
 
 		private void SetAvailableWindowSize(double screenWidth, double screenHeight)
@@ -173,7 +173,7 @@ namespace GoToWindow
 				Log.Error("Failed hiding window.", exc);
 			}
 
-			Application.Current.Dispatcher.InvokeAsync(HideWindow, DispatcherPriority.ApplicationIdle);
+			Application.Current.Dispatcher.InvokeAsync(HideWindow, DispatcherPriority.Input);
 		}
 
 		public void EnableKeyboardHook(KeyboardShortcut shortcut)
@@ -218,6 +218,7 @@ namespace GoToWindow
 			_mainViewModel.Load(PluginsContainer.Plugins);
 			_mainWindow.DataReady();
 			_mainWindow.EndInit();
+			_state = GoToWindowState.Shown;
 			Log.Debug("View Model loaded.");
 
 			if (_state == GoToWindowState.ShowingThenHide)
@@ -227,7 +228,6 @@ namespace GoToWindow
 				return;
 			}
 
-			_state = GoToWindowState.Shown;
 			Application.Current.Dispatcher.InvokeAsync(EnsureWindowIsForeground, DispatcherPriority.Background);
 		}
 

@@ -92,6 +92,9 @@ namespace GoToWindow.Squirrel
 
 		public void CheckForUpdates(Action<string> callback, Action<Exception> errCallback)
 		{
+			if (_updateManager == null)
+				return; // Disposing
+
 			if (!Enabled)
 			{
 				callback(null);
@@ -105,6 +108,9 @@ namespace GoToWindow.Squirrel
 
 		private void CheckForUpdateCallback(Action<string> callback, UpdateInfo updateInfo)
 		{
+			if (_updateManager == null)
+				return; // Disposing
+
 			if (updateInfo == null)
 			{
 				callback(null);
@@ -123,6 +129,8 @@ namespace GoToWindow.Squirrel
 
 		public void Update(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback)
 		{
+			if (_updateManager == null)
+				return; // Disposing
 			if (!Enabled)
 				throw new ApplicationException("Updates are currently disabled");
 
@@ -139,6 +147,9 @@ namespace GoToWindow.Squirrel
 
 		private void DownloadReleasesCallback(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback)
 		{
+			if (_updateManager == null)
+				return; // Disposing
+
 			progressCallback(UpdateStatus.Installing, 0);
 			Log.Info("Squirrel: Applying releases...");
 			var applyReleasesTask = _updateManager.ApplyReleases(_updateInfo, progress => progressCallback(UpdateStatus.Installing, progress));
@@ -148,6 +159,9 @@ namespace GoToWindow.Squirrel
 
 		private void ApplyReleasesCallback(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback, string installPath)
 		{
+			if (_updateManager == null)
+				return; // Disposing
+
             progressCallback(UpdateStatus.Installing, 100);
             Log.Info("Squirrel: Creating uninstall info...");
             var createUninstallerRegistryEntryTask = _updateManager.CreateUninstallerRegistryEntry();
@@ -157,6 +171,9 @@ namespace GoToWindow.Squirrel
 
         private void CreateUninstallerRegistryEntryCallback(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback, string installPath)
         {
+			if (_updateManager == null)
+				return; // Disposing
+
             _updateManager.Dispose();
             Log.Info("Squirrel: Launching new version.");
             progressCallback(UpdateStatus.Restarting, 100);
@@ -205,6 +222,9 @@ namespace GoToWindow.Squirrel
 
 		internal void InstallShortcuts(bool updateOnly)
 		{
+			if (_updateManager == null)
+				return; // Disposing
+           
 			if (!Enabled) return;
 
 			_updateManager.CreateShortcutsForExecutable(ExecutableFilename, ShortcutLocation.StartMenu, updateOnly, null, null);
@@ -214,6 +234,9 @@ namespace GoToWindow.Squirrel
 
 		internal void RemoveShortcuts()
 		{
+			if (_updateManager == null)
+				return; // Disposing
+           
 			if (!Enabled) return;
 
 			_updateManager.RemoveShortcutsForExecutable(ExecutableFilename, ShortcutLocation.StartMenu);
