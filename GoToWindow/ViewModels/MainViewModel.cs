@@ -30,6 +30,7 @@ namespace GoToWindow.ViewModels
             }
         }
 
+		//TODO: What about this? Should be renamed differently than Empty()
 		private bool _isEmpty;
 		public bool IsEmpty
 		{

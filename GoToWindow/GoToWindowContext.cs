@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,24 +28,14 @@ namespace GoToWindow
 
 	public class GoToWindowContext : IGoToWindowContext
 	{
-		private enum GoToWindowState
-		{
-			Showing,
-			ShowingThenHide,
-			Shown,
-			Hiding,
-			Hidden
-		}
-
 		private static readonly ILog Log = LogManager.GetLogger(typeof(GoToWindowContext).Assembly, "GoToWindow");
 
 		private readonly object _lock = new object();
-		private readonly MainViewModel _mainViewModel;
-		private readonly MainWindow _mainWindow;
-
-		private GoToWindowState _state = GoToWindowState.Hidden;
-		private KeyboardHook _hooks;
+		private MainWindow _mainWindow;
 		private IWindowEntry _mainWindowEntry;
+		private MainViewModel _mainViewModel;
+		private KeyboardHook _hooks;
+		private bool _isClosing;
 
 		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
 
@@ -55,59 +46,46 @@ namespace GoToWindow
 			_mainViewModel.UpdateAvailable = !string.IsNullOrEmpty(version);
 		}
 
-		public GoToWindowContext()
-		{
-			_mainWindow = new MainWindow();
-			_mainViewModel = new MainViewModel();
-		}
-		
 		public void Init()
 		{
 			WmiProcessWatcher.Start();
 
 			PluginsContainer = GoToWindowPluginsContainer.LoadPlugins();
-
-			_mainWindow.DataContext = _mainViewModel;
-			_mainViewModel.Close += _mainViewModel_Hide;
 		}
 
 		public void Show()
 		{
 			lock (_lock)
 			{
-				if (_state == GoToWindowState.Shown)
+				if (_mainWindow != null)
 				{
 					Log.Debug("Sending Tab Again to Main Window.");
 					_mainWindow.ShortcutAgain();
 					return;
 				}
 
-				if (_state != GoToWindowState.Hidden)
-					return;
+				_mainViewModel = new MainViewModel();
+				_mainWindow = new MainWindow { DataContext = _mainViewModel };
+				_mainWindow.Closing += _mainWindow_Closing;
+				_mainViewModel.Close += _mainViewModel_Close;
 
-				Log.Debug("Showing Main Window.");
-				_state = GoToWindowState.Showing;
-			}
+				Showing?.Invoke(this, new EventArgs());
 
-			Showing?.Invoke(this, new EventArgs());
+				SetAvailableWindowSize(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
+				_mainWindow.Left = SystemParameters.PrimaryScreenWidth / 2f - _mainViewModel.AvailableWindowWidth / 2f;
+				_mainWindow.Top = SystemParameters.PrimaryScreenHeight / 2f - (_mainViewModel.AvailableWindowHeight + 56) / 2f;
+				_mainWindow.Show();
 
-			SetAvailableWindowSize(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
-			_mainWindow.Left = SystemParameters.PrimaryScreenWidth/2f - _mainViewModel.AvailableWindowWidth/2f;
-			_mainWindow.Top = SystemParameters.PrimaryScreenHeight/2f - (_mainViewModel.AvailableWindowHeight + 56)/2f;
-			_mainWindow.Show();
-
-			if (_mainWindowEntry == null)
-			{
 				var interopHelper = new WindowInteropHelper(_mainWindow);
 				_mainWindowEntry = WindowEntryFactory.Create(interopHelper.Handle);
 
 				Log.DebugFormat("GoToWindow main window created with hWnd {0}", _mainWindowEntry.HWnd);
+
+				_mainWindow.SetFocus();
+				_mainWindowEntry.Focus();
+
+				Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Input);
 			}
-
-			_mainWindow.SetFocus();
-			_mainWindowEntry.Focus();
-
-			Application.Current.Dispatcher.InvokeAsync(LoadViewModel, DispatcherPriority.Input);
 		}
 
 		private void SetAvailableWindowSize(double screenWidth, double screenHeight)
@@ -137,43 +115,41 @@ namespace GoToWindow
 		public void Hide(bool hideIfPending, bool requested)
 		{
 			if (!requested && Settings.Default.KeepOpenOnLostFocus)
+			{
+				Log.Debug("Ignoring hide on focus out because KeepOpenOnLostFocus is active.");
 				return;
+			}
 
 			lock (_lock)
 			{
-				if (_state == GoToWindowState.Showing)
+				if (_mainWindow == null)
 				{
-					Log.Debug("Cannot Hide because Show is still in progress. Pending Hide.");
-					_state = GoToWindowState.ShowingThenHide;
+					Log.Debug("Ignore hide request because window is already hidden.");
 					return;
 				}
 
-				if (!hideIfPending && _state == GoToWindowState.ShowingThenHide)
+				if (!_isClosing)
 				{
-					Log.Debug("Hide already pending.");
-					return;
+					try
+					{
+						_mainWindow.Close();
+						Log.Debug("Window Hidden");
+					}
+					catch (InvalidOperationException exc)
+					{
+						Log.Warn("Window is still closing", exc);
+					}
+					catch (Exception exc)
+					{
+						Log.Error("Failed hiding window.", exc);
+					}
+					_isClosing = false;
 				}
 
-				if (_state != GoToWindowState.Shown && _state != GoToWindowState.ShowingThenHide)
-					return;
-
-				Log.Debug("Hiding Main Window.");
-				_state = GoToWindowState.Hiding;
+				_mainWindow = null;
+				_mainViewModel = null;
+				_mainWindowEntry = null;
 			}
-
-			try
-			{
-				_mainWindow.BeginInit();
-				_mainViewModel.Empty();
-				_mainWindow.EndInit();
-				_mainViewModel.IsEmpty = true;
-			}
-			catch (InvalidOperationException exc)
-			{
-				Log.Error("Failed hiding window.", exc);
-			}
-
-			Application.Current.Dispatcher.InvokeAsync(HideWindow, DispatcherPriority.Input);
 		}
 
 		public void EnableKeyboardHook(KeyboardShortcut shortcut)
@@ -181,7 +157,6 @@ namespace GoToWindow
 			if (shortcut.Enabled)
 			{
 				_hooks?.Dispose();
-
 				_hooks = KeyboardHook.Hook(shortcut, HandleShortcut);
 			}
 			else if (_hooks != null)
@@ -206,29 +181,30 @@ namespace GoToWindow
 
 		private void LoadViewModel()
 		{
-			if (_state == GoToWindowState.ShowingThenHide)
+			lock (_lock)
 			{
-				Log.Debug("Executing pending Hide (before loading windows).");
-				Hide(true);
-				return;
+				if (_mainWindow == null)
+				{
+					Log.Debug("Cancelling LoadViewModel because Window was closed.");
+					return;
+				}
+
+				try
+				{
+					Log.Debug("View Model loading...");
+					_mainWindow.BeginInit();
+					_mainViewModel.Load(PluginsContainer.Plugins);
+					_mainWindow.DataReady();
+					_mainWindow.EndInit();
+					Log.Debug("View Model loaded.");
+				}
+				catch (Exception exc)
+				{
+					Log.Error("Failed LoadViewModel.", exc);
+				}
+
+				Application.Current.Dispatcher.InvokeAsync(EnsureWindowIsForeground, DispatcherPriority.Background);
 			}
-
-			Log.Debug("View Model loading...");
-			_mainWindow.BeginInit();
-			_mainViewModel.Load(PluginsContainer.Plugins);
-			_mainWindow.DataReady();
-			_mainWindow.EndInit();
-			_state = GoToWindowState.Shown;
-			Log.Debug("View Model loaded.");
-
-			if (_state == GoToWindowState.ShowingThenHide)
-			{
-				Log.Debug("Executing pending Hide (after loading windows).");
-				Hide(true);
-				return;
-			}
-
-			Application.Current.Dispatcher.InvokeAsync(EnsureWindowIsForeground, DispatcherPriority.Background);
 		}
 
 		private async void EnsureWindowIsForeground()
@@ -237,20 +213,14 @@ namespace GoToWindow
 			{
 				await Task.Delay(10);
 
-				if (_state != GoToWindowState.Shown)
-				{
-					Log.Debug("Ensuring foreground: Hide is already in progress. Stop watching.");
-					return;
-				}
-
-				if (HideWindowIfNotForeground())
-					return;
+				if (_mainWindow == null) return;
+				if (HideWindowIfNotForeground()) return;
 			}
 		}
 
 		private bool HideWindowIfNotForeground()
 		{
-			if (_mainWindowEntry.IsForeground())
+			if (_mainWindowEntry?.IsForeground() ?? false)
 				return false;
 
 #if(DEBUG)
@@ -262,36 +232,26 @@ namespace GoToWindow
 			return true;
 		}
 
-		private void HideWindow()
-		{
-			_mainWindow.Hide();
-			Log.Debug("Main window hidden.");
-
-			lock (_lock)
-			{
-				_state = GoToWindowState.Hidden;
-			}
-		}
-
 		private void HandleShortcut()
 		{
 			Application.Current.Dispatcher.InvokeAsync(Show, DispatcherPriority.Normal);
 		}
 
-		private void _mainViewModel_Hide(object sender, CloseEventArgs e)
+		private void _mainWindow_Closing(object sender, CancelEventArgs e)
 		{
-			Hide(false, e.Requested);
+			_isClosing = true;
+		}
+
+		private void _mainViewModel_Close(object sender, CloseEventArgs e)
+		{
+			Application.Current.Dispatcher.InvokeAsync(() => Hide(false, e.Requested), DispatcherPriority.Input);
 		}
 
 		public void Dispose()
 		{
 			WmiProcessWatcher.Stop();
 
-			if (_hooks != null)
-			{
-				_hooks.Dispose();
-				_hooks = null;
-			}
+			_hooks?.Dispose();
 		}
 	}
 }
