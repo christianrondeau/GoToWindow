@@ -30,15 +30,14 @@ namespace GoToWindow.ViewModels
             }
         }
 
-		//TODO: What about this? Should be renamed differently than Empty()
-		private bool _isEmpty;
-		public bool IsEmpty
+		private bool _isLoading;
+		public bool IsLoading
 		{
-			get => _isEmpty;
+			get => _isLoading;
 			set
 			{
-				_isEmpty = value;
-				OnPropertyChanged("IsEmpty");
+				_isLoading = value;
+				OnPropertyChanged("IsLoading");
 			}
 		}
 
@@ -98,14 +97,15 @@ namespace GoToWindow.ViewModels
             goToWindowEntryShortcutCommand.Executed += GoToWindowEntryShortcutCommand_Executed;
             GoToWindowEntryShortcut = goToWindowEntryShortcutCommand;
 
-			Empty();
-			IsEmpty = true;
+	        SelectedWindowEntry = null;
+	        Windows.Source = null;
+	        SearchText = "";
+	        IsRowIndexVisible = false;
+	        IsLoading = true;
 		}
 
 		public void Load(IEnumerable<IGoToWindowPlugin> plugins)
 		{
-			Empty();
-
 			try
 			{
 				var list = new List<ISearchResult>();
@@ -130,15 +130,7 @@ namespace GoToWindow.ViewModels
 				Log.Error("Error while loading the windows list", exc);
 			}
 
-			IsEmpty = false;
-		}
-
-		public void Empty()
-		{
-			SelectedWindowEntry = null;
-			Windows.Source = null;
-			SearchText = "";
-			IsRowIndexVisible = false;
+			IsLoading = false;
 		}
 
 		public void AskClose(bool requested)
@@ -150,10 +142,7 @@ namespace GoToWindow.ViewModels
         {
 	        var items = Windows?.View?.Cast<ISearchResult>().ToArray();
 
-            if (index < items?.Length)
-                return items[index];
-
-            return null;
+            return index < items?.Length ? items[index] : null;
         }
 
         private void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)

@@ -12,7 +12,7 @@ namespace GoToWindow.ViewModels
 	{
 		public DesignTimeMainViewModel()
 		{
-			IsEmpty = false;
+			IsLoading = false;
 			AvailableWindowWidth = 640;
 			AvailableWindowHeight = 240;
 			SearchText = "User Query...";
