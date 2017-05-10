@@ -64,7 +64,7 @@ namespace GoToWindow.Windows
 
 	        windowEntry.Select();
 
-	        ViewModel.AskClose(true);
+	        ViewModel.AskClose(this, true);
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -185,7 +185,7 @@ namespace GoToWindow.Windows
 
         private void ClearSearchButton_Click(object sender, RoutedEventArgs e)
         {
-			ViewModel.AskClose(true);
+			ViewModel.AskClose(this, true);
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -196,7 +196,7 @@ namespace GoToWindow.Windows
         private void Window_Deactivated(object sender, EventArgs e)
         {
             Log.Debug("Window deactivated.");
-			ViewModel.AskClose(false);
+			ViewModel.AskClose(this, false);
         }
 
 		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -205,7 +205,7 @@ namespace GoToWindow.Windows
 				ViewModel.IsRowIndexVisible = true;
 
 			if (e.Key == Key.Escape)
-				ViewModel.AskClose(true);
+				ViewModel.AskClose(this, true);
 		}
 
         private void Window_PreviewKeyUp(object sender, KeyEventArgs e)

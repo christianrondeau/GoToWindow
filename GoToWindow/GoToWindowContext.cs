@@ -109,10 +109,10 @@ namespace GoToWindow
 
 		public void Hide(bool requested)
 		{
-			Hide(false, requested);
+			Hide(false, requested, _mainWindow);
 		}
 
-		public void Hide(bool hideIfPending, bool requested)
+		public void Hide(bool hideIfPending, bool requested, MainWindow target)
 		{
 			if (!requested && Settings.Default.KeepOpenOnLostFocus)
 			{
@@ -122,28 +122,24 @@ namespace GoToWindow
 
 			lock (_lock)
 			{
-				if (_mainWindow == null)
+				if (_mainWindow == null || !ReferenceEquals(_mainWindow, target))
 				{
 					Log.Debug("Ignore hide request because window is already hidden.");
 					return;
 				}
 
-				if (!_isClosing)
+				try
 				{
-					try
-					{
-						_mainWindow.Close();
-						Log.Debug("Window Hidden");
-					}
-					catch (InvalidOperationException exc)
-					{
-						Log.Warn("Window is still closing", exc);
-					}
-					catch (Exception exc)
-					{
-						Log.Error("Failed hiding window.", exc);
-					}
-					_isClosing = false;
+					_mainWindow.Close();
+					Log.Debug("Window Hidden");
+				}
+				catch (InvalidOperationException exc)
+				{
+					Log.Warn("Window is still closing", exc);
+				}
+				catch (Exception exc)
+				{
+					Log.Error("Failed hiding window.", exc);
 				}
 
 				_mainWindow = null;
@@ -244,7 +240,7 @@ namespace GoToWindow
 
 		private void _mainViewModel_Close(object sender, CloseEventArgs e)
 		{
-			Application.Current.Dispatcher.InvokeAsync(() => Hide(false, e.Requested), DispatcherPriority.Input);
+			Application.Current.Dispatcher.InvokeAsync(() => Hide(false, e.Requested, sender as MainWindow), DispatcherPriority.Input);
 		}
 
 		public void Dispose()

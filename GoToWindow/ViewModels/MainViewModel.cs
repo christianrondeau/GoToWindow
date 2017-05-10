@@ -8,6 +8,7 @@ using GoToWindow.Commands;
 using GoToWindow.Extensibility;
 using GoToWindow.Extensibility.Controls;
 using GoToWindow.Extensibility.ViewModel;
+using GoToWindow.Windows;
 using log4net;
 
 namespace GoToWindow.ViewModels
@@ -133,9 +134,9 @@ namespace GoToWindow.ViewModels
 			IsLoading = false;
 		}
 
-		public void AskClose(bool requested)
+		public void AskClose(MainWindow window, bool requested)
 		{
-			Close?.Invoke(this, new CloseEventArgs(requested));
+			Close?.Invoke(window, new CloseEventArgs(requested));
 		}
 
         private ISearchResult GetEntryAt(int index)
