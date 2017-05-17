@@ -1,5 +1,5 @@
 ﻿$packageName = 'GoToWindow'
-$url        = 'https://github.com/christianrondeau/GoToWindow/releases/download/v0.6.1/GoToWindow.Setup.0.6.1.exe'
+$url        = 'https://github.com/christianrondeau/GoToWindow/releases/download/v0.7.0/GoToWindow.Setup.0.7.0.exe'
 $installerType = 'exe'
 $silentArgs = '--silent'
 
