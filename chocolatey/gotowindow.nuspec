@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
 	<metadata>
 		<id>gotowindow</id>
-		<version>0.7.0</version>
+		<version>0.7.1</version>
 		<packageSourceUrl>https://github.com/christianrondeau/GoToWindow/Chocolatey</packageSourceUrl>
 		<owners>Christian Rondeau</owners>
 		<title>GoToWindow (Install)</title>
