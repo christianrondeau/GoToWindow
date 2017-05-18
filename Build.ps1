@@ -117,11 +117,21 @@ If(Test-Path -Path $OutputSetupMsi) {
 	Remove-Item -Confirm:$false $OutputSetupMsi
 }
 
+$OutputSetupExe = "$ReleasesFolder\GoToWindow.Setup.$Version.exe"
+If(Test-Path -Path $OutputSetupExe) {
+	Remove-Item -Confirm:$false $OutputSetupExe
+}
+
 &($Squirrel) -g $SetupLoadingGif --releasify $NuPkgPath -i $SetupIcon -baseUrl https://github.com/christianrondeau/GoToWindow/releases/download/v$Version/
 
 $SquirrelSetupMsi = "$ReleasesFolder\Setup.msi"
 If(Test-Path -Path $SquirrelSetupMsi) {
 	Rename-Item $SquirrelSetupMsi $OutputSetupMsi
+}
+
+$SquirrelSetupExe = "$ReleasesFolder\Setup.exe"
+If(Test-Path -Path $SquirrelSetupExe) {
+	Rename-Item $SquirrelSetupExe $OutputSetupExe
 }
 
 # ==================================== Cleanup
