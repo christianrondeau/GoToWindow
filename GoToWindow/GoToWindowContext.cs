@@ -65,15 +65,20 @@ namespace GoToWindow
 				}
 
 				_mainViewModel = new MainViewModel();
+
+				SetAvailableWindowSize(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
+
 				_mainWindow = new MainWindow { DataContext = _mainViewModel };
 				_mainWindow.Closing += _mainWindow_Closing;
 				_mainViewModel.Close += _mainViewModel_Close;
 
 				Showing?.Invoke(this, new EventArgs());
 
-				SetAvailableWindowSize(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
 				_mainWindow.Left = SystemParameters.PrimaryScreenWidth / 2f - _mainViewModel.AvailableWindowWidth / 2f;
 				_mainWindow.Top = SystemParameters.PrimaryScreenHeight / 2f - (_mainViewModel.AvailableWindowHeight + 56) / 2f;
+				_mainWindow.Width = _mainViewModel.AvailableWindowWidth;
+				_mainWindow.MaxHeight = _mainViewModel.AvailableWindowHeight;
+
 				_mainWindow.Show();
 
 				var interopHelper = new WindowInteropHelper(_mainWindow);
