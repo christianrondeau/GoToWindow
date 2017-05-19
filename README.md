@@ -70,7 +70,7 @@ See the [Plugins](PLUGINS.md) document for more information on extending GoToWin
 
   * [Christian Rondeau](https://github.com/christianrondeau) - Main Developer
   * [David Cote](https://github.com/cotedav) - User Interface Design
-  * [CoenraadS](https://github.com/CoenraadS) - Contributions
+  * [Other contributors](https://github.com/christianrondeau/GoToWindow/graphs/contributors)
 
 ## License
 
