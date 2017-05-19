@@ -15,7 +15,7 @@
 		<projectSourceUrl>https://github.com/christianrondeau/GoToWindow</projectSourceUrl>
 		<docsUrl>https://github.com/christianrondeau/GoToWindow/blob/master/README.md</docsUrl>
 		<bugTrackerUrl>https://github.com/christianrondeau/GoToWindow/issues</bugTrackerUrl>
-		<tags>gotowindow app windows alt-tab switcher</tags>
+		<tags>gotowindow app windows alt-tab switcher admin</tags>
 		<summary>A keyboard-maniac alt-tab alternative</summary>
 		<description>No more need for alt-tabbing through dozens of windows, or looking for your windows in the task bar. Simply press Win + Tab + Tab, type a few characters from the window title or process name you want to switch to and press enter. For the keyboard maniacs. (Installs in `%APPDATA%\..\Local\GoToWindow`)</description>
 		<releaseNotes>Fix window not closing when alt-tabbing while window is still loading</releaseNotes>
