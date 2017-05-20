@@ -134,6 +134,17 @@ If(Test-Path -Path $SquirrelSetupExe) {
 	Rename-Item $SquirrelSetupExe $OutputSetupExe
 }
 
+# ==================================== Chocolatey
+
+$ChocolateyNuPkg = "chocolatey\gotowindow.$Version.nupkg"
+If(Test-Path -Path $ChocolateyNuPkg) {
+	Remove-Item -Confirm:$false $ChocolateyNuPkg
+}
+
+pushd chocolatey
+choco pack
+popd
+
 # ==================================== Cleanup
 
 Write-Host "Cleanup..." -ForegroundColor White
