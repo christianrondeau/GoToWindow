@@ -77,7 +77,6 @@ namespace GoToWindow
 				_mainWindow.Left = SystemParameters.PrimaryScreenWidth / 2f - _mainViewModel.AvailableWindowWidth / 2f;
 				_mainWindow.Top = SystemParameters.PrimaryScreenHeight / 2f - (_mainViewModel.AvailableWindowHeight + 56) / 2f;
 				_mainWindow.Width = _mainViewModel.AvailableWindowWidth;
-				_mainWindow.MaxHeight = _mainViewModel.AvailableWindowHeight;
 
 				_mainWindow.Show();
 
@@ -98,7 +97,7 @@ namespace GoToWindow
 			if (screenWidth > 1280)
 			{
 				_mainViewModel.AvailableWindowWidth = (int) (screenWidth*0.5f);
-				_mainViewModel.AvailableWindowHeight = (int) (screenHeight*0.66f);
+				_mainViewModel.AvailableWindowHeight = (int) (screenHeight*0.5);
 			}
 			else if (screenWidth < 800)
 			{
