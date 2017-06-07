@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 Param(
 	[String][Parameter(Mandatory=$True)]$Version
 )
@@ -21,5 +21,7 @@ Function AssignVersionToFile {
 
 AssignVersionToFile -Path "$PSScriptRoot\GoToWindow.nuspec" -RegEx "<version>[^<]+</version>" -Replacement "<version>$($Version)</version>"
 AssignVersionToFile -Path "$PSScriptRoot\GoToWindow.Shared\Properties\AssemblyInfo.Shared.cs" -RegEx "`"(\d+\.\d+\.\d+)`"" -Replacement "`"$($Version)`""
+AssignVersionToFile -Path "$PSScriptRoot\chocolatey\gotowindow.nuspec" -RegEx "<version>[^<]+</version>"-Replacement "<version>$($Version)</version>"
+AssignVersionToFile -Path "$PSScriptRoot\chocolatey\tools\chocolateyinstall.ps1" -RegEx "(\d+\.\d+\.\d+)" -Replacement "$($Version)"
 
 Write-Host "Version updated!" -ForegroundColor Green
