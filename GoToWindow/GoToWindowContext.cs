@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -35,7 +34,6 @@ namespace GoToWindow
 		private IWindowEntry _mainWindowEntry;
 		private MainViewModel _mainViewModel;
 		private KeyboardHook _hooks;
-		private bool _isClosing;
 
 		public IGoToWindowPluginsContainer PluginsContainer { get; private set; }
 
@@ -69,7 +67,6 @@ namespace GoToWindow
 				SetAvailableWindowSize(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
 
 				_mainWindow = new MainWindow { DataContext = _mainViewModel };
-				_mainWindow.Closing += _mainWindow_Closing;
 				_mainViewModel.Close += _mainViewModel_Close;
 
 				Showing?.Invoke(this, new EventArgs());
@@ -235,11 +232,6 @@ namespace GoToWindow
 		private void HandleShortcut()
 		{
 			Application.Current.Dispatcher.InvokeAsync(Show, DispatcherPriority.Normal);
-		}
-
-		private void _mainWindow_Closing(object sender, CancelEventArgs e)
-		{
-			_isClosing = true;
 		}
 
 		private void _mainViewModel_Close(object sender, CloseEventArgs e)

@@ -15,9 +15,8 @@ namespace GoToWindow.Converters
 
 			var range = int.Parse(parameter.ToString());
 			var item = (ListViewItem)value;
-			var listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
 
-		    if (listView == null)
+			if (!(ItemsControl.ItemsControlFromItemContainer(item) is ListView listView))
 		        return false;
 
 			var index = listView.ItemContainerGenerator.IndexFromContainer(item);

@@ -12,9 +12,8 @@ namespace GoToWindow.Converters
 			if (value == null) throw new ArgumentNullException(nameof(value));
 
 			var item = (ListViewItem)value;
-			var listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
 
-            if (listView == null)
+			if (!(ItemsControl.ItemsControlFromItemContainer(item) is ListView listView))
                 return false;
 
 			var index = listView.ItemContainerGenerator.IndexFromContainer(item);

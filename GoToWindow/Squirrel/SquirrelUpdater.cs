@@ -76,7 +76,7 @@ namespace GoToWindow.Squirrel
 		    ExecutableFilename = Path.GetFileName(executablePath);
 
 		    var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-		    Enabled = executablePath?.StartsWith(appDataPath, StringComparison.InvariantCultureIgnoreCase) ?? false;
+		    Enabled = executablePath.StartsWith(appDataPath, StringComparison.InvariantCultureIgnoreCase);
 
 		    if (!Enabled)
 		        Log.Info(

@@ -59,8 +59,7 @@ namespace GoToWindow.Windows
 
         private void FocusSelectedWindowItem()
         {
-            var windowEntry = WindowsListView.SelectedItem as ISearchResult;
-	        if (windowEntry == null) return;
+	        if (!(WindowsListView.SelectedItem is ISearchResult windowEntry)) return;
 
 	        windowEntry.Select();
 
