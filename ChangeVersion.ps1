@@ -24,6 +24,6 @@ AssignVersionToFile -Path "$PSScriptRoot\GoToWindow.Shared\Properties\AssemblyIn
 AssignVersionToFile -Path "$PSScriptRoot\chocolatey\gotowindow.nuspec" -RegEx "<version>[^<]+</version>"-Replacement "<version>$($Version)</version>"
 AssignVersionToFile -Path "$PSScriptRoot\chocolatey\tools\chocolateyinstall.ps1" -RegEx "(\d+\.\d+\.\d+)" -Replacement "$($Version)"
 
-Write-Host "IMPORTANT: Remember to update chocolatey\tools\chocolateyinstall.ps1 with `checksum -t sha256 Releases\GoToWindow.Setup.VER.exe`"
+Write-Host "IMPORTANT: Remember to update chocolatey\tools\chocolateyinstall.ps1 with ``checksum -t sha256 Releases\GoToWindow.Setup.VER.exe``"
 
 Write-Host "Version updated!" -ForegroundColor Green
