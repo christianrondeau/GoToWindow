@@ -72,6 +72,12 @@ See the [Plugins](PLUGINS.md) document for more information on extending GoToWin
   * [David Cote](https://github.com/cotedav) - User Interface Design
   * [Other contributors](https://github.com/christianrondeau/GoToWindow/graphs/contributors)
 
+## Thanks
+
+<a href="https://www.jetbrains.com/buy/opensource/"><img src="http://resources.jetbrains.com/storage/products/resharper/img/meta/resharper_logo_300x300.png" width="150" height="150" alt="JetBrains Resharper" /></a>
+
+Thanks JetBrains for providing a ReSharper license! This makes my life much easier (and I don't remember how to code without it)
+
 ## License
 
 Copyright (c) 2015 Christian Rondeau. Licensed under the [MIT license](LICENSE.md).
