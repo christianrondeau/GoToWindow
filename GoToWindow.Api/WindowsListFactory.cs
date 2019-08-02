@@ -51,6 +51,9 @@ namespace GoToWindow.Api
 		[DllImport("user32.dll", SetLastError = true)]
 		private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmGetWindowAttribute(IntPtr hWnd, int dwAttribute, out int pvAttribute, int cbAttribute);
+
         public static WindowsList Load()
         {
             var lShellWindow = GetShellWindow();
@@ -73,14 +76,22 @@ namespace GoToWindow.Api
 
 		    var className = GetClassName(hWnd);
 
-		    if (className == "ApplicationFrameWindow")
-			    InspectWindows10AppWindow(hWnd, windows, className);
-		    else
+		    //if (className == "ApplicationFrameWindow")
+			   // InspectWindows10AppWindow(hWnd, windows, className);
+		    //else
 			    InspectNormalWindow(hWnd, currentProcessId, windows, className);
 	    }
 
 		private static void InspectNormalWindow(IntPtr hWnd, int currentProcessId, ICollection<IWindowEntry> windows, string className)
 		{
+            if (className == "ApplicationFrameWindow")
+            {
+                // check if windows is not cloaked
+                const int DWMWA_CLOAKED = 14;
+                DwmGetWindowAttribute(hWnd, DWMWA_CLOAKED, out int cloaked, sizeof(int));
+                if (cloaked != 0) return;
+            }
+
 			if (!ClassEligibleForActivation(className))
 				return;
 
