@@ -11,6 +11,7 @@ namespace GoToWindow.Api
     /// Thanks to Tommy Carlier for how to get the list of windows: http://blog.tcx.be/2006/05/getting-list-of-all-open-windows.html
 	/// Thanks to taby for window eligibility: http://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
 	/// Thanks to Hans Passant & Tim Beaudet for Windows 10 apps process name: http://stackoverflow.com/a/32513438/154480
+	/// Thanks to vhanla for hiding closed Windows 10 apps: https://github.com/christianrondeau/GoToWindow/pull/55
     /// </remarks>
     public static class WindowsListFactory
     {
@@ -76,22 +77,14 @@ namespace GoToWindow.Api
 
 		    var className = GetClassName(hWnd);
 
-		    //if (className == "ApplicationFrameWindow")
-			   // InspectWindows10AppWindow(hWnd, windows, className);
-		    //else
+		    if (className == "ApplicationFrameWindow")
+			    InspectWindows10AppWindow(hWnd, windows, className);
+		    else
 			    InspectNormalWindow(hWnd, currentProcessId, windows, className);
 	    }
 
 		private static void InspectNormalWindow(IntPtr hWnd, int currentProcessId, ICollection<IWindowEntry> windows, string className)
 		{
-            if (className == "ApplicationFrameWindow")
-            {
-                // check if windows is not cloaked
-                const int DWMWA_CLOAKED = 14;
-                DwmGetWindowAttribute(hWnd, DWMWA_CLOAKED, out int cloaked, sizeof(int));
-                if (cloaked != 0) return;
-            }
-
 			if (!ClassEligibleForActivation(className))
 				return;
 
@@ -111,6 +104,11 @@ namespace GoToWindow.Api
 	    private static void InspectWindows10AppWindow(IntPtr hWnd, ICollection<IWindowEntry> windows, string className)
 	    {
 		    Log.Debug("- Found Window 10 App");
+
+			// check if windows is not cloaked
+			const int DWMWA_CLOAKED = 14;
+			DwmGetWindowAttribute(hWnd, DWMWA_CLOAKED, out int cloaked, sizeof(int));
+			if (cloaked != 0) return;
 
 		    var foundChildren = false;
 			GetWindowThreadProcessId(hWnd, out uint processId);
