@@ -103,7 +103,7 @@ namespace GoToWindow
 
 		private void Application_Exit(object sender, ExitEventArgs e)
 		{
-            SquirrelContext.Dispose();
+			SquirrelContext.Dispose();
 
 			if (_menu != null)
 			{

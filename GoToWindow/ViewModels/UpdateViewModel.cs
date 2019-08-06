@@ -57,7 +57,7 @@ namespace GoToWindow.ViewModels
 		}
 
 		private void UpdateErrorCallback(Exception exc)
-        {
+		{
 			UpdateStatus = UpdateStatus.Error;
 			Enabled = true;
 		}

@@ -21,15 +21,15 @@ namespace GoToWindow.ViewModels
 		public ISearchResult SelectedWindowEntry { get; set; }
 
 		private string _searchText;
-        public string SearchText
-        {
-            get => _searchText;
-	        set
-            {
-                _searchText = value;
-                OnPropertyChanged("SearchText");
-            }
-        }
+		public string SearchText
+		{
+			get => _searchText;
+			set
+			{
+				_searchText = value;
+				OnPropertyChanged("SearchText");
+			}
+		}
 
 		private bool _isLoading;
 		public bool IsLoading
@@ -86,23 +86,23 @@ namespace GoToWindow.ViewModels
 			}
 		}
 
-        public ICommand GoToWindowEntryShortcut { get; }
+		public ICommand GoToWindowEntryShortcut { get; }
 
 		public event CloseEventHandler Close;
 
-        public MainViewModel()
-        {
+		public MainViewModel()
+		{
 			Windows = new CollectionViewSource();
 
-            var goToWindowEntryShortcutCommand = new GoToWindowEntryShortcutCommand(GetEntryAt);
-            goToWindowEntryShortcutCommand.Executed += GoToWindowEntryShortcutCommand_Executed;
-            GoToWindowEntryShortcut = goToWindowEntryShortcutCommand;
+			var goToWindowEntryShortcutCommand = new GoToWindowEntryShortcutCommand(GetEntryAt);
+			goToWindowEntryShortcutCommand.Executed += GoToWindowEntryShortcutCommand_Executed;
+			GoToWindowEntryShortcut = goToWindowEntryShortcutCommand;
 
-	        SelectedWindowEntry = null;
-	        Windows.Source = null;
-	        SearchText = "";
-	        IsRowIndexVisible = false;
-	        IsLoading = true;
+			SelectedWindowEntry = null;
+			Windows.Source = null;
+			SearchText = "";
+			IsRowIndexVisible = false;
+			IsLoading = true;
 		}
 
 		public void Load(IEnumerable<IGoToWindowPlugin> plugins)
@@ -139,15 +139,15 @@ namespace GoToWindow.ViewModels
 			Close?.Invoke(window, new CloseEventArgs(requested));
 		}
 
-        private ISearchResult GetEntryAt(int index)
-        {
-	        var items = Windows?.View?.Cast<ISearchResult>().ToArray();
+		private ISearchResult GetEntryAt(int index)
+		{
+			var items = Windows?.View?.Cast<ISearchResult>().ToArray();
 
-            return index < items?.Length ? items[index] : null;
-        }
+			return index < items?.Length ? items[index] : null;
+		}
 
-        private void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
-        {
+		private void GoToWindowEntryShortcutCommand_Executed(object sender, EventArgs e)
+		{
 			Close?.Invoke(this, new CloseEventArgs(true));
 		}
 	}

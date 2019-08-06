@@ -10,7 +10,7 @@ namespace GoToWindow.Api.Tests
 		public static string GetResourcePath(string filename)
 		{
 			var executablePath = Path.GetDirectoryName(typeof(WindowListFactoryTests).Assembly.Location);
-            return executablePath != null ? Path.Combine(executablePath, filename) : null;
+			return executablePath != null ? Path.Combine(executablePath, filename) : null;
 		}
 
 		public IWindowEntry ExpectedWindow { get; }

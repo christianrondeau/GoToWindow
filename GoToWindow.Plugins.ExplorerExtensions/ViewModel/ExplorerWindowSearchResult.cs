@@ -35,9 +35,9 @@ namespace GoToWindow.Plugins.ExplorerExtensions.ViewModel
 			_window.Select();
 		}
 
-        public void SetError(string message)
-        {
-            _window.SetError(message);
-        }
+		public void SetError(string message)
+		{
+			_window.SetError(message);
+		}
 	}
 }

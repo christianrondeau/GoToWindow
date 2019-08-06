@@ -4,8 +4,8 @@ namespace GoToWindow.Extensibility.ViewModel
 {
 	public interface IWindowSearchResult : IBasicSearchResult
 	{
-        bool IsVisible { get; }
+		bool IsVisible { get; }
 		IntPtr HWnd { get; }
-	    void SetError(string message);
+		void SetError(string message);
 	}
 }

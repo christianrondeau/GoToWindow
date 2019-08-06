@@ -6,10 +6,10 @@ namespace GoToWindow.Api
 	{
 		public IntPtr HWnd { get; set; }
 		public uint ProcessId { get; set; }
-	    public string Title { get; set; }
-        public IntPtr IconHandle { get; set; }
-        public bool IsVisible { get; set; }
-        public string ProcessName { get; set; }
+		public string Title { get; set; }
+		public IntPtr IconHandle { get; set; }
+		public bool IsVisible { get; set; }
+		public string ProcessName { get; set; }
 
 		public bool Focus()
 		{
@@ -31,7 +31,7 @@ namespace GoToWindow.Api
 
 		public override string ToString()
 		{
-            return $"{ProcessName} ({ProcessId}): \"{Title}\"";
+			return $"{ProcessName} ({ProcessId}): \"{Title}\"";
 		}
 	}
 }

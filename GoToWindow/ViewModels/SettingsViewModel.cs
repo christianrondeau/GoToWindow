@@ -31,7 +31,7 @@ namespace GoToWindow.ViewModels
 
 		}
 
-	    public SettingsViewModel(IGoToWindowContext context)
+		public SettingsViewModel(IGoToWindowContext context)
 		{
 			_context = context;
 			_enabled = true;
@@ -148,7 +148,7 @@ namespace GoToWindow.ViewModels
 		public void Load()
 		{
 			// Settings
-		    WindowListSingleClick = Settings.Default.WindowListSingleClick;
+			WindowListSingleClick = Settings.Default.WindowListSingleClick;
 			KeepOpenOnLostFocus = Settings.Default.KeepOpenOnLostFocus;
 
 			// Shortcut

@@ -6,8 +6,8 @@ using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.Firefox
 {
-    public class FirefoxTabsFinder : UIAutomationTabsFinderBase, ITabsFinder
-    {
+	public class FirefoxTabsFinder : UIAutomationTabsFinderBase, ITabsFinder
+	{
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{
 			var firefoxWindow = AutomationElement.FromHandle(hWnd);

@@ -14,7 +14,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 	/// </remarks>
 	public class InternetExplorerTab : TabBase, ITab
 	{
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ProcessExtensions).Assembly, "GoToWindow");
+		private static readonly ILog Log = LogManager.GetLogger(typeof(ProcessExtensions).Assembly, "GoToWindow");
 
 		private readonly SHDocVw.InternetExplorer _ie;
 
@@ -144,20 +144,20 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 
 		private static string UrlForTab(IAccessible tab)
 		{
-		    try
-		    {
-		        var desc = tab.accDescription[0];
-		        if (desc != null)
-		        {
-		            return desc.Contains("\n")
-		                ? desc.Substring(desc.IndexOf("\n", StringComparison.Ordinal)).Trim()
-		                : desc;
-		        }
-		    }
-		    catch (Exception exc)
-		    {
-		        Log.Warn("Error trying to get URL for Internet Explorer tab", exc);
-		    }
+			try
+			{
+				var desc = tab.accDescription[0];
+				if (desc != null)
+				{
+					return desc.Contains("\n")
+						? desc.Substring(desc.IndexOf("\n", StringComparison.Ordinal)).Trim()
+						: desc;
+				}
+			}
+			catch (Exception exc)
+			{
+				Log.Warn("Error trying to get URL for Internet Explorer tab", exc);
+			}
 			return "empty://";
 		}
 	}

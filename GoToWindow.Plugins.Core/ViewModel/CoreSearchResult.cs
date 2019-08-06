@@ -13,7 +13,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
 		private readonly IWindowEntry _entry;
 		private BitmapFrame _icon;
 
-	    public BitmapFrame Icon => _icon ?? (_icon = LoadIcon());
+		public BitmapFrame Icon => _icon ?? (_icon = LoadIcon());
 		public string Title => _entry.Title;
 		public string ProcessName => _entry.ProcessName;
 		public IntPtr HWnd => _entry.HWnd;
@@ -21,7 +21,7 @@ namespace GoToWindow.Plugins.Core.ViewModel
 		public bool IsVisible => _entry.IsVisible;
 		public string Error { get; private set; }
 
-	    public CoreSearchResult(IWindowEntry entry, Func<UserControl> viewCtor)
+		public CoreSearchResult(IWindowEntry entry, Func<UserControl> viewCtor)
 			: base(viewCtor)
 		{
 			_entry = entry;
@@ -37,21 +37,21 @@ namespace GoToWindow.Plugins.Core.ViewModel
 			return IsShown(searchQuery, ProcessName, Title);
 		}
 
-        public void SetError(string message)
-        {
-            Error = message;
-        }
+		public void SetError(string message)
+		{
+			Error = message;
+		}
 
-	    private BitmapFrame LoadIcon()
-	    {
-	        string executable;
+		private BitmapFrame LoadIcon()
+		{
+			string executable;
 
-	        using (var process = Process.GetProcessById((int) _entry.ProcessId))
-	        {
-	            executable = process.GetExecutablePath();
-	        }
+			using (var process = Process.GetProcessById((int) _entry.ProcessId))
+			{
+				executable = process.GetExecutablePath();
+			}
 
-	        return IconLoader.LoadIcon(_entry.IconHandle, executable);
-	    }
+			return IconLoader.LoadIcon(_entry.IconHandle, executable);
+		}
 	}
 }

@@ -6,7 +6,7 @@ using GoToWindow.Plugins.ExpandBrowsersTabs.Contracts;
 
 namespace GoToWindow.Plugins.ExpandBrowsersTabs.NotepadPlusPlus
 {
-    public class NotepadPlusPlusTabsFinder : UIAutomationTabsFinderBase, ITabsFinder
+	public class NotepadPlusPlusTabsFinder : UIAutomationTabsFinderBase, ITabsFinder
 	{
 		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{

@@ -9,13 +9,13 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.InternetExplorer
 	{
 		private bool _searchedOnce;
 
-	    public bool CanGetTabsOfWindow(IWindowSearchResult item, out string errorMessage)
-	    {
-	        errorMessage = null;
-	        return true;
-	    }
+		public bool CanGetTabsOfWindow(IWindowSearchResult item, out string errorMessage)
+		{
+			errorMessage = null;
+			return true;
+		}
 
-	    public IEnumerable<ITab> GetTabsOfWindow(IntPtr chromeWindowHandle)
+		public IEnumerable<ITab> GetTabsOfWindow(IntPtr chromeWindowHandle)
 		{
 			if (_searchedOnce)
 				yield break;

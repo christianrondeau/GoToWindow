@@ -15,12 +15,12 @@ namespace GoToWindow.FakeApp
 
 		private void Window_Initialized(object sender, EventArgs e)
 		{
-		    var args = Environment.GetCommandLineArgs();
+			var args = Environment.GetCommandLineArgs();
 
-		    Title = args.Length >= 2 ? args[1] : "Go To Window - Fake Application (For Testing)";
+			Title = args.Length >= 2 ? args[1] : "Go To Window - Fake Application (For Testing)";
 		}
 
-	    private void Window_KeyDown(object sender, KeyEventArgs e)
+		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
 			InsertKeyMessage("Down: " + GetKeyEventString(e));
 		}

@@ -9,8 +9,8 @@ namespace GoToWindow.Extensibility.Controls
 		{
 			InitializeComponent();
 
-		    if (!DesignerProperties.GetIsInDesignMode(this))
-		        Background = Brushes.Transparent;
+			if (!DesignerProperties.GetIsInDesignMode(this))
+				Background = Brushes.Transparent;
 		}
 	}
 }

@@ -5,10 +5,10 @@ namespace GoToWindow.Api
 {
 	public static class MouseSend
 	{
-        // ReSharper disable InconsistentNaming
+		// ReSharper disable InconsistentNaming
 		private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
 		private const uint MOUSEEVENTF_LEFTUP = 0x0004;
-        // ReSharper restore InconsistentNaming
+		// ReSharper restore InconsistentNaming
 
 		[DllImport("user32.dll")]
 		private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, IntPtr dwExtraInfo);

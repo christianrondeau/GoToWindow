@@ -15,9 +15,9 @@ namespace GoToWindow.Api
 		[DllImport("user32.dll", SetLastError = true)]
 		private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool IsIconic(IntPtr hWnd);
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool IsIconic(IntPtr hWnd);
 
 		public static WindowEntry Create(IntPtr hWnd)
 		{
@@ -30,16 +30,16 @@ namespace GoToWindow.Api
 		{
 			var windowTitle = GetWindowTitle(hWnd);
 
-		    var iconHandle = WindowIcon.GetAppIcon(hWnd);
-            var isVisible = !IsIconic(hWnd);
+			var iconHandle = WindowIcon.GetAppIcon(hWnd);
+			var isVisible = !IsIconic(hWnd);
 
-		    return new WindowEntry
+			return new WindowEntry
 			{
 				HWnd = hWnd,
 				Title = windowTitle,
 				ProcessId = processId,
 				IconHandle = iconHandle,
-                IsVisible = isVisible
+				IsVisible = isVisible
 			};
 		}
 

@@ -14,7 +14,7 @@ namespace GoToWindow.Converters
 			var item = (ListViewItem)value;
 
 			if (!(ItemsControl.ItemsControlFromItemContainer(item) is ListView listView))
-                return false;
+				return false;
 
 			var index = listView.ItemContainerGenerator.IndexFromContainer(item);
 			return (index + 1).ToString(CultureInfo.InvariantCulture);

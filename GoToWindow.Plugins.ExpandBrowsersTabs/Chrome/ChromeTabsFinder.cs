@@ -9,9 +9,9 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Chrome
 	/// <remarks>
 	/// Thanks to CoenraadS: https://github.com/CoenraadS/Chrome-Tab-Switcher
 	/// </remarks>
-    public class ChromeTabsFinder : UIAutomationTabsFinderBase, ITabsFinder
+	public class ChromeTabsFinder : UIAutomationTabsFinderBase, ITabsFinder
 	{
-	    public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
+		public IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd)
 		{
 			var cacheRequest = new CacheRequest();
 			cacheRequest.Add(AutomationElement.NameProperty);

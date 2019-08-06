@@ -6,7 +6,7 @@ namespace GoToWindow.Plugins.ExpandBrowsersTabs.Contracts
 {
 	public interface ITabsFinder
 	{
-	    bool CanGetTabsOfWindow(IWindowSearchResult item, out string errorMessage);
-	    IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd);
+		bool CanGetTabsOfWindow(IWindowSearchResult item, out string errorMessage);
+		IEnumerable<ITab> GetTabsOfWindow(IntPtr hWnd);
 	}
 }

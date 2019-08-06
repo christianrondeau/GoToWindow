@@ -6,7 +6,7 @@ namespace GoToWindow.Extensibility.ViewModel
 	public abstract class SearchResultBase
 	{
 		private readonly Func<UserControl> _viewCtor;
-	    private UserControl _view;
+		private UserControl _view;
 
 		public UserControl View => _view ?? (_view = _viewCtor());
 

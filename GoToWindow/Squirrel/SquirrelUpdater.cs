@@ -30,10 +30,10 @@ namespace GoToWindow.Squirrel
 			return Updater;
 		}
 
-        public static void Dispose()
-        {
-            Updater.Dispose();
-        }
+		public static void Dispose()
+		{
+			Updater.Dispose();
+		}
 
 		private static string GetUpdateUrl()
 		{
@@ -72,15 +72,15 @@ namespace GoToWindow.Squirrel
 		{
 			Log = LogManager.GetLogger(typeof(SquirrelUpdater).Assembly, "GoToWindow");
 
-		    var executablePath = Assembly.GetEntryAssembly().Location;
-		    ExecutableFilename = Path.GetFileName(executablePath);
+			var executablePath = Assembly.GetEntryAssembly().Location;
+			ExecutableFilename = Path.GetFileName(executablePath);
 
-		    var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-		    Enabled = executablePath.StartsWith(appDataPath, StringComparison.InvariantCultureIgnoreCase);
+			var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+			Enabled = executablePath.StartsWith(appDataPath, StringComparison.InvariantCultureIgnoreCase);
 
-		    if (!Enabled)
-		        Log.Info(
-			        $"Updates are disabled because GoToWindow is not running from the AppData directory. Executable: {executablePath}, App Data: {appDataPath}");
+			if (!Enabled)
+				Log.Info(
+					$"Updates are disabled because GoToWindow is not running from the AppData directory. Executable: {executablePath}, App Data: {appDataPath}");
 		}
 
 		public SquirrelUpdater(string updateUrl)
@@ -162,38 +162,38 @@ namespace GoToWindow.Squirrel
 			if (_updateManager == null)
 				return; // Disposing
 
-            progressCallback(UpdateStatus.Installing, 100);
-            Log.Info("Squirrel: Creating uninstall info...");
-            var createUninstallerRegistryEntryTask = _updateManager.CreateUninstallerRegistryEntry();
-            createUninstallerRegistryEntryTask.ContinueWith(t => CreateUninstallerRegistryEntryCallback(progressCallback, errCallback, installPath), TaskContinuationOptions.OnlyOnRanToCompletion);
-            createUninstallerRegistryEntryTask.ContinueWith(t => HandleAsyncError(errCallback, t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+			progressCallback(UpdateStatus.Installing, 100);
+			Log.Info("Squirrel: Creating uninstall info...");
+			var createUninstallerRegistryEntryTask = _updateManager.CreateUninstallerRegistryEntry();
+			createUninstallerRegistryEntryTask.ContinueWith(t => CreateUninstallerRegistryEntryCallback(progressCallback, errCallback, installPath), TaskContinuationOptions.OnlyOnRanToCompletion);
+			createUninstallerRegistryEntryTask.ContinueWith(t => HandleAsyncError(errCallback, t.Exception), TaskContinuationOptions.OnlyOnFaulted);
 		}
 
-        private void CreateUninstallerRegistryEntryCallback(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback, string installPath)
-        {
+		private void CreateUninstallerRegistryEntryCallback(Action<UpdateStatus, int> progressCallback, Action<Exception> errCallback, string installPath)
+		{
 			if (_updateManager == null)
 				return; // Disposing
 
-            _updateManager.Dispose();
-            Log.Info("Squirrel: Launching new version.");
-            progressCallback(UpdateStatus.Restarting, 100);
+			_updateManager.Dispose();
+			Log.Info("Squirrel: Launching new version.");
+			progressCallback(UpdateStatus.Restarting, 100);
 
-            try
-            {
-                var executablePath = Path.Combine(installPath, "GoToWindow.exe");
-                if (File.Exists(executablePath))
-                {
-                    Process.Start(executablePath, "--squirrel-firstrunafterupdate");
-                }
+			try
+			{
+				var executablePath = Path.Combine(installPath, "GoToWindow.exe");
+				if (File.Exists(executablePath))
+				{
+					Process.Start(executablePath, "--squirrel-firstrunafterupdate");
+				}
 
-                Log.Info("Squirrel: Shutting down.");
-                Application.Current.Dispatcher.InvokeAsync(() => Application.Current.Shutdown(1));
-            }
-            catch (Exception exc)
-            {
-                HandleAsyncError(errCallback, exc);
-            }
-        }
+				Log.Info("Squirrel: Shutting down.");
+				Application.Current.Dispatcher.InvokeAsync(() => Application.Current.Shutdown(1));
+			}
+			catch (Exception exc)
+			{
+				HandleAsyncError(errCallback, exc);
+			}
+		}
 
 		private static void HandleAsyncError(Action<Exception> errCallback, Exception exc)
 		{
@@ -224,19 +224,19 @@ namespace GoToWindow.Squirrel
 		{
 			if (_updateManager == null)
 				return; // Disposing
-           
+		   
 			if (!Enabled) return;
 
 			_updateManager.CreateShortcutsForExecutable(ExecutableFilename, ShortcutLocation.StartMenu, updateOnly, null, null);
 			_updateManager.CreateShortcutsForExecutable(ExecutableFilename, ShortcutLocation.Desktop, updateOnly, null, null);
-            _updateManager.CreateShortcutsForExecutable(ExecutableFilename, ShortcutLocation.Startup, updateOnly, null, null);
-        }
+			_updateManager.CreateShortcutsForExecutable(ExecutableFilename, ShortcutLocation.Startup, updateOnly, null, null);
+		}
 
 		internal void RemoveShortcuts()
 		{
 			if (_updateManager == null)
 				return; // Disposing
-           
+		   
 			if (!Enabled) return;
 
 			_updateManager.RemoveShortcutsForExecutable(ExecutableFilename, ShortcutLocation.StartMenu);

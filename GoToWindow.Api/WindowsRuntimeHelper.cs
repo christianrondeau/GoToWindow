@@ -12,14 +12,14 @@ namespace GoToWindow.Api
 			return Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version >= Win8Version;
 		}
 
-        public static bool GetHasElevatedPrivileges()
-        {
-            if (!IsWindows8()) return true;
+		public static bool GetHasElevatedPrivileges()
+		{
+			if (!IsWindows8()) return true;
 
-            var identity = WindowsIdentity.GetCurrent();
+			var identity = WindowsIdentity.GetCurrent();
 
-	        var principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200);
-        }
+			var principal = new WindowsPrincipal(identity);
+			return principal.IsInRole(WindowsBuiltInRole.Administrator) || principal.IsInRole(0x200);
+		}
 	}
 }

@@ -4,7 +4,7 @@ namespace GoToWindow.Extensibility.ViewModel
 {
 	public class DesignTimeCommandResult : IBasicCommandResult
 	{
-	    public UserControl View => null;
+		public UserControl View => null;
 
 		public string BeforeText { get; }
 		public string Text { get; }
